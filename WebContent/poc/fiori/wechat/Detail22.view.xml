@@ -1,0 +1,61 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="poc.fiori.wechat.Detail" xmlns:html="http://www.w3.org/1999/xhtml" id="Detail">
+	<Page title="Product Details" >
+	   <footer>
+			<Bar>
+				<contentMiddle>
+					<Button
+					    id="tocart"
+						text="Add to cart"
+						enabled="true"
+						press="handleCart"
+						type="Accept" />
+				</contentMiddle>
+			</Bar>
+		</footer>
+		<content>
+			<ObjectHeader id="ProductHead" >
+				<attributes>
+					<ObjectAttribute 
+						id="ProductAtt" />
+				</attributes>
+		    </ObjectHeader>
+		    <IconTabBar id="TabBar">
+				<items>
+					<IconTabFilter id="InfoTab" icon="sap-icon://hint">
+					    <content>
+					    <VBox><items>					    
+						    <Label></Label>
+						    <HBox><items>
+						    <Label text= "Label: " textAlign="Center"></Label>
+						    <Label id="sLabel" design="Bold"></Label>
+						    </items></HBox>
+						    <Label></Label>
+						    <HBox><items>
+						    <Label text= "Description: " textAlign="Center"></Label>
+						    <Label id="sDes" design="Bold"></Label>
+						    </items></HBox>					    
+					    </items></VBox>
+					    </content>
+						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
+					</IconTabFilter>
+					<IconTabFilter id="NotesTab" icon="sap-icon://notes">
+						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
+					</IconTabFilter>
+				</items>
+			</IconTabBar>	
+				
+	        <VBox class="HeaderInfo" >
+		    <items>
+		      <Label text="Amount" />
+		      <Input
+		        id="productInput"
+		        type="Text"
+		        value="1"
+		        width="100%">
+		      </Input>
+		    </items>
+		  </VBox>
+		</content>
+	</Page>
+</core:View>

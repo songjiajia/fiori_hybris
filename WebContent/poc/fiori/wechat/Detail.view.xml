@@ -1,0 +1,62 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="poc.fiori.wechat.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Product Details" showNavButton="true" navButtonPress="onBack">
+	   <footer>
+			<Bar>
+				<contentMiddle>
+					<Button
+					    id="tocart"
+						text="Add to cart"
+						enabled="true"
+						press="handleCart"
+						type="Accept" />
+				</contentMiddle>
+			</Bar>
+		</footer>
+		<content>
+			<ObjectHeader id="ProductHead" >
+				<attributes>
+					<ObjectAttribute 
+						id="ProductAtt" />
+				</attributes>
+		    </ObjectHeader>
+		    <IconTabBar id="TabBar">
+				<items>
+					<IconTabFilter id="InfoTab" icon="sap-icon://hint">
+					    <content>
+					    <VBox><items>					    
+						    <Label></Label>
+						    <HBox><items>
+						    <Label id="tLabel" text= "Label: " textAlign="Center"></Label>
+						    <Label id="sLabel"></Label>
+						    </items></HBox>
+						    <Label></Label>
+						    <HBox><items>
+						    <Label id="tDes" text= "Desc: " textAlign="Center"></Label>
+						    <Label id="sDes"></Label>
+						    </items></HBox>							    
+						    <Label></Label>				    
+					    </items></VBox>
+					    </content>
+						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
+					</IconTabFilter>
+					<IconTabFilter id="NotesTab" icon="sap-icon://notes">
+						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
+					</IconTabFilter>
+				</items>
+			</IconTabBar>	
+				
+	        <VBox class="HeaderInfo" >
+		    <items>
+		      <Label text="Quantity" />
+		      <HBox alignItems="Center">
+		       <Button id="minus" icon="sap-icon://less" press="onPress"/>		       
+		       <core:HTML id="separator"></core:HTML>		       
+		       <Input id="input" class="input" type="Number" maxLength="3" value="1" width="3rem" enabled="false"/> 		           
+		       <Button id="plus" icon="sap-icon://add" press="onPress"/>       
+              </HBox>
+		    </items>
+		  </VBox>
+		</content>
+	</Page>
+</core:View>

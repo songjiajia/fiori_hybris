@@ -1,0 +1,22 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="poc.fiori.wechat.search" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Product Search" id="Search">
+		<subHeader>
+      <Bar>
+        <contentMiddle>
+          <SearchField id="idSearch"
+            search="onSearch"
+            width="100%" />
+        </contentMiddle>
+      </Bar>
+    </subHeader>
+    <content>
+    <Image id="idImage"  src ="poc/fiori/wechat/brand.jpg"  width="100%"/>
+     <List
+        id="idList" 
+        selectionChange="onSelectionChange"
+        itemPress="onItemPress" >      
+      </List>
+    </content>
+	</Page>
+</core:View>

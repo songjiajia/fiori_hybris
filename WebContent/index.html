@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<style type="text/css">
+	.HeaderInfo{
+	font-size: 1.25rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-top: 1rem;
+    }
+    .BarMargin{
+	margin-left: 1rem;
+	width: 92% !important;
+    }
+    .LabelPadding{
+    padding-left: 1rem;
+    }
+    .input .sapMInputBase{
+    padding: 0;
+    }
+    .input .sapMInputBaseInner{
+    text-align: right; 
+    height: 2.5rem;
+    }
+	</style>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+<!--  <script src="resources/sap-ui-core.js"-->		
+        <script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+				id="sap-ui-bootstrap"
+				data-sap-ui-libs="sap.m"
+				data-sap-ui-theme="sap_bluecrystal">
+		</script>
+		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+
+		<script>
+				sap.ui.localResources("poc.fiori.wechat");
+				var app = new sap.m.App({id:"theApp", initialPage:"idsearch1"});
+				var page = sap.ui.view({id:"idsearch1", viewName:"poc.fiori.wechat.search", type:sap.ui.core.mvc.ViewType.XML});
+//				var app = new sap.m.App({id:"theApp", initialPage:"idsearch1"});
+//				var page = sap.ui.view({id:"idsearch1", viewName:"poc.fiori.wechat.Detail", type:sap.ui.core.mvc.ViewType.XML});
+				app.addPage(page);
+				app.placeAt("content");
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>
