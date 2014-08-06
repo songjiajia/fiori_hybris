@@ -10,8 +10,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
-				var oPara = evt.data.oModel;
-				var sPath = evt.data.sPath;
+				var oPara = evt.data.context.oModel;
+				var sPath = evt.data.context.sPath;
 				sPath = sPath + "/@code";
 			    oCode =	oPara.getProperty (sPath);
 			    this.showDetail();
@@ -33,8 +33,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	},
 	
 	showDetail: function(){
-//		var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.151.248:9001/ws410/rest/";	
-		var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
+		var uripre = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
+//		var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 //		var producturi = uripre + "products?product_attributes=name,ean,code,europe1Prices,description&priceRow_attributes=price&products_query=%7Bname%7D%20LIKE%20%27%25Bandeau%25%27";
 		var producturi = uripre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/apparelstylevariantproducts/" + oCode + "?product_attributes=name,ean,code,europe1Prices,description,picture,summary&priceRow_attributes=price";
 //		var producturi = uripre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/apparelstylevariantproducts/" + 186828 + "?product_attributes=name,ean,code,europe1Prices,description,picture,summary&priceRow_attributes=price";
@@ -78,8 +78,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		var code = oProduct.getModel().getProperty("/@code");
 		var quantity = this.byId("input").getValue();
 		
-//		var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.151.248:9001/ws410/rest/";
-		var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
+       var uripre = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+		//var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 		var cartNoUrl = uripre + "/ws410/rest/customers/jones.wu@sap.com";
 	 	var cartNoModel = new sap.ui.model.xml.XMLModel();
 	 	cartNoModel.loadData(cartNoUrl,null,false);

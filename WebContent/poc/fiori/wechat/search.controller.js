@@ -24,7 +24,7 @@ navToHandler : function(channelId, eventId, data) {
 	                 this.app.addPage(sap.ui.xmlview(data.id, "poc.fiori.wechat." + data.id));
 	              }
 	            // Navigate to given page (include bindingContext)
-	            this.app.to(data.id, data.data.context);
+	            this.app.to(data.id, data.data);
         } else {
 	            jQuery.sap.log.error("nav-to event cannot be processed. Invalid data: " + data);
 	        }
@@ -55,7 +55,16 @@ navToHandler : function(channelId, eventId, data) {
 //	onExit: function() {
 //
 //	}
-
+	 onGlassesPress : function (oEvent) {
+		 var bus = sap.ui.getCore().getEventBus();
+	        bus.publish("nav", "to", { 
+	            id : "CategoryDetail",
+	            data : {
+	                context : oEvent.oSource.getText()
+	            }
+ 	});
+		
+	 },
 	 onSearch : function (oEvt) {
 		 var oImage = this.byId("idImage");
 		 oImage.setVisible(false) ;
@@ -64,8 +73,8 @@ navToHandler : function(channelId, eventId, data) {
 		    // add filter for search
 		    var aFilters = [];
 		    var sQuery = oEvt.getSource().getValue();
-//		    var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.151.248:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
-		    var url = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
+		    var url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
+//		    var url = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
 		    var oModel = new sap.ui.model.xml.XMLModel();
 	        oModel.loadData(url);
 //	        var oList = this.byId("idList");
@@ -84,8 +93,8 @@ navToHandler : function(channelId, eventId, data) {
 //		 	oItems.bindProperty("title","@code").bindProperty("description","ean/text()");
 	        var getUrl = function(){
 //	        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
-//	              var iconUrl = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.151.248:9001";
-	              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
+	              var iconUrl = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+//	              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 	              var oItems = that.byId("idList").getItems();
 	              for (i in oItems){
 	            	  oItems[i].setProperty("icon", iconUrl + oItems[i].getProperty("icon"));
@@ -101,38 +110,6 @@ navToHandler : function(channelId, eventId, data) {
 		      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Contains, sQuery);
 		      aFilters.push(filter);
 		    }
-
-		    // update list binding
-/*		    var list = this.getView().byId("idList");
-		    var binding = list.getBinding("items");
-		    binding.filter(aFilters, "Application"); */
 		  },
-/*		  onItemPress : function(oEvent) {
-			  var oSelectedItem   = oEvent.oSource.getSelectedItem();
-//			  var bus = sap.ui.getCore().getEventBus();
-//		        bus.publish("nav", "to", { 
-//		            id : "DetailPage",
-//		            data : {
-//		                context : bindingContext
-//		            }
-//		       });
-		  },*/
-	/*	  onSelectionChange : function (oEvt) {
-
-			    var oList = oEvt.getSource();
-			    var oLabel = this.getView().byId("idFilterLabel");
-//			    var oInfoToolbar = this.getView().byId("idInfoToolbar");
-
-			    // With the 'getSelectedContexts' function you can access the context paths
-			    // of all list items that have been selected, regardless of any current
-			    // filter on the aggregation binding.
-			    var aContexts = oList.getSelectedContexts(true);
-
-			    // update UI
-			    var bSelected = (aContexts && aContexts.length > 0);
-			    var sText = (bSelected) ? aContexts.length + " selected" : null;
-//			    oInfoToolbar.setVisible(bSelected);
-			    oLabel.setText(sText);
-			  } */
 
 });

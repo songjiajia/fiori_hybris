@@ -1,22 +1,47 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-		controllerName="poc.fiori.wechat.search" xmlns:html="http://www.w3.org/1999/xhtml">
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="poc.fiori.wechat.search" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Product Search" id="Search">
 		<subHeader>
-      <Bar>
-        <contentMiddle>
-          <SearchField id="idSearch"
-            search="onSearch"
-            width="100%" />
-        </contentMiddle>
-      </Bar>
-    </subHeader>
-    <content>
-    <Image id="idImage"  src ="poc/fiori/wechat/brand.jpg"  width="100%"/>
-     <List
-        id="idList" 
-        selectionChange="onSelectionChange"
-        itemPress="onItemPress" >      
-      </List>
-    </content>
+			<Bar>
+				<contentMiddle>
+					<SearchField id="idSearch" search="onSearch" width="100%" />
+				</contentMiddle>
+			</Bar>
+		</subHeader>
+		<VBox>
+			<items>
+				<HBox justifyContent="Center" alignItems="Start">
+					<items>
+						<HBox width="20em">
+							<Button text="sunglasses" width="10em" press="onGlassesPress" />
+						</HBox>
+						<HBox width="20em">
+							<Button text="T-Shirt" width="10em" press="onTshirtPress" />
+						</HBox>
+						<HBox width="20em">
+							<Button text="Shoes" width="10em" press="onShoesPress" />
+						</HBox>
+					</items>
+				</HBox>
+				<HBox justifyContent="Center" alignItems="Start">
+					<items>
+						<HBox width="20em">
+							<Button text="Glasses" width="10em" press="glassesPress" />
+						</HBox>
+						<HBox width="20em">
+							<Button text="T-Shirt" width="10em" press="tshirtPress" />
+						</HBox>
+						<HBox width="20em">
+							<Button text="Shoes" width="10em" press="shoesPress" />
+						</HBox>
+					</items>
+				</HBox>
+			</items>
+		</VBox>
+		<content>
+			<Image id="idImage" src="poc/fiori/wechat/brand.jpg" width="100%" />
+			<List id="idList" selectionChange="onSelectionChange" itemPress="onItemPress">
+			</List>
+		</content>
 	</Page>
 </core:View>
