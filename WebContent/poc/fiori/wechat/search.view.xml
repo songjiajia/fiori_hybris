@@ -13,35 +13,35 @@
 				<HBox justifyContent="Center" alignItems="Start">
 					<items>
 						<HBox width="20em">
-							<Button text="sunglasses" width="10em" press="onGlassesPress" />
+							<Button text="Sunglasses" id="idSunglasses" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="T-Shirt" width="10em" press="onTshirtPress" />
+							<Button text="Shirt" id="idShirt" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="Shoes" width="10em" press="onShoesPress" />
+							<Button text="Shoes"  id="idShoes" width="10em" press="onCatButtonsPress" />
 						</HBox>
 					</items>
 				</HBox>
 				<HBox justifyContent="Center" alignItems="Start">
 					<items>
 						<HBox width="20em">
-							<Button text="Glasses" width="10em" press="glassesPress" />
+							<Button text="Caps" id="idCaps" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="T-Shirt" width="10em" press="tshirtPress" />
+							<Button text="Clothes" id="idClothes" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="Shoes" width="10em" press="shoesPress" />
+							<Button text="Tool"  id="idTools" width="10em" press="onCatButtonsPress" />
 						</HBox>
 					</items>
 				</HBox>
 			</items>
 		</VBox>
 		<content>
-			<Image id="idImage" src="poc/fiori/wechat/brand.jpg" width="100%" />
+  <!--   <Image id="idImage" src="poc/fiori/wechat/brand.jpg" width="100%" /> 			
 			<List id="idList" selectionChange="onSelectionChange" itemPress="onItemPress">
-			</List>
+			</List>  -->  
 		</content>
 	</Page>
 </core:View>

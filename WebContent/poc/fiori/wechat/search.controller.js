@@ -7,10 +7,11 @@ sap.ui.controller("poc.fiori.wechat.search", {
 */
 	onInit: function() {
 		
-		 var oImage = this.byId("idImage");
+/*		 var oImage = this.byId("idImage");
 		 oImage.setVisible(true);
 		 var oList = this.byId("idList");
-		 oList.setVisible(false);
+		 oList.setVisible(false);  */
+		
 	  // subscribe to event bus
     var bus = sap.ui.getCore().getEventBus();
     bus.subscribe("nav", "to", this.navToHandler, this);
@@ -55,29 +56,68 @@ navToHandler : function(channelId, eventId, data) {
 //	onExit: function() {
 //
 //	}
-	 onGlassesPress : function (oEvent) {
+/*	 onGlassesPress : function (oEvent) {
 		 var bus = sap.ui.getCore().getEventBus();
+		 var para = "sunglasses";
 	        bus.publish("nav", "to", { 
 	            id : "CategoryDetail",
 	            data : {
-	                context : oEvent.oSource.getText()
+	                context : para
+	            }
+ 	});
+		
+	 },*/
+	 onCatButtonsPress : function (oEvent) {
+		 var bus = sap.ui.getCore().getEventBus();
+		 var catId = oEvent.oSource.getId();
+		 switch (catId) {
+		   case this.byId("idSunglasses").getId():
+		     para = "sunglasses";
+		     break;
+		   case this.byId("idShirt").getId():
+			 para = "shirts";
+		     break;
+		   case this.byId("idShoes").getId():
+			 para = "shoes";
+			 break;
+		   case this.byId("idCaps").getId():
+			 para = "caps";
+			 break;
+		   case this.byId("idClothes").getId():
+			 para = "clothes";
+			 break;
+		   case this.byId("idTools").getId():
+		     para = "tools";
+			 break;   
+						};
+	        bus.publish("nav", "to", { 
+	            id : "CategoryDetail",
+	            data : {
+	                context : para
 	            }
  	});
 		
 	 },
 	 onSearch : function (oEvt) {
-		 var oImage = this.byId("idImage");
+/*		 var oImage = this.byId("idImage");
 		 oImage.setVisible(false) ;
 		 var oList = this.byId("idList");
-		 oList.setVisible(true);
+		 oList.setVisible(true);  */
 		    // add filter for search
 		    var aFilters = [];
 		    var sQuery = oEvt.getSource().getValue();
-		    var url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
-//		    var url = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
+		    
+		    var bus = sap.ui.getCore().getEventBus();
+		        bus.publish("nav", "to", { 
+		            id : "CategoryDetail",
+		            data : {
+		                context : sQuery
+		            }
+		        });
+		    
+/*		    var url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
 		    var oModel = new sap.ui.model.xml.XMLModel();
 	        oModel.loadData(url);
-//	        var oList = this.byId("idList");
 	        var oItems = new sap.m.StandardListItem();
 	        oItems.setProperty("type", "Active");
 	        oItems.attachPress(function(oEvent){
@@ -90,15 +130,11 @@ navToHandler : function(channelId, eventId, data) {
 	        	});
 	        });
 	        var that = this;
-//		 	oItems.bindProperty("title","@code").bindProperty("description","ean/text()");
 	        var getUrl = function(){
-//	        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
 	              var iconUrl = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
-//	              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 	              var oItems = that.byId("idList").getItems();
 	              for (i in oItems){
 	            	  oItems[i].setProperty("icon", iconUrl + oItems[i].getProperty("icon"));
-//	            	  oItems.setProperty("icon",iconUrl);
 	              }
 	             
 	        };
@@ -109,7 +145,7 @@ navToHandler : function(channelId, eventId, data) {
 		    if (sQuery && sQuery.length > 0) {
 		      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Contains, sQuery);
 		      aFilters.push(filter);
-		    }
-		  },
+		    } */
+		  }, 
 
 });
