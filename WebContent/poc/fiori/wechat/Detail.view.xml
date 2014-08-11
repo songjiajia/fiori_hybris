@@ -7,10 +7,16 @@
 					<Button
 					    id="tocart"
 						text="Add to cart"
-						enabled="true"
+						enabled="false"
 						press="handleCart"
 						type="Accept" />
 				</contentMiddle>
+				<contentRight>
+					<Button
+					    icon="sap-icon://cart"
+						enabled="true"
+						press="displayCart"/>
+				</contentRight>
 			</Bar>
 		</footer>
 		<content>
@@ -27,21 +33,31 @@
 					    <VBox><items>					    
 						    <Label></Label>
 						    <HBox><items>
-						    <Label id="tLabel" text= "Label: " textAlign="Center"></Label>
-						    <Label id="sLabel"></Label>
-						    </items></HBox>
-						    <Label></Label>
+						    <Label id="tLabelColor" text= "Color: " textAlign="Center"></Label>
+					        <SegmentedButton id="bColors">
+					        </SegmentedButton>
+					        </items></HBox>
+						    <Label></Label>						    
 						    <HBox><items>
-						    <Label id="tDes" text= "Desc: " textAlign="Center"></Label>
-						    <Label id="sDes"></Label>
-						    </items></HBox>							    
-						    <Label></Label>				    
+						    <Label id="tLabelSize" text= "Size: " textAlign="Center"></Label>
+					        <Select id="sizeSelect" change="changeSize">
+					        </Select>
+					        </items></HBox>			    
 					    </items></VBox>
 					    </content>
 						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
 					</IconTabFilter>
 					<IconTabFilter id="NotesTab" icon="sap-icon://notes">
 						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
+						<content>
+							<Label></Label>
+							<HBox><items>
+							<Label id="tDes" text= "Description: " textAlign="Center"></Label>
+							<VBox width="80%">
+						    <Text id="sDes" maxLines="4"></Text>
+						    </VBox>
+						    </items></HBox>
+						</content>
 					</IconTabFilter>
 				</items>
 			</IconTabBar>	
