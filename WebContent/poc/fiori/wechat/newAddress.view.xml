@@ -1,0 +1,34 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" controllerName="poc.fiori.wechat.newAddress" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Add New Address" id="newAddress" showNavButton="true" navButtonPress="onBack">
+	  <footer>
+			<Bar>
+				<contentMiddle>
+					<Button
+					    id="ok"
+						text="OK"
+						enabled="true"
+						press="handleAccept"
+						type="Accept" />
+				    <Button
+					    id="cancel"
+						text="Cancel"
+						enabled="true"
+						press="handleCancel"
+						type="Reject" />
+				</contentMiddle>
+			</Bar>
+		</footer>
+		<content>
+		    <Label></Label>
+		    <VBox id="div" width="90%"><items>
+			<Label id="lName" text="*Name:"></Label>
+			<Input id="iName"></Input>
+			<Label id="lCity" text="*City:"></Label>
+			<Input id="iCity"></Input>
+			<Label id="lAddr" text="*Address Line:"></Label>			
+			<TextArea id="tAddr" rows="3" width="100%"></TextArea>
+			</items></VBox>
+		</content>
+	</Page>
+</core:View>
