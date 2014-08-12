@@ -20,7 +20,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			    }
 //				sPath = sPath + "/@code";
 //			    oCode =	oPara.getProperty (sPath);
-//				oCode = "122312";
+//				oCode = "122405";
 			    this.showDetail(oCode);
 			    this.showColor();
 			    this.showInitialSize();
@@ -30,11 +30,15 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 //			    if (jQuery.device.is.iphone == true || jQuery.device.is.ipad == true)
 //			      {
 				    var tLabelSize = this.byId("tLabelSize");
-				    tLabelSize.addStyleClass("LabelPadding");
+				    tLabelSize.addStyleClass("LabelPadding").addStyleClass("LabelMiddle");
 				    var tLabelColor = this.byId("tLabelColor");
-				    tLabelColor.addStyleClass("LabelPadding");
+				    tLabelColor.addStyleClass("LabelPadding").addStyleClass("LabelMiddle");
 				    var tDes = this.byId("tDes");
-				    tDes.addStyleClass("LabelPadding");
+				    tDes.addStyleClass("LabelPadding").addStyleClass("LabelMiddle");
+				    var bColor = this.byId("bColors");
+				    bColor.addStyleClass("LabelPadding");
+				    var sSize = this.byId("sizeSelect");
+				    sSize.addStyleClass("LabelPadding");
 //			      }
 			}	}, this);
 // subscribe to event bus
@@ -134,7 +138,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
         	var colorButton = this.byId("bColors");
         	colorButton.removeAllButtons();
 			var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
-			var pcoloruri = uripre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/apparelproducts/" + 122312;
+			var pcoloruri = uripre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/apparelproducts/" + oCode;
 			var cModel = new sap.ui.model.xml.XMLModel();
 			cModel.loadData(pcoloruri,null,false);	
 			var a = cModel.getObject("/variants/");

@@ -32,17 +32,16 @@
 					    <content>
 					    <VBox><items>					    
 						    <Label></Label>
-						    <HBox><items>
-						    <Label id="tLabelColor" text= "Color: " textAlign="Center"></Label>
+						    <HBox>
+						    <Label id="tLabelColor" text= "Color" textAlign="Center"></Label>
 					        <SegmentedButton id="bColors">
 					        </SegmentedButton>
-					        </items></HBox>
-						    <Label></Label>						    
-						    <HBox><items>
-						    <Label id="tLabelSize" text= "Size: " textAlign="Center"></Label>
-					        <Select id="sizeSelect" change="changeSize">
-					        </Select>
-					        </items></HBox>			    
+					        </HBox>
+						    <Label></Label>
+						    <HBox>	
+						    <Label id="tLabelSize" text= "Size" textAlign="Center"></Label>
+					        <Select id="sizeSelect" change="changeSize"></Select>
+					        </HBox>		    
 					    </items></VBox>
 					    </content>
 						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
@@ -52,7 +51,7 @@
 						<content>
 							<Label></Label>
 							<HBox><items>
-							<Label id="tDes" text= "Description: " textAlign="Center"></Label>
+							<Label id="tDes" text= "Description" textAlign="Center"></Label>
 							<VBox width="80%">
 						    <Text id="sDes" maxLines="4"></Text>
 						    </VBox>
