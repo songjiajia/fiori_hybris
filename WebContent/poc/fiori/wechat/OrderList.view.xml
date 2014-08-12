@@ -2,10 +2,10 @@
 	xmlns="sap.m" controllerName="poc.fiori.wechat.OrderList" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Order List" id="OrderList" showNavButton="true" navButtonPress="onOrderListBack">
 		<content>
-			<List id="idOrderList"  itemPress="onOrderDetail"
+			<List id="idOrderList"  
 			 items="{/orders/order/}">
 			 <items>
-			<CustomListItem id="idOrderList" type="Active">	
+			<CustomListItem id="idOrderListItem" press="onOrderDetail" type="Active">	
  	    <ObjectHeader  title="Order Number" number="{totalPrice}" numberUnit="EUR">
 		    <statuses>
       <ObjectStatus

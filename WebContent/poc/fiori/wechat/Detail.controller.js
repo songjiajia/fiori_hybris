@@ -12,8 +12,14 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			onBeforeShow: function(evt){
 				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
-				sPath = sPath + "/@code";
-			    oCode =	oPara.getProperty (sPath);
+				sPathCode = sPath + "/@code";			
+			    oCode =	oPara.getProperty (sPathCode);
+			    if (oCode == null){
+			    	sPathCode = sPath + "/code";			
+				    oCode =	oPara.getProperty (sPathCode);
+			    }
+//				sPath = sPath + "/@code";
+//			    oCode =	oPara.getProperty (sPath);
 //				oCode = "122312";
 			    this.showDetail(oCode);
 			    this.showColor();

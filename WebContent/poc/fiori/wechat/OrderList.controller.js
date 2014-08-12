@@ -13,7 +13,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
     this.getView().setModel(orderListModel);
        var oOrderNumber= this.byId("idOrderNumber");
        oOrderNumber.addStyleClass("OrderNumber");
-       oOrderlist=this.byId("idOrderList");
+/*      oOrderlist=this.byId("idOrderListItem");
        oOrderlist.attachPress(function(oEvent){
      	  var bus = sap.ui.getCore().getEventBus();
 	        bus.publish("nav", "to", { 
@@ -23,7 +23,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 	            }
   	});
         
-	    });
+	    });  */
 	},
 	    onCatBack: function(){
 			 this.app = sap.ui.getCore().byId("theApp");
@@ -50,6 +50,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		
 		onOrderDetail: function(oEvent){
 			var oList = this.byId("idOrderList");
+			var item = oEvent.getSource();
 			 var bus = sap.ui.getCore().getEventBus();
 		        bus.publish("nav", "to", { 
 		            id : "OrderDetail",
