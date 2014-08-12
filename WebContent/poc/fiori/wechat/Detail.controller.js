@@ -241,21 +241,23 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	displayCart: function(oEvent){
 		var bus = sap.ui.getCore().getEventBus();
         bus.publish("nav", "to", { 
-            id : "search",
-            data : {
-                context : this.byId("ProductAtt").getProperty("text")
-            }
+            id : "shoppingCart",
+//            data : {
+//                context : this.byId("ProductAtt").getProperty("text")
+//            }
 	});
 	},
     
 	navToHandler : function(channelId, eventId, data) {
-	        if (data && data.id) {
+//	        if (data && data.id) {
+		if (data.id) {
 	        	 if (this.app.getPage(data.id) === null) {
 	                 jQuery.sap.log.info("now loading page '" + data.id + "'");
 	                 this.app.addPage(sap.ui.xmlview(data.id, "poc.fiori.wechat." + data.id));
 	              }
 	            // Navigate to given page (include bindingContext)
-	            this.app.to(data.id, data.data.context);
+//	            this.app.to(data.id, data.data.context);
+	        	this.app.to(data.id);
         } else {
 	            jQuery.sap.log.error("nav-to event cannot be processed. Invalid data: " + data);
 	        }
