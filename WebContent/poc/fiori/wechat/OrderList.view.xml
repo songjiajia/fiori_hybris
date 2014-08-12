@@ -14,7 +14,7 @@
         </statuses>
 		    <attributes>
             <ObjectAttribute text="{@code}" id="idOrderNumber" class="orderNumber"/>
-            <ObjectAttribute text="{date}"/>
+            <ObjectAttribute text="{path: 'date',formatter:'.formatDate'}" id="test"/>
             </attributes>
 			</ObjectHeader>  
 			</CustomListItem>

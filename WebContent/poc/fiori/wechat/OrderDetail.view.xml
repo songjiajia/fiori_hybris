@@ -2,19 +2,21 @@
 	xmlns="sap.m" controllerName="poc.fiori.wechat.OrderDetail" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Order Detail" id="OrderDetail" showNavButton="true" navButtonPress="onOrderDetailBack">
 		<content>
- 		<ObjectHeader title="{/date}" number="{/totalPrice}" numberUnit="EUR">
+ 		<ObjectHeader title="{path:'/date', formatter:'.formatDate'}" number="{/totalPrice}" numberUnit="EUR">
 		<attributes>
-            <ObjectAttribute text="{/@code}"/>
-            <ObjectAttribute text="{/deliveryAddress/streetname}"/> 
+            <ObjectAttribute text="{path:'/@code', formatter:'.formatOrderNumber'}"/>
+            <ObjectAttribute text="{parts:['/deliveryAddress/streetname','/deliveryAddress/town'],formatter:'.formatAddress'}"/> 
          </attributes>
 		</ObjectHeader> 
  		<List id="idOrderDetaillist"  itemPress="onOrderDetail"
 			 items="{/entries/entry/}">
 			 <items>
 			<CustomListItem id="idOrderDetailItem" type="Active">	
- 	    <ObjectHeader  title="Order Number" number="{basePrice}" numberUnit="EUR">
+ 	    <ObjectHeader icon="{@downloadURL}" title="{@productName}" number="{basePrice}" numberUnit="EUR">
 		    <attributes>
-            <ObjectAttribute text="{quantity}"/>
+		    <ObjectAttribute text="{@code}"/>
+		    <ObjectAttribute text="{path:'@size',formatter:'.formatSize'}"/>
+            <ObjectAttribute text="{path:'quantity', formatter:'.formatQuantity'}"/>
             </attributes>
 			</ObjectHeader>  
 			</CustomListItem>
