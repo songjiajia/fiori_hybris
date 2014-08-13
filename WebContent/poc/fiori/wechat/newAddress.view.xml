@@ -5,29 +5,29 @@
 			<Bar>
 				<contentMiddle>
 					<Button
-					    id="ok"
-						text="OK"
-						enabled="true"
+					    id="save"
+						text="Save"
+						enabled="false"
 						press="handleAccept"
-						type="Accept" />
-				    <Button
+						type="Accept"/>
+<!--				    <Button
 					    id="cancel"
 						text="Cancel"
 						enabled="true"
 						press="handleCancel"
-						type="Reject" />
+						type="Reject" />  -->
 				</contentMiddle>
 			</Bar>
 		</footer>
 		<content>
 		    <Label></Label>
 		    <VBox id="div" width="90%"><items>
-			<Label id="lName" text="*Name:"></Label>
-			<Input id="iName"></Input>
-			<Label id="lCity" text="*City:"></Label>
-			<Input id="iCity"></Input>
-			<Label id="lAddr" text="*Address Line:"></Label>			
-			<TextArea id="tAddr" rows="3" width="100%"></TextArea>
+			<Label text="*LastName:"></Label>
+			<Input id="lName" liveChange="handleChange"></Input>
+			<Label text="*FirstName:"></Label>
+			<Input id="fName" liveChange="handleChange"></Input>
+			<Label text="*Address Line:"></Label>			
+			<TextArea id="tAddr" rows="3" width="100%" liveChange="handleChange"></TextArea>
 			</items></VBox>
 		</content>
 	</Page>
