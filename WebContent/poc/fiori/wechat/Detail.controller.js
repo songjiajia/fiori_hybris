@@ -20,10 +20,23 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			    }
 //				sPath = sPath + "/@code";
 //			    oCode =	oPara.getProperty (sPath);
-//				oCode = "122405";
+//				oCode = "121868";
 			    this.showDetail(oCode);
-			    this.showColor();
-			    this.showInitialSize();
+			    var infoTab = this.byId("InfoTab");
+			    var toCart = this.byId("tocart");
+			    infoTab.setVisible(false);
+				toCart.setEnabled(true);
+			    var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
+				var pcoloruri = uripre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/apparelproducts/" + oCode;
+				var oModel = new sap.ui.model.xml.XMLModel();
+				oModel.loadData(pcoloruri,null,false);	
+				var a = oModel.getObject("/variants/");
+				var num = a.getElementsByTagName("variantProduct").length;
+				if (num > 0){
+					infoTab.setVisible(true);
+				    this.showColor();
+				    this.showInitialSize();
+			    }
 			    var tabBar = this.byId("TabBar");
 			    tabBar.addStyleClass("BarMargin");
 // CSS adjustment for mobile and ipad
@@ -132,7 +145,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	       {this.byId("input").setValue(i);}
 	    },
 	
-		showColor: function(){
+    showColor: function(){
         	var that = this;
 //remove all colors in case duplicate display
         	var colorButton = this.byId("bColors");

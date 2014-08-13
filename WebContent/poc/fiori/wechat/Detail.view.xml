@@ -32,16 +32,12 @@
 					    <content>
 					    <VBox><items>					    
 						    <Label></Label>
-						    <HBox>
 						    <Label id="tLabelColor" text= "Color" textAlign="Center"></Label>
 					        <SegmentedButton id="bColors">
 					        </SegmentedButton>
-					        </HBox>
 						    <Label></Label>
-						    <HBox>	
 						    <Label id="tLabelSize" text= "Size" textAlign="Center"></Label>
 					        <Select id="sizeSelect" change="changeSize"></Select>
-					        </HBox>		    
 					    </items></VBox>
 					    </content>
 						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
@@ -50,12 +46,10 @@
 						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
 						<content>
 							<Label></Label>
-							<HBox><items>
+							<VBox width="80%"><items>
 							<Label id="tDes" text= "Description" textAlign="Center"></Label>
-							<VBox width="80%">
 						    <Text id="sDes" maxLines="4"></Text>
-						    </VBox>
-						    </items></HBox>
+						    </items></VBox>
 						</content>
 					</IconTabFilter>
 				</items>
