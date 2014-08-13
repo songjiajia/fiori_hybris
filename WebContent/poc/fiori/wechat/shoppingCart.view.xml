@@ -1,0 +1,63 @@
+<core:View xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="poc.fiori.wechat.shoppingCart" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Product DetailsShopping Cart" showNavButton="true" navButtonPress="onBack">
+	<content>
+		<List id="ProductList" headerText="Products" 
+			items="{/entries/entry/}" mode="MultiSelect" selectionChange ="selectChange" >
+<!-- 			growing="true" growingThreshold="3" growingScrollToLoad="false"> -->
+			
+	   		<CustomListItem type="Active" >
+		        <HBox>
+				    <items>
+					   <VBox width="60%">
+				    		<items>
+				    			<HBox>			    			
+						    		<items>
+						    			<Image src="poc/fiori/wechat/delete.jpg" width='4em'></Image>
+						    			<Label text="{path: 'info',formatter:'.formatName'}" press="toDetail"></Label>
+						    		</items>
+				    			</HBox>
+				    			<VBox>
+				    				<items>
+					    				<Label id="size" text="{path: 'info',formatter:'.formatSize'}"></Label>
+							    		<HBox alignItems="Center">
+								    		<items>
+								    			<Label text="Quantity: " />
+										       <Button id="minu" icon="sap-icon://less" press="onPressMinus"/>		       
+										       <Input id="inputQuantity" type="Number" maxLength="3" width="3em" value="{quantity}" enabled="false"/> 		           
+										       <Button id="plus" icon="sap-icon://add" press="onPressPlus"/>    
+								    		</items>
+					           			 </HBox>
+					    			</items>
+				    			</VBox>
+				    		</items>
+				    	</VBox>
+				    	<VBox width="30%">
+				    		<items>
+				    			<VBox>
+				    				<items>
+				    					<Label></Label>
+				    					<Label id="price" text="{totalPrice}" textAlign="Right"></Label>
+				    					<Label text="EUR" textAlign="Right"></Label>
+				    					<Label></Label>
+				    					<Image src="poc/fiori/wechat/delete.jpg" width="2em" press="deleteCart"></Image>
+				    				</items>
+				    			</VBox>
+				    		</items>
+				    	</VBox>
+				    </items>
+			    </HBox>
+   			 </CustomListItem>
+  		</List>
+
+		<Label id="noProduct"  text="No product"></Label>
+  		<HBox id="hboxcheck">
+  			<items>
+  				<CheckBox id="selectedAll" select="selectedAll"> </CheckBox>
+	  			<Label id="totalPrice" text="Total: 0 " ></Label>
+	  			<Button id="CheckOut" text="Checkout(0)" press="checkout" enabled="false"></Button>  			
+  			</items>
+  		</HBox>
+  	</content>	
+	</Page>
+</core:View>
