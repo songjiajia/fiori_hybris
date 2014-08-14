@@ -113,39 +113,14 @@ navToHandler : function(channelId, eventId, data) {
 		            data : {
 		                context : sQuery
 		            }
-		        });
-		    
-/*		    var url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + sQuery +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";
-		    var oModel = new sap.ui.model.xml.XMLModel();
-	        oModel.loadData(url);
-	        var oItems = new sap.m.StandardListItem();
-	        oItems.setProperty("type", "Active");
-	        oItems.attachPress(function(oEvent){
-	        	  var bus = sap.ui.getCore().getEventBus();
-			        bus.publish("nav", "to", { 
-			            id : "Detail",
-			            data : {
-			                context : oEvent.oSource.getBindingContext()
-			            }
-	        	});
-	        });
-	        var that = this;
-	        var getUrl = function(){
-	              var iconUrl = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
-	              var oItems = that.byId("idList").getItems();
-	              for (i in oItems){
-	            	  oItems[i].setProperty("icon", iconUrl + oItems[i].getProperty("icon"));
-	              }
-	             
-	        };
-	        oModel.attachRequestCompleted(getUrl);
-	        oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
-		 	oList.setModel(oModel);
-		 	oList.bindItems("/product", oItems);
-		    if (sQuery && sQuery.length > 0) {
-		      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Contains, sQuery);
-		      aFilters.push(filter);
-		    } */
+		        });		    
+		        
 		  }, 
+		  onCartPress: function(oEvt){
+			   var bus = sap.ui.getCore().getEventBus();
+		        bus.publish("nav", "to", { 
+		            id : "shoppingCart"
+		        });		 
+		  }
 
 });

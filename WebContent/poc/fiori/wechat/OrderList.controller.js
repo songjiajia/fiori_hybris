@@ -12,6 +12,10 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
    var orderListModel = new sap.ui.model.xml.XMLModel();
     orderListModel.loadData(url,null,false);	
     this.getView().setModel(orderListModel);
+    var oList=this.byId("idOrderList");
+	var items = oList.getBinding("items");
+ 	var oSorter = new sap.ui.model.Sorter("date",true);
+ 	items.sort(oSorter);
        var oOrderNumber= this.byId("idOrderNumber");
        oOrderNumber.addStyleClass("OrderNumber");
 /*      oOrderlist=this.byId("idOrderListItem");
@@ -48,8 +52,6 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 
 		
 		onOrderDetail: function(oEvent){
-			var oList = this.byId("idOrderList");
-			var item = oEvent.getSource();
 			 var bus = sap.ui.getCore().getEventBus();
 		        bus.publish("nav", "to", { 
 		            id : "OrderDetail",

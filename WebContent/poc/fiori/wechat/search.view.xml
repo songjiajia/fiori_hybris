@@ -43,5 +43,12 @@
 			<List id="idList" selectionChange="onSelectionChange" itemPress="onItemPress">
 			</List>  -->  
 		</content>
+		 <footer>
+      <Bar>
+        <contentRight>
+          <Button icon="sap-icon://cart" press="onCartPress" />
+        </contentRight>
+      </Bar>
+    </footer>
 	</Page>
 </core:View>

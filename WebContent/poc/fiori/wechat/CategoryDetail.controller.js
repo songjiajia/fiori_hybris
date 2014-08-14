@@ -16,9 +16,21 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 				  url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + oPara +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online";	
 			    };
 				
-				var sunGlassesModel = new sap.ui.model.xml.XMLModel();
-		    	sunGlassesModel.loadData(url);				
-				
+				var catProductsModel = new sap.ui.model.xml.XMLModel();
+				catProductsModel.loadData(url);				
+		    	//var oProducts = productModel.getObject("/products/");
+			//	var productNum =oProducts.getElementsByTagName("product").length;
+		//		var i = 0;
+//				while(i<productNum){
+//					var variantType = productModel.getProperty("/products/product/"+i+"/variantType");
+//					if(variantType != "ApparelStyleVariantProduct") {
+//						dProduct = oProducts.getElementsByTagName("product")[i];
+//						productModel.getObject("/products/").removeChild(dProduct);
+//						
+//					}
+//					i++;
+//						
+//				};
 		    	 var oList = this.byId("idCatList");
 		    	 var oItems = new sap.m.StandardListItem();
 			        oItems.setProperty("type", "Active");
@@ -35,6 +47,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 					var getUrl = function(){
 //			        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
 			              var iconUrl = "http://10.59.145.101:9001";
+//						  var iconUrl = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
 //			              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 			              var oItems = that.byId("idCatList").getItems();
 			              for (var i=0;i<oItems.length;i++){
@@ -42,7 +55,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			              } 
 			             
 			        };
-			        sunGlassesModel.attachRequestCompleted(getUrl);
+			        catProductsModel.attachRequestCompleted(getUrl);
 			        
 //				 	oItems.bindProperty("title","@code").bindProperty("description","ean/text()");
 			        
@@ -50,14 +63,17 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			    	if (oPara == "sunglasses" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
 					{					
 					   oItems.bindProperty("title","name/text()").bindProperty("icon","images/0/image/url");;
-				        oList.setModel(sunGlassesModel);
+				        oList.setModel(catProductsModel);
 					 	oList.bindItems("/products/product", oItems);
+					 	var items = oList.getBinding("items");
+					 	var oFilter = new sap.ui.model.Filter("variantType",sap.ui.model.FilterOperator.EQ,"ApparelStyleVariantProduct");
+					 	items.filter(oFilter);
 					}
 					else
 				    {     
 						  var aFilters = [];
 						  oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
-						 	oList.setModel(sunGlassesModel);
+						 	oList.setModel(catProductsModel);
 						 	oList.bindItems("/product", oItems);
 						    if (oPara && oPara.length > 0) {
 						      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Starts, oPara);
