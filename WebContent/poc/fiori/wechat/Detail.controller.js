@@ -21,7 +21,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 //				sPath = sPath + "/@code";
 //			    oCode =	oPara.getProperty (sPath);
 //				oCode = "121868";
-			    this.defaultTab();
+//			    this.defaultTab();
 			    var infoTab = this.byId("InfoTab");
 			    var toCart = this.byId("tocart");
 			    infoTab.setVisible(false);
@@ -55,6 +55,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				    tLabelColor.addStyleClass("LabelPadding").addStyleClass("LabelMiddle");
 				    var tDes = this.byId("tDes");
 				    tDes.addStyleClass("LabelPadding").addStyleClass("LabelMiddle");
+				    var sDes = this.byId("sDes");
+				    sDes.addStyleClass("LabelPadding");
 				    var bColor = this.byId("bColors");
 				    bColor.addStyleClass("LabelPadding");
 				    var sSize = this.byId("sizeSelect");
@@ -99,9 +101,11 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	 	oHeadAtt.setProperty("text", oModel.getProperty("/@code"));
 	 	
 	 	var oDes = this.byId("sDes");
-	 	var des = oModel.getProperty("/description");
+	 	var des = oModel.getProperty("/summary");
 	 	des = des.replace(/<p>/g,"");
 	 	des = des.replace(/<\/p>/g,"");
+	 	des = des.replace(/<br>/g,"");
+	 	des = des.replace(/<\/br>/g,"");
 	 	oDes.setProperty("text", des);
 
 // Initialize quantity	 	
@@ -172,6 +176,9 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
             	oModel.loadData(productUri,null,false);
             	var productName = oModel.getProperty("/name");
             	var productCode = oModel.getProperty("/@code");
+            	var productDes = oModel.getProperty("/summary");
+            	productDes = productDes.replace(/<p>/g,"");
+            	productDes = productDes.replace(/<\/p>/g,"");
     			var iconurl = "proxy/http/10.59.145.101:9001";
     		 	iconurl += oModel.getProperty("/others/media/@downloadURL");
     		 	var sButton = this.byId("bColors");
@@ -185,6 +192,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
     		 	button.pUri = productUri;
     		 	button.pName = productName;
     		 	button.pCode = productCode;
+    		 	button.pDes = productDes;
     		 	button.setProperty("icon", iconurl);
     		 	sButton.addButton(button);
             	i++;
@@ -193,11 +201,13 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		
 	refreshHeader: function(oEvent){
 			var oHeader = this.byId("ProductHead");
-		 	iconurl = oEvent.oSource.getIcon();
+		 	var iconurl = oEvent.oSource.getIcon();
 		 	oHeader.setProperty("icon", iconurl);
 		 	oHeader.setProperty("title", oEvent.oSource.pName);
 		 	var oHeadAtt = this.byId("ProductAtt");
 		 	oHeadAtt.setProperty("text", oEvent.oSource.pCode);
+		 	var oDes = this.byId("sDes");
+		 	oDes.setProperty("text", oEvent.oSource.pDes);
 		 	var oModel = new sap.ui.model.xml.XMLModel();
 		 	var success = function(oEvent){
 				if (oEvent.getParameter("success") == false){

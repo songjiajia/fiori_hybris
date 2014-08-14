@@ -44,9 +44,9 @@
 					<IconTabFilter id="NotesTab" icon="sap-icon://notes">
 						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
 						<content>
-							<Label></Label>
 							<VBox width="80%"><items>
 							<Label id="tDes" text= "Description" textAlign="Center"></Label>
+							<Label></Label>
 						    <Text id="sDes" maxLines="4"></Text>
 						    </items></VBox>
 						</content>
