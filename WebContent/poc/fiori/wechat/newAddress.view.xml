@@ -22,12 +22,13 @@
 		<content>
 		    <Label></Label>
 		    <VBox id="div" width="90%"><items>
-			<Label text="*LastName:"></Label>
+			<Label text="*Last Name:"></Label>
 			<Input id="lName" liveChange="handleChange"></Input>
-			<Label text="*FirstName:"></Label>
+			<Label text="*First Name:"></Label>
 			<Input id="fName" liveChange="handleChange"></Input>
 			<Label text="*Address Line:"></Label>			
 			<TextArea id="tAddr" rows="3" width="100%" liveChange="handleChange"></TextArea>
+			<TextArea id="uAddr" rows="3" width="100%" visible="false" class="tBorder"></TextArea>
 			</items></VBox>
 		</content>
 	</Page>

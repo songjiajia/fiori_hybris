@@ -4,7 +4,6 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	onInit : function() {
 		var div = this.byId("div");
 		div.addStyleClass("LabelPadding");
-		
 	},
 	
 	handleChange: function() {
@@ -32,6 +31,7 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		var firstName = fName.getValue();
 		var tAddr = this.byId("tAddr");
 		var address = tAddr.getValue();
+  		var uAddr = this.byId("uAddr");
 		var bSave = this.byId("save");
 	 	var newAddressUri = uripre + "/ws410/rest/addresses/";	 	
 		var xmlData = "<address><owner pk='"+userPK+"'></owner><firstname>"+firstName+"</firstname><lastname>"+lastName+"</lastname><streetname>"+address+"</streetname><shippingAddress>true</shippingAddress></address>";
@@ -42,10 +42,15 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	      contentType: "application/xml",
 	      success: function (data) {
 //	        alert(data);
+//Set input field to uneditable and hide text area border
 	    	  lName.setEditable(false);
 	    	  fName.setEditable(false);
 	    	  tAddr.setEditable(false);
 	    	  bSave.setEnabled(false);
+	    	  tAddr.setVisible(false);
+	  		  uAddr.setVisible(true);
+	  		  uAddr.setValue(address);
+	  		  uAddr.setEnabled(false);
 	    	  setTimeout(function () {
 				   sap.m.MessageToast.show("New address has been added");
 			   }, 100);
@@ -58,10 +63,28 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	},
 
 	onBack: function(){
-		 var href = window.location.href;
-	 	 window.open(href, "_self", "");
-	   	 window.close();
+//Initialize input field and save button		
+		 var lName = this.byId("lName");
+		 var fName = this.byId("fName");
+		 var tAddr = this.byId("tAddr");
+		 var bSave = this.byId("save");
+		 lName.setValue();
+		 fName.setValue();
+		 tAddr.setValue();
+		 lName.setEditable(true);
+	  	 fName.setEditable(true);
+	  	 tAddr.setEditable(true);
+	  	 bSave.setEnabled(false);
+//If nav from Order Page, back; If nav from ME, close 	  	 
 		 this.app = sap.ui.getCore().byId("theApp");
-		 this.app.back();
+		 var initialPage = this.app.getInitialPage();
+		 if (initialPage == "newAddress") {
+			 var href = window.location.href;
+		 	 window.open(href, "_self", "");
+		   	 window.close();
+		 }
+		 else {
+			 this.app.back();
+		 }
 	},
 });
