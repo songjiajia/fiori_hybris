@@ -28,7 +28,7 @@
 		    </ObjectHeader>
 		    <IconTabBar id="TabBar">
 				<items>
-					<IconTabFilter id="InfoTab" icon="sap-icon://hint">
+					<IconTabFilter id="InfoTab" icon="sap-icon://hint" visible="false">
 					    <content>
 					    <VBox><items>	
 						    <Label id="tLabelColor" text= "Color" textAlign="Center"></Label>
@@ -41,7 +41,7 @@
 					    </content>
 						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
 					</IconTabFilter>
-					<IconTabFilter id="NotesTab" icon="sap-icon://notes">
+					<IconTabFilter id="NotesTab" icon="sap-icon://notes" visible="false">
 						<!-- <mvc:XMLView viewName="poc.fiori.wechat.Attachments"></mvc:XMLView> -->
 						<content>
 							<VBox width="80%"><items>
