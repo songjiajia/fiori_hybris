@@ -43,7 +43,7 @@
 <!-- 				    					<Label text="EUR" textAlign="Right"></Label> -->
 <!-- 				    					<Label></Label> -->
 <!-- 				    					<Image src="poc/fiori/wechat/delete.jpg" width="2em" press="deleteCart"></Image> -->
-										<ObjectHeader  id="price" number="{totalPrice}" numberUnit="EUR" />
+										<ObjectHeader  id="price" number="{path: 'basePrice',formatter:'.formatBasePrice'}" numberUnit="EUR" />
 <!-- 										<Image src="poc/fiori/wechat/delete.jpg" width="2em" press="deleteCart" ></Image> -->
 				    				</items>
 				    					<layoutData><FlexItemData growFactor="1" /></layoutData>
@@ -61,7 +61,7 @@
   			<items>
 <!--   				<CheckBox id="selectedAll" select="selectedAll"> </CheckBox> -->
 	  			<Button id="totalPrice" text="Total: 0 " />
-	  			<Button id="CheckOut" text="Checkout(0)" press="checkOut" ></Button>  			
+	  			<Button id="CheckOut" text="Checkout" press="checkOut" ></Button>  			
   			</items>
   			<layoutData><FlexItemData growFactor="0" /></layoutData>
   		</HBox>
