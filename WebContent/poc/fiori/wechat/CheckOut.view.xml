@@ -1,0 +1,110 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="poc.fiori.wechat.CheckOut" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Check Out"  showNavButton="true" navButtonPress="onCheckoutBack">
+	 <footer>
+			<Bar>
+				<contentMiddle>
+					<Button
+					    id="ok"
+						text="OK"
+						enabled="true"
+						press="handleOk"
+						type="Accept" />
+				    <Button
+					    id="cancel"
+						text="Cancel"
+						enabled="true"
+						press="handleCancel"
+						type="Reject" />
+				</contentMiddle>
+			</Bar>
+		</footer>
+		<content>
+		<VBox>
+		
+		
+	<Panel>
+	<content>
+	<VBox>
+	
+	
+	<ObjectIdentifier title="Shipping" />
+	 <RadioButton groupName="Shipping" text="Pick up" selected="true" select="selectPickup"/>
+      <RadioButton id="ship" groupName="Shipping" text="Ship" select="selectShip"/>
+      
+     
+      
+	</VBox>
+	</content>
+	
+	</Panel>
+	
+	 <Panel id="ShipAddress" visible="false">
+      <VBox>
+      
+      
+        <VBox id="addresses" items="{/addresses/address/}">
+        <RadioButton  groupName="Address" text="{line1}" >
+        
+        <customData>
+										<core:CustomData key="pk" value="{@pk}" />
+									</customData>
+									</RadioButton>
+       
+      </VBox>
+      <HBox>
+      <Button icon="sap-icon://add" text="Add new Address" press="addNewAddress"/> 
+      </HBox>
+      
+      
+      </VBox>
+      </Panel>
+	
+	<Panel>
+	<content>
+	<VBox>
+	
+	
+	<ObjectIdentifier title="Payment" />
+	 <RadioButton groupName="Payment" text="Cash" select="selectCash" selected="true" />
+      <RadioButton groupName="Payment" text="WeChat Pay" select="selectWP"/>
+      <RadioButton groupName="Payment" text="Credit" select="selectCredit"/>
+     
+	</VBox>
+	</content>
+	
+	</Panel>
+	
+	 <Panel id="Credits" visible="false">
+       <VBox>
+      
+      
+        <VBox id="Crd" items="{/}">
+        <RadioButton  groupName="Credit" text="{number}" >
+        
+         <customData>
+										<core:CustomData key="pk" value="{pk}" />
+									</customData>
+        </RadioButton>
+       
+      </VBox>
+      <HBox>
+      <Button icon="sap-icon://add" text="Add new Credit" press="addNewCredit"/> 
+      </HBox>
+      
+      
+      </VBox>
+      </Panel>
+	 <ObjectHeader
+    id="totalprice"
+    title="Total:"
+    number="{/totalPrice}"
+    numberUnit="{/currency/name}" >
+	 <attributes>
+      <ObjectAttribute text="including delivery fee {/deliveryCost} {/currency/name} ." />
+       </attributes>
+  </ObjectHeader>
+	</VBox>
+		</content>
+	</Page>
+</core:View>
