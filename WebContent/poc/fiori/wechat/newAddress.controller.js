@@ -8,17 +8,18 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	
 	handleChange: function() {
 		this.byId("save").setEnabled(false);
-		var lastName = this.byId("lName").getValue();
-		var firstName = this.byId("fName").getValue();
-		var address = this.byId("tAddr").getValue();		
+		var lastName = this.byId("lName").getValue().trim();
+		var firstName = this.byId("fName").getValue().trim();
+		var address = this.byId("tAddr").getValue().trim();		
 		if (lastName && firstName && address) {
 			this.byId("save").setEnabled(true);
 		}
 	},
 	
 	handleAccept: function() {
-		var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
-		//var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
+		var appUri = "http://localhost:8080/poc.fiori.wechat/";
+		var proxyUri = "proxy/http/10.59.145.101:9001";
+		var uripre = appUri+proxyUri;
 		var user = "jones.wu@sap.com";
 		var userUri = uripre + "/ws410/rest/users/" + user;
 		var uModel = new sap.ui.model.xml.XMLModel();
@@ -87,4 +88,5 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 			 this.app.back();
 		 }
 	},
+	
 });
