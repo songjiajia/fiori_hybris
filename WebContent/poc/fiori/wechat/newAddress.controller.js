@@ -4,7 +4,33 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	onInit : function() {
 		var div = this.byId("div");
 		div.addStyleClass("LabelPadding");
+		  var bus = sap.ui.getCore().getEventBus();
+		    bus.subscribe("nav", "to", this.navToHandler, this);
+		    this.app = sap.ui.getCore().byId("theApp");		
+		this.fromwhere = "";
+		var that = this;
+		oView.addEventDelegate({
+			onBeforeShow: function(evt){
+				if(evt.data.fromwhere === "checkout"){
+					that.fromwhere = "checkout";
+				}
+			}
+		});
+		
 	},
+	
+	navToHandler : function(channelId, eventId, data) {
+        if (data && data.id) {
+        	 if (this.app.getPage(data.id) === null) {
+                 jQuery.sap.log.info("now loading page '" + data.id + "'");
+                 this.app.addPage(sap.ui.xmlview(data.id, "poc.fiori.wechat." + data.id));
+              }
+            // Navigate to given page (include bindingContext)
+            this.app.to(data.id, data.data);
+    } else {
+            jQuery.sap.log.error("nav-to event cannot be processed. Invalid data: " + data);
+        }
+        },
 	
 	handleChange: function() {
 		this.byId("save").setEnabled(false);
@@ -25,7 +51,7 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		var uModel = new sap.ui.model.xml.XMLModel();
 		uModel.loadData(userUri,null,false);
 		var userPK = uModel.getProperty("/@pk");		
-		
+		var fromwhere = this.fromwhere;
 		var lName = this.byId("lName");
 		var lastName = lName.getValue();
 		var fName = this.byId("fName");
@@ -55,6 +81,16 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	    	  setTimeout(function () {
 				   sap.m.MessageToast.show("New address has been added");
 			   }, 100);
+	    	  
+	    	  if(fromwhere === "checkout"){
+	    		  var bus = sap.ui.getCore().getEventBus();
+	  	        bus.publish("nav", "to", { 
+	  	            id : "CheckOut",
+	  	            data : {
+	  	                fromwhere : "address"
+	  	            }
+	  	});
+	    	  }
 	      },
 	      error: function (xhr, status, error) {
 	          alert("Service Error:" + error);

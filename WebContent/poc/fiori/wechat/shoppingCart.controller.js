@@ -2,7 +2,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onInit:function(){
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
-		var userId="jiajing.hu@sap.com";
+		userId="jiajing.hu@sap.com";
 		var baseUrl="http://localhost:8980/poc.fiori.wechat/proxy/http/";
 		var userUrl="10.59.145.101:9001/ws410/rest/customers/";
 		var url= baseUrl + userUrl + userId;
@@ -289,6 +289,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
             id : "",
             data : {
                 cartCode : cartCode,
+                userId : userId,
+                fromwhere : "cart"
             }
      });
 	},

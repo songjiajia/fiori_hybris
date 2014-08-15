@@ -73,6 +73,48 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			      creditModel.loadData(url);	
 			      creditModel.attachRequestCompleted(successfulRequest);
 					
+				}else if(evt.data.fromwhere === "cart"){
+					that.cartid = evt.data.cartCode;
+					that.userid = evt.data.userId;
+				}else if(evt.data.fromwhere === "address"){
+					that.getView().byId("ShipAddress").setVisible(true);
+					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+					var addressJson = {};
+					
+					
+					var addressModel = new sap.ui.model.xml.XMLModel();
+					var successfulRequest = function(){
+						
+						var oFilter = new sap.ui.model.Filter("line1",
+								 sap.ui.model.FilterOperator.NE, "");
+						that.getView().byId("addresses").getBinding("items").filter(oFilter);
+//						var xmlstr = AddressModel.getXML();
+//						var xmlDoc;
+//						if (window.DOMParser)
+//						  {
+//						  parser=new DOMParser();
+//						  xmlDoc=parser.parseFromString(xmlstr,"text/xml");
+//						  }
+//						else // code for IE
+//						  {
+//						  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+//						  xmlDoc.async=false;
+//						  xmlDoc.loadXML(xmlstr); 
+//						  } 
+//						addressJson = that.xmlToJson(xmlDoc); 
+						
+						
+			           
+			      };
+					
+					addressModel.loadData(url);			
+					addressModel.attachRequestCompleted(successfulRequest);
+					that.getView().byId("ShipAddress").setModel(addressModel);
+					
+					
+					//TODO: change selected to last item;
+					var len = that.getView().byId("addresses").getItems().length;
+					that.getView().byId("addresses").getItems()[len - 1].setSelected(true);
 				}
 				
 				
@@ -250,6 +292,14 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				      data: orderxml,
 				      contentType: "application/xml",
 				      success: function () {
+				    		 var bus = sap.ui.getCore().getEventBus();
+				 	        bus.publish("nav", "to", { 
+				 	            id : "orderStatus",
+				 	            data : {
+				 	            	order : that.cartid
+				 	            }
+				 	});
+				    	  
 				    	  
 				      },
 				      error: function (xhr, status, error) {
