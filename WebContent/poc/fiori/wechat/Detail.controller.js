@@ -130,7 +130,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		//var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
         var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
         var user = "jones.wu@sap.com"
-		var cartNoUrl = uripre + "/ws410/rest/users/" + user;
+		var cartNoUrl = uripre + "/ws410/rest/customers/" + user;
 	 	var cartNoModel = new sap.ui.model.xml.XMLModel();
 	 	cartNoModel.loadData(cartNoUrl,null,false);
 	 	var cartNo = cartNoModel.getProperty("/carts/cart/@code");
@@ -143,9 +143,10 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			      url: newCartUri,
 			      data: xmlData,
 			      contentType: "application/xml",
+			      async: false,
 			      success: function (data) {
 //			        alert(data);
-//	 				cartNo = 
+	 				cartNo = data.getElementsByTagName("cart")[0].getAttribute("code");
 			      },
 			      error: function (xhr, status, error) {
 			          console.log("New Cart Error:" + error);
