@@ -67,7 +67,7 @@
 	
 	<ObjectIdentifier title="Payment" />
 	 <RadioButton groupName="Payment" text="Cash" select="selectCash" selected="true" />
-      <RadioButton groupName="Payment" text="WeChat Pay" select="selectWP"/>
+      <RadioButton id="wcpay" groupName="Payment" text="WeChat Pay" select="selectWP"/>
       <RadioButton groupName="Payment" text="Credit" select="selectCredit"/>
      
 	</VBox>
@@ -99,7 +99,7 @@
     id="totalprice"
     title="Total:"
     number="{/totalPrice}"
-    numberUnit="{/currency/name}" >
+    numberUnit="{/currency/@isocode}" >
 	 <attributes>
       <ObjectAttribute text="including delivery fee {/deliveryCost} {/currency/name} ." />
        </attributes>

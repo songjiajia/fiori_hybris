@@ -16,13 +16,13 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
         this.cartid = "";
         var oView = this.getView();
         var that = this;
-        this.urlpre = "http://localhost/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/";
+        this.urlpre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/";
     	oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				
 				if(evt.data.fromwhere == "newpayment"){
 					that.getView().byId("Credits").setVisible(true);
-					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+					var url = that.urlpre + "ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 				
 					var creditJson = {};
 				//	var that = this;
@@ -73,13 +73,13 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				}else if(evt.data.fromwhere === "cart"){
 					that.setParm(evt.data.cartCode, evt.data.userId);
 					
-					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/carts/" + that.cartid + "?currency_attributes=name";
+					var url = that.urlpre + "ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode";
 					var cartModel = new sap.ui.model.xml.XMLModel();
 					cartModel.loadData(url);
 					oView.byId("totalprice").setModel(cartModel);
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
-					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+					var url = that.urlpre +  "ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 					var addressJson = {};
 					
 					
@@ -122,7 +122,12 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			}
     	}, this);
 	},
-	
+	onExit : function () {
+	    if (this.wcpayDialog) {
+	      this.wcpayDialog.destroy();
+	    }
+	   
+	  },
 	
 	setParm : function(cartid,userid){
 		this.cartid = cartid;
@@ -211,7 +216,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectShip : function(){
 		this.getView().byId("ShipAddress").setVisible(true);
-		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+		var url = this.urlpre + "ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 		var addressJson = {};
 		var that = this;
 		
@@ -255,9 +260,85 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	},
 	
 	handleOk : function(){
+		if(this.getView().byId("wcpay").getSelected() === true){
+			var that = this;
+			var orderno = this.cartid;
+			var price = this.getView().byId("totalprice");
+			if(!this.wcpayDialog){
+				this.wcpayDialog = new sap.m.Dialog(
+						{
+							title : "Enter Payment Passport",
+							content : [
+							           new sap.m.VBox({
+							        	   justifyContent : "Center",
+							        	   alignItems : "Center",
+							        	  items:[new sap.m.Label(
+													{
+														TextAlign : "Center",
+														text : orderno
+													}),new sap.m.Label({
+														TextAlign : "Center",
+														text : price.getNumberUnit() + " " + price.getNumber(),
+														design : "Bold"
+													}),new sap.m.Input({
+														maxLength : 6,
+														placeholder : "please enter password",
+														type : "Password",
+														width : "auto"
+														
+													}),new sap.m.Link({
+														text : "Payment mode:WeChat Account >"
+													})
+							        	         ] 
+							           })
+							           ],
+									
+
+							leftButton : new sap.m.Button(
+									{
+										text : "ok",
+										press : function() {
+											//TODO :temply removed;
+											that.createorder();
+//											var oRouter = sap.ui.core.UIComponent
+//											.getRouterFor(that);
+//										//	var versionview = 
+//										
+//										
+//									
+//									//		versionview.setModel(this.localModel1);
+////											var view = sap.ui.view({
+////												viewName : "SyncData.view.VersionList",
+////												type : sap.ui.core.mvc.ViewType.XML,
+////												viewData : oViewData
+////											});
+////											
+////											this.localModel1 = new sap.ui.model.json.JSONModel(Config.VersionList1);
+////											view.byId("versionlist").setModel(this.localModel1);
+//											
+//											oRouter.navTo("SyncBack", {
+//												// contextPath :
+//												// item.getBindingContext().sPath.substr(1),
+//												});
+											
+											
+											that.wcpayDialog.close();
+										}
+									}),
+							rightButton : new sap.m.Button({
+								text : "Cancel",
+								press : function() {
+									that.wcpayDialog.close();
+								}
+							})
+						});}
+				this.wcpayDialog.open();
+			
+		}else{
+			
 		
 		this.createorder();
-		
+		}
 	},
 	
 	createorder : function(){
@@ -293,7 +374,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		      contentType: "application/xml",
 		      success: function () {
 		    	  var orderurl = that.urlpre + "ws410/rest/orders/" + that.cartid;
-		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user><paymentInfo pk="'+ chosenPayment + '"></paymentInfo><deliveryAddress pk="' + chosenAdd + '"/></order>';
+		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user><paymentInfo pk="'+ chosenPayment + '"></paymentInfo><deliveryAddress pk="' + chosenAdd + '"/><status>COMPLETED</status></order>';
 		    	  $.ajax({
 				      type: 'PUT',
 				      url: orderurl,
@@ -330,7 +411,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
-		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+		var url = this.urlpre + "ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 	
 		var creditJson = {};
 		var that = this;
