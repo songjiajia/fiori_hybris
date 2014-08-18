@@ -7,8 +7,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		    
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
-		userId="jones.wu@sap.com";
-//		userId="jiajing.hu@sap.com";
+//		userId="jones.wu@sap.com";
+		userId="jiajing.hu@sap.com";
 		var baseUrl="http://localhost:8980/poc.fiori.wechat/proxy/http/";
 		var userUrl="10.59.145.101:9001/ws410/rest/customers/";
 		var url= baseUrl + userUrl + userId;

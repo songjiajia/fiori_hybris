@@ -59,12 +59,20 @@
 		<Label id="noProduct"  text="No product"></Label>
   		<HBox id="hboxcheck">
   			<items>
-<!--   				<CheckBox id="selectedAll" select="selectedAll"> </CheckBox> -->
+<!--   				<CheckBox id="selectedAll" select="selectedAll"> </CheckBox> 
 	  			<Button id="totalPrice" text="Total: 0 " />
-	  			<Button id="CheckOut" text="Checkout" press="checkOut" ></Button>  			
+	  			<Button id="CheckOut" text="Checkout" press="checkOut" ></Button>  	-->		
   			</items>
   			<layoutData><FlexItemData growFactor="0" /></layoutData>
   		</HBox>
   	</content>	
+  	<footer>
+      <Bar>
+        <contentRight>
+         <Button id="totalPrice" text="Total: 0 " />
+	  	<Button id="CheckOut" text="Checkout" press="checkOut" />
+        </contentRight>
+      </Bar>
+    </footer>
 	</Page>
 </core:View>

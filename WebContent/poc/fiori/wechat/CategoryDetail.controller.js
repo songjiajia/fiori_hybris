@@ -108,5 +108,12 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			 this.app = sap.ui.getCore().byId("theApp");
 			 this.app.back();
 		},
+		  onCartPress: function(oEvt){
+			   var bus = sap.ui.getCore().getEventBus();
+		        bus.publish("nav", "to", { 
+		            id : "shoppingCart"
+		        });		 
+		  }
+
 	
 });

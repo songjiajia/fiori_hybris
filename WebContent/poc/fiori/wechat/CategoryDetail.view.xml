@@ -5,5 +5,12 @@
 			<List id="idCatList" selectionChange="onCatSelectionChange" itemPress="onCatItemPress">
 			</List>
 		</content>
+	<footer>
+      <Bar>
+        <contentRight>
+          <Button icon="sap-icon://cart" press="onCartPress" />
+        </contentRight>
+      </Bar>
+    </footer>
 	</Page>
 </core:View>
