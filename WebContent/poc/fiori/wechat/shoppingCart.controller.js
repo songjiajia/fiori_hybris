@@ -8,7 +8,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
 		userId="jones.wu@sap.com";
-		var baseUrl="http://localhost:8080/poc.fiori.wechat/proxy/http/";
+//		userId="jiajing.hu@sap.com";
+		var baseUrl="http://localhost:8980/poc.fiori.wechat/proxy/http/";
 		var userUrl="10.59.145.101:9001/ws410/rest/customers/";
 		var url= baseUrl + userUrl + userId;
 //	    var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/customers/jiajing.hu@sap.com";
@@ -73,7 +74,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		  var oCart = cModel.getObject("/entries/");
           cartNum =oCart.getElementsByTagName("entry").length;
           
-          var baseUri ="http://localhost:8080/poc.fiori.wechat/proxy/http/";
+          var baseUri ="http://localhost:8980/poc.fiori.wechat/proxy/http/";
           var i = 0;
           while(i<cartNum){
                 var cartNumEntryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//entry uri
@@ -89,7 +90,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
                 var oImageModel = new sap.ui.model.xml.XMLModel();
                 oImageModel.loadData(imageUri,null,false);
                 var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001
-                image = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001" + image;
+                image = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001" + image;
                 cModel.setProperty("/entries/entry/"+i+"/@imageUri",image);
                 i++;
           }
@@ -130,7 +131,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri = "http://localhost:8980/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -165,7 +166,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri = "http://localhost:8980/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -211,6 +212,34 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	},
 	handleDelete: function(evt) {
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
+	    uripre = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+		var deleteCartProductUri = uripre + "/ws410/rest/carts/"+cartCode;
+		var oModel =   new sap.ui.model.xml.XMLModel();
+	     oModel.loadData(deleteCartProductUri);
+	     var oPara = evt.getParameter("listItem").getBindingContext();
+			var sPath = oPara.sPath;
+			sPathProducts = sPath + "/@uri";			
+		    oDelProductUri =	oPara.getProperty (sPathProducts);  
+		    oDelProductUri = oDelProductUri.substring(25,oDelProductUri.length);
+		    oDelProductUri = uripre + oDelProductUri;
+			$.ajax({
+			      type: 'DELETE',
+			      url: oDelProductUri,
+			      contentType: "application/xml",
+			      success: function () {
+			    	  cModel.refresh();
+//			        alert(data);
+//			    	  setTimeout(function () {
+					//	   sap.m.MessageToast.show("Item has added to Cart");
+			    		  
+//					   }, 100);
+//			    	  window.open("http://jones.nat123.net/yacceleratorstorefront/en/cart",'_self');
+			      },
+			      error: function (xhr, status, error) {
+			          alert("Service Error:" + error);
+			      },
+			      dataType: 'xml'
+			    });
 	  },
 // 	selectChange : function(object){  //when each item checkbox selectChange
 // 		var isSelected = object.getParameters();
