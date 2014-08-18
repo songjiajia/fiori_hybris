@@ -67,6 +67,7 @@ navToHandler : function(channelId, eventId, data) {
  	});
 		
 	 },*/
+	// get which category button is pressed, and add it as a parameter to detail page
 	 onCatButtonsPress : function (oEvent) {
 		 var bus = sap.ui.getCore().getEventBus();
 		 var catId = oEvent.oSource.getId();
@@ -99,13 +100,12 @@ navToHandler : function(channelId, eventId, data) {
 		
 	 },
 	 onSearch : function (oEvt) {
-/*		 var oImage = this.byId("idImage");
-		 oImage.setVisible(false) ;
-		 var oList = this.byId("idList");
-		 oList.setVisible(true);  */
+
 		    // add filter for search
 		    var aFilters = [];
 		    var sQuery = oEvt.getSource().getValue();
+		    if(sQuery !== ""){
+		    	
 		    
 		    var bus = sap.ui.getCore().getEventBus();
 		        bus.publish("nav", "to", { 
@@ -114,6 +114,7 @@ navToHandler : function(channelId, eventId, data) {
 		                context : sQuery
 		            }
 		        });		    
+		    }
 		        
 		  }, 
 		  onCartPress: function(oEvt){
