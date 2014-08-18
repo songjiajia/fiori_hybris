@@ -8,7 +8,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		    this.app = sap.ui.getCore().byId("theApp");		
 		    this.byId("test");
 			    
-   url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
+   url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
    var orderListModel = new sap.ui.model.xml.XMLModel();
     orderListModel.loadData(url,null,false);	
     this.getView().setModel(orderListModel);
@@ -16,8 +16,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 	var items = oList.getBinding("items");
  	var oSorter = new sap.ui.model.Sorter("date",true);
  	items.sort(oSorter);
-       var oOrderNumber= this.byId("idOrderNumber");
-       oOrderNumber.addStyleClass("OrderNumber");
+ //      var oOrderNumber= this.byId("idOrderNumber");
 /*      oOrderlist=this.byId("idOrderListItem");
        oOrderlist.attachPress(function(oEvent){
      	  var bus = sap.ui.getCore().getEventBus();
@@ -60,7 +59,9 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		            }
 		});
 		},
-		
+		formatOrderNumber: function(code){
+			return "No. " + code;
+		},
 		formatDate: function(date){
 				var oDate = date.substring(0,10);
 //				var oDateFormat = sap.ui.core.format.DateFormat.getInstance({pattern: "dd/MM/yyyy",style:"short"});

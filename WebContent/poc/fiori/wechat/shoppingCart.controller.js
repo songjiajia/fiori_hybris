@@ -208,7 +208,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		return "Size : "+size;
 	},
 	formatBasePrice : function(basePrice){
-		return basePrice+"/p";
+		return basePrice+"/pc";
 	},
 	handleDelete: function(evt) {
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
