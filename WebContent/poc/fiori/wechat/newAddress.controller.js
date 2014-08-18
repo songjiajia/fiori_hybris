@@ -8,11 +8,13 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		    bus.subscribe("nav", "to", this.navToHandler, this);
 		    this.app = sap.ui.getCore().byId("theApp");		
 		this.fromwhere = "";
+		this.userid = "";
 		var that = this;
-		oView.addEventDelegate({
+		this.getView().addEventDelegate({
 			onBeforeShow: function(evt){
 				if(evt.data.fromwhere === "checkout"){
 					that.fromwhere = "checkout";
+					that.userid = evt.data.userId;
 				}
 			}
 		});
@@ -46,7 +48,7 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		var appUri = "http://localhost:8080/poc.fiori.wechat/";
 		var proxyUri = "proxy/http/10.59.145.101:9001";
 		var uripre = appUri+proxyUri;
-		var user = "jones.wu@sap.com";
+		var user = this.userid;
 		var userUri = uripre + "/ws410/rest/users/" + user;
 		var uModel = new sap.ui.model.xml.XMLModel();
 		uModel.loadData(userUri,null,false);

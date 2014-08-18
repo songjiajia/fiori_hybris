@@ -10,8 +10,10 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
 			    oCode =	oPara.getProperty (sPathCode); 
-				 uripre = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
-				 orderuri = uripre + "/ws410/rest/orders/"+ oCode +"?orderentry_attributes=basePrice,quantity,info,calculated&address_attributes=streetname,town";
+//				 uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
+			    uriPreEntries= "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+			    uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http";	
+				 orderuri = uriPreEntries + "/ws410/rest/orders/"+ oCode +"?orderentry_attributes=basePrice,quantity,info,calculated&address_attributes=streetname,town";
 				oModel = new sap.ui.model.xml.XMLModel();
 				oModel.loadData(orderuri,null,false);
 				oView.setModel(oModel);
@@ -29,12 +31,12 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 			var i = 0;
 			while(i<orderNum){
 				var orderEntryUri = oModel.getProperty("/entries/entry/"+i+"/@uri");
-				orderEntryUri = orderEntryUri.substring(25,orderEntryUri.length);
+				orderEntryUri = orderEntryUri.substring(6,orderEntryUri.length);
 				orderEntryUri = uripre + orderEntryUri;
 				var oOrderEntryModel = new sap.ui.model.xml.XMLModel();
 				oOrderEntryModel.loadData(orderEntryUri,null,false);
 				var productUri=oOrderEntryModel.getProperty("/product/@uri");
-				productUri = productUri.substring(25,productUri.length);
+				productUri = productUri.substring(6,productUri.length);
 				productUri = uripre + productUri;
                var oProductModel =  new sap.ui.model.xml.XMLModel();
                 oProductModel.loadData(productUri,null,false);

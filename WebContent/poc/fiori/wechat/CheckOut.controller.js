@@ -13,16 +13,13 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		this.userid= "jones.wu@sap.com";
 		
 		
-        this.cartid = "00024494";
+        this.cartid = "";
         var oView = this.getView();
         var that = this;
-        this.urlpre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/";
+        this.urlpre = "http://localhost/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/";
     	oView.addEventDelegate({
 			onBeforeShow: function(evt){
-				var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/" + that.cartid + "?currency_attributes=name";
-				var cartModel = new sap.ui.model.xml.XMLModel();
-				cartModel.loadData(url);
-				oView.byId("totalprice").setModel(cartModel);
+				
 				if(evt.data.fromwhere == "newpayment"){
 					that.getView().byId("Credits").setVisible(true);
 					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
@@ -74,11 +71,15 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			      creditModel.attachRequestCompleted(successfulRequest);
 					
 				}else if(evt.data.fromwhere === "cart"){
-					that.cartid = evt.data.cartCode;
-					that.userid = evt.data.userId;
+					that.setParm(evt.data.cartCode, evt.data.userId);
+					
+					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/carts/" + that.cartid + "?currency_attributes=name";
+					var cartModel = new sap.ui.model.xml.XMLModel();
+					cartModel.loadData(url);
+					oView.byId("totalprice").setModel(cartModel);
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
-					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+					var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 					var addressJson = {};
 					
 					
@@ -120,6 +121,12 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				
 			}
     	}, this);
+	},
+	
+	
+	setParm : function(cartid,userid){
+		this.cartid = cartid;
+		this.userid = userid;
 	},
 	
 	navToHandler : function(channelId, eventId, data) {
@@ -182,7 +189,8 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	        bus.publish("nav", "to", { 
 	            id : "newAddress",
 	            data : {
-	                fromwhere : "checkout"
+	                fromwhere : "checkout",
+	                userId : this.userid
 	            }
 	});
 	},
@@ -203,7 +211,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectShip : function(){
 		this.getView().byId("ShipAddress").setVisible(true);
-		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 		var addressJson = {};
 		var that = this;
 		
@@ -322,7 +330,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
-		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+		var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/http://10.59.145.101:9001/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 	
 		var creditJson = {};
 		var that = this;

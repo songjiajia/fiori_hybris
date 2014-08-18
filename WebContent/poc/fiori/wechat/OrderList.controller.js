@@ -8,7 +8,7 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		    this.app = sap.ui.getCore().byId("theApp");		
 		    this.byId("test");
 			    
-   url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
+   url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
    var orderListModel = new sap.ui.model.xml.XMLModel();
     orderListModel.loadData(url,null,false);	
     this.getView().setModel(orderListModel);
