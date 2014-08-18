@@ -13,10 +13,10 @@
 				<HBox justifyContent="Center" alignItems="Start">
 					<items>
 						<HBox width="20em">
-							<Button text="Sunglasses" id="idSunglasses" width="10em" press="onCatButtonsPress" />
+							<Button text="Bags" id="idBags" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="Shirt" id="idShirt" width="10em" press="onCatButtonsPress" />
+							<Button text="Shirts" id="idShirt" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
 							<Button text="Shoes"  id="idShoes" width="10em" press="onCatButtonsPress" />

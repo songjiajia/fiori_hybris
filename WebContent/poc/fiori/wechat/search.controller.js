@@ -72,8 +72,8 @@ navToHandler : function(channelId, eventId, data) {
 		 var bus = sap.ui.getCore().getEventBus();
 		 var catId = oEvent.oSource.getId();
 		 switch (catId) {
-		   case this.byId("idSunglasses").getId():
-		     para = "sunglasses";
+		   case this.byId("idBags").getId():
+		     para = "160700";
 		     break;
 		   case this.byId("idShirt").getId():
 			 para = "shirts";
