@@ -3,11 +3,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		
 		  var bus = sap.ui.getCore().getEventBus();
 		    bus.subscribe("nav", "to", this.navToHandler, this);
-		    this.app = sap.ui.getCore().byId("theApp");	
-		    
-		   var uid = this.getRequestPar("user");
-		//   alert(uid);
-		    
+		    this.app = sap.ui.getCore().byId("theApp");		
 		    
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
@@ -16,7 +12,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var baseUrl="http://localhost:8080/poc.fiori.wechat/proxy/http/";
 		var userUrl="10.59.145.101:9001/ws410/rest/customers/";
 		var url= baseUrl + userUrl + userId;
-//	    var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/customers/jiajing.hu@sap.com";
+//	    var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/customers/jiajing.hu@sap.com";
 		var oModel = new sap.ui.model.xml.XMLModel();
 	    cartCode = "";
 	    var getUrl = function(){
@@ -28,12 +24,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	    	this.setVisibleFalse();
 	    	return;
 	    }
-	    
 	    cModel = new sap.ui.model.xml.XMLModel();
 	    var cartListUrl = baseUrl + "10.59.145.101:9001/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice";
 	    cModel.loadData(cartListUrl,"",false);
 
-	    if(cModel==null){//cModel is null,there is no product in shopping cart
+	    if(cModel.getObject("/entries/").getElementsByTagName("entry").length==0){//cModel is null,there is no product in shopping cart
 	    	this.setVisibleFalse();
 	    	return;
 	    }
@@ -60,7 +55,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         }
         totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");
 	  },
-	  
 	  navToHandler : function(channelId, eventId, data) {
 	        if (data && data.id) {
 	        	 if (this.app.getPage(data.id) === null) {
@@ -73,7 +67,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	            jQuery.sap.log.error("nav-to event cannot be processed. Invalid data: " + data);
 	        }
 	        },
-
 	  getImageUri : function(cModel){
 		  var oCart = cModel.getObject("/entries/");
           cartNum =oCart.getElementsByTagName("entry").length;
@@ -93,7 +86,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 			    imageUri = baseUri + imageUri.substring(7);
                 var oImageModel = new sap.ui.model.xml.XMLModel();
                 oImageModel.loadData(imageUri,null,false);
-                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229
+                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001
                 image = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001" + image;
                 cModel.setProperty("/entries/entry/"+i+"/@imageUri",image);
                 i++;
@@ -103,8 +96,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	  setVisibleFalse : function(){					//when cart is null.
 	    	var noProduct=this.byId("noProduct");
 	    	noProduct.setVisible(true);//when cartCode is null,there is no product in the shopping cart
-	    	var selectedAll = this.byId("selectedAll");
-	    	selectedAll.setVisible(false);
 	    	var totalPrice = this.byId("totalPrice");
 	    	totalPrice.setVisible(false);
 	    	var CheckOut = this.byId("CheckOut");
@@ -129,13 +120,13 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         totalCartPrice -= basePrice;
         totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");     //new totalCartPrice
       //update backend
-        var itemId = plusId.split("-");
+        var itemId = minuId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
-		var entryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//"http://jones02.nat123.net:18229/ws410/rest/carts/00024518/cartentries/8796717285420"
+		var entryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//"http://10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420"
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -143,26 +134,10 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	      data: xmlData,
 	      contentType: "application/xml",
 	      success: function (data) {
+	    	  cModel.refresh();
 	      },
 		});
 	},
-	
-	
-	getRequestPar : function(paras){
-		var url = location.href;  
-		var paraString = url.substring(url.indexOf("?")+1,url.length).split("&");  
-		var paraObj = {}; 
-		for (var i=0; j=paraString[i]; i++){  
-		paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length);  
-		}  
-		var returnValue = paraObj[paras.toLowerCase()];  
-		if(typeof(returnValue)=="undefined"){  
-		return "";  
-		}else{  
-		return returnValue;  
-		}  
-	},
-	
 	onPressPlus : function (object){
 		var item = object.getSource();
 		var plusId = item.getId();//shoppingCart--plus-shoppingCart--ProductList-0
@@ -182,11 +157,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         //update backend
         var itemId = plusId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
-		var entryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//"http://jones02.nat123.net:18229/ws410/rest/carts/00024518/cartentries/8796717285420"
+		var entryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//"http://10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420"
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri = "http://localhost:8080/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -194,18 +169,9 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	      data: xmlData,
 	      contentType: "application/xml",
 	      success: function (data) {
+	    	  cModel.refresh();
 	      },
 		});
-        //if item is selected
-//        var itemId = "__item"+plusId.substring(45)+plusId.substring(18);
-//        var isSelected = this.byId(itemId);
-//        alert(isSelected.getSelected());
-//        if(isSelected.getSelected()){
-//        	var tPrice = this.byId("totalPrice");
-//     		var totalPrice = parseFloat(tPrice.getText().split(" ")[1]);
-//        	totalPrice += singlePrice;
-//            tPrice.setText("Total: "+totalPrice+" EUR"); 
-//        }        		
  	},
  	onBack: function(){//back to pre_page
 		 this.app = sap.ui.getCore().byId("theApp");
@@ -231,9 +197,17 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		return basePrice+"/pc";
 	},
 	handleDelete: function(evt) {
+		var itemId = evt.getParameter("listItem").getId();
+ 		var priceId = "price"+itemId.substring(7);
+ 		var id = "inputQuantity"+itemId.substring(7);//relpace "shoppingCart--plus"
+		var inputQuantity = this.byId(id);
+		var quantity = parseInt(inputQuantity.getValue());
+ 		var basePrice = parseFloat(this.byId(priceId).getNumber());//each item totalprice
+ 		var tPrice = this.byId("totalPrice");
+ 		var totalPrice = parseFloat(tPrice.getText().split(" ")[1]);//Total: 0 EUR
+ 		totalPrice = totalPrice-basePrice * quantity;
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
 	    uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
-	    
 		var deleteCartProductUri = uripre + "/ws410/rest/carts/"+cartCode;
 		var oModel =   new sap.ui.model.xml.XMLModel();
 	     oModel.loadData(deleteCartProductUri);
@@ -249,12 +223,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 			      contentType: "application/xml",
 			      success: function () {
 			    	  cModel.refresh();
-//			        alert(data);
-//			    	  setTimeout(function () {
-					//	   sap.m.MessageToast.show("Item has added to Cart");
-			    		  
-//					   }, 100);
-//			    	  window.open("http://jones.nat123.net/yacceleratorstorefront/en/cart",'_self');
+			    	  tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR");
 			      },
 			      error: function (xhr, status, error) {
 			          alert("Service Error:" + error);
@@ -291,12 +260,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 // 		tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR");
 // 		
 // 	},
-//	deleteCart : function(oEvent){  //delete product
-//		var o
-//		if(confirm("Are sure delete the shopping cart?")){
-//			alert("try again");
-//		}
-//	},
 //	selectedAll : function(){           //select all items
 //		var isSelect = this.byId("selectedAll");
 //		var productList = this.byId("ProductList");

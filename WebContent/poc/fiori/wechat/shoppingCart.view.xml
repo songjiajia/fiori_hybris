@@ -2,14 +2,13 @@
 		controllerName="poc.fiori.wechat.shoppingCart" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Shopping Cart" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
 	<content>
-		<List id="ProductList" headerText="Products" itempress="cartProductDetail"
+		<List id="ProductList"
 			items="{/entries/entry/}" mode="Delete" delete="handleDelete"  >
 <!-- 			selectionChange ="selectChange" growing="true" growingThreshold="3" growingScrollToLoad="false"> -->
-			
-	   		<CustomListItem type="Active" press="cartProductDetail" >
+	   		<CustomListItem type="Active"  >
 		        <HBox>
-				    <items>
-				    	<Label width="10%"></Label>
+		        	<items>
+						<VBox width="3%"></VBox>
 					   <VBox width="50%">
 				    		<items>
 				    			<HBox>			    			
@@ -38,13 +37,7 @@
 				    		<items>
 				    			<VBox>
 				    				<items>
-<!-- 				    					<Label></Label> -->
-<!-- 				    					<Label id="price" text="{totalPrice}" textAlign="Center"></Label> -->
-<!-- 				    					<Label text="EUR" textAlign="Right"></Label> -->
-<!-- 				    					<Label></Label> -->
-<!-- 				    					<Image src="poc/fiori/wechat/delete.jpg" width="2em" press="deleteCart"></Image> -->
-										<ObjectHeader  id="price" number="{path: 'basePrice',formatter:'.formatBasePrice'}" numberUnit="EUR" />
-<!-- 										<Image src="poc/fiori/wechat/delete.jpg" width="2em" press="deleteCart" ></Image> -->
+										<ObjectHeader  id="price" number="{basePrice}" numberUnit="EUR / UNIT" />
 				    				</items>
 				    					<layoutData><FlexItemData growFactor="1" /></layoutData>
 				    			</VBox>
@@ -55,22 +48,15 @@
 			    </HBox>
    			 </CustomListItem>
   		</List>
-
-		<Label id="noProduct"  text="No product"></Label>
-  		<HBox id="hboxcheck">
-  			<items>
-<!--   				<CheckBox id="selectedAll" select="selectedAll"> </CheckBox> 
-	  			<Button id="totalPrice" text="Total: 0 " />
-	  			<Button id="CheckOut" text="Checkout" press="checkOut" ></Button>  	-->		
-  			</items>
-  			<layoutData><FlexItemData growFactor="0" /></layoutData>
-  		</HBox>
+		<Label id="noProduct"  text="No product,Please add" textAlign="Center" width="100%"></Label>
   	</content>	
   	<footer>
       <Bar>
+      	<contentLeft>
+      		<Button id="totalPrice" text="Total: 0 " />
+      	</contentLeft>
         <contentRight>
-         <Button id="totalPrice" text="Total: 0 " />
-	  	<Button id="CheckOut" text="Checkout" press="checkOut" />
+	  		<Button id="CheckOut" text="Order" press="checkOut" />
         </contentRight>
       </Bar>
     </footer>
