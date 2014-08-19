@@ -63,7 +63,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				    var bColor = this.byId("bColors");
 				    bColor.addStyleClass("LabelPadding");
 				    var sSize = this.byId("sizeSelect");
-				    sSize.addStyleClass("LabelPadding");
+				    sSize.addStyleClass("SizePadding");
 //			      }
 			}	}, this);
 // subscribe to event bus

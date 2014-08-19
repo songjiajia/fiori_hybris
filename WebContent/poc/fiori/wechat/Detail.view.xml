@@ -30,13 +30,16 @@
 				<items>
 					<IconTabFilter id="InfoTab" icon="sap-icon://hint" visible="false">
 					    <content>
-					    <VBox><items>	
-						    <Label id="tLabelColor" text= "Color" textAlign="Center"></Label>
-					        <SegmentedButton id="bColors">
-					        </SegmentedButton>
-						    <Label id="tLabelSize" text= "Size" textAlign="Center"></Label>
-					        <Select id="sizeSelect" change="changeSize"></Select>
-					        <Label></Label>
+					    <VBox><items>
+					        <HBox>	
+							    <Label id="tLabelColor" text= "Color" textAlign="Center"></Label>
+						        <SegmentedButton id="bColors">
+						        </SegmentedButton>
+					        </HBox>
+					        <HBox>
+							    <Label id="tLabelSize" text= "Size" textAlign="Center"></Label>
+						        <Select id="sizeSelect" change="changeSize"></Select>
+					        </HBox>
 					    </items></VBox>
 					    </content>
 						<!--  <mvc:XMLView viewName="poc.fiori.wechat.Info"></mvc:XMLView>-->
