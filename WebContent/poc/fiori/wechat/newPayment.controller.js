@@ -10,7 +10,16 @@ sap.ui.controller("poc.fiori.wechat.newPayment", {
        
        var bus = sap.ui.getCore().getEventBus();
 	    bus.subscribe("nav", "to", this.navToHandler, this);
-	    this.app = sap.ui.getCore().byId("theApp");		
+	    this.app = sap.ui.getCore().byId("theApp");	
+	    var that = this;
+		this.getView().addEventDelegate({
+			onBeforeShow: function(evt){
+				if(evt.data.fromwhere === "checkout"){
+					that.fromwhere = "checkout";
+					that.userid = evt.data.userId;
+				}
+			}
+		});
        
 	},
 	
@@ -44,7 +53,7 @@ sap.ui.controller("poc.fiori.wechat.newPayment", {
         },
 	
 	handleAccept : function(){
-		var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+		var uripre = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229";
 		//var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 	 	var newCreditUri = uripre + "/ws410/rest/creditcardpaymentinfos/";	
 	 	var code = this.getView().byId("iVnum").getValue();
@@ -82,6 +91,11 @@ sap.ui.controller("poc.fiori.wechat.newPayment", {
 	      dataType: 'xml'
 	    });
 	},
+	
+	onBack: function(){ 
+		 this.app = sap.ui.getCore().byId("theApp");
+		 this.app.back();
+	}
 
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered

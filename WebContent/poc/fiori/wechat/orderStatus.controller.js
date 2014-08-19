@@ -13,6 +13,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 
 	if (evt.data.order){
      var oderId = evt.data.order;
+     
 	var url = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/orders/" + oderId;
     var oModel = new sap.ui.model.xml.XMLModel();
 	oModel.loadData(url,null,false);
@@ -26,7 +27,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	var oOrderHead = this.getView().byId("OrderHead");
  	oOrderHead.setModel(oModel);
  	oOrderHead.setProperty("title", "Hi, your oder was successful!");
- 	oOrderHead.bindProperty("number", "/deliveryCost")
+ 	oOrderHead.bindProperty("number", "/totalPrice");
  	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
  	
  	var oOrderStatus=this.getView().byId("OrderSta");
@@ -40,16 +41,17 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var oAddress=this.getView().byId("Address");
  	var deliveryPK = oModel.getProperty("/deliveryAddress/@pk");
- 	var deliveryUrl = "http://localhost:8080/poc.fiori.wechat/proxy/http/http/10.59.145.101:9001/ws410/rest/addresses/" + deliveryPK;
+ 	var deliveryUrl = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/addresses/" + deliveryPK;
  	var oDeliveryModel = new sap.ui.model.xml.XMLModel();
  	oDeliveryModel.loadData(deliveryUrl,null,false);
  	var deliveryAddress1 = oDeliveryModel.getProperty("/line1");
- 	var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
- 	var deliveryAddress =  "Address:"+ deliveryAddress1 + deliveryAddress2;
+ 	//var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
+ 	var deliveryAddress =  "Address:"+ deliveryAddress1 
+ 	//+ deliveryAddress2;
  	oAddress.setProperty("text",deliveryAddress);
  	
 // 	 var isoCode = oModel.getProperty("/currency/@isocode");
-// 	var currUrl = "http://localhost:8080/shytest1/proxy/http/10.59.145.101:9001/ws410/rest/currencies/" + isoCode;
+// 	var currUrl = "http://jones01.nat123.net/shytest1/proxy/http/jones02.nat123.net:18229/ws410/rest/currencies/" + isoCode;
 // 	var oModelCurrency = new sap.ui.model.xml.XMLModel();
 // 	oModelCurrency.loadData(currUrl,null,false);
 // 	var currencyName = oModelCurrency.getProperty("/name");

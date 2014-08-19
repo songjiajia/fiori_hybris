@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 							http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-		version="2.5"
-		xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
 	<display-name>poc.fiori.wechat</display-name>
 
 	<!-- ============================================================== -->
-	<!-- UI5 resource servlet used to handle application resources      -->
+	<!-- UI5 resource servlet used to handle application resources -->
 	<!-- ============================================================== -->
 
 	<servlet>
@@ -21,7 +20,8 @@
 		<url-pattern>/resources/*</url-pattern>
 	</servlet-mapping>
 	<!-- BEGIN: test-resources -->
-	<!-- test-resources mapping has to be switched off for productive use on a Java server! -->
+	<!-- test-resources mapping has to be switched off for productive use on 
+		a Java server! -->
 	<servlet-mapping>
 		<servlet-name>ResourceServlet</servlet-name>
 		<url-pattern>/test-resources/*</url-pattern>
@@ -38,7 +38,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- Cache Control Filter to prevent caching of any resource        -->
+	<!-- Cache Control Filter to prevent caching of any resource -->
 	<!-- ============================================================== -->
 
 	<filter>
@@ -69,7 +69,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- UI5 proxy servlet                                              -->
+	<!-- UI5 proxy servlet -->
 	<!-- ============================================================== -->
 
 	<servlet>
@@ -83,7 +83,7 @@
 
 
 	<!-- ============================================================== -->
-	<!-- Welcome file list                                              -->
+	<!-- Welcome file list -->
 	<!-- ============================================================== -->
 
 	<welcome-file-list>

@@ -68,7 +68,7 @@
 	<ObjectIdentifier title="Payment" />
 	 <RadioButton groupName="Payment" text="Cash" select="selectCash" selected="true" />
       <RadioButton id="wcpay" groupName="Payment" text="WeChat Pay" select="selectWP"/>
-      <RadioButton groupName="Payment" text="Credit" select="selectCredit"/>
+      <RadioButton groupName="Payment" text="Bank Card" select="selectCredit"/>
      
 	</VBox>
 	</content>
@@ -89,7 +89,7 @@
        
       </VBox>
       <HBox>
-      <Button icon="sap-icon://add" text="Add new Credit" press="addNewCredit"/> 
+      <Button icon="sap-icon://add" text="Add new Bank Card" press="addNewCredit"/> 
       </HBox>
       
       

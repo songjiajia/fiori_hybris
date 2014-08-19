@@ -10,9 +10,9 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
 			    oCode =	oPara.getProperty (sPathCode); 
-//				 uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";	
-			    uriPreEntries= "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
-			    uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http";	
+//				 uripre = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229";	
+			    uriPreEntries= "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229";
+			    uripre = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http";	
 				 orderuri = uriPreEntries + "/ws410/rest/orders/"+ oCode +"?orderentry_attributes=basePrice,quantity,info,calculated&address_attributes=streetname,town";
 				oModel = new sap.ui.model.xml.XMLModel();
 				oModel.loadData(orderuri,null,false);

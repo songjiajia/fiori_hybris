@@ -45,8 +45,8 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	},
 	
 	handleAccept: function() {
-		var appUri = "http://localhost:8080/poc.fiori.wechat/";
-		var proxyUri = "proxy/http/10.59.145.101:9001";
+		var appUri = "http://jones01.nat123.net/poc.fiori.wechat/";
+		var proxyUri = "proxy/http/jones02.nat123.net:18229";
 		var uripre = appUri+proxyUri;
 		var user = this.userid;
 		var userUri = uripre + "/ws410/rest/users/" + user;

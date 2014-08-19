@@ -8,12 +8,12 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 				var oPara = evt.data.context;
 				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
 				{					
-//				var url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/10.59.145.101:9001/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
-				 url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
+//				var url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
+				 url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
 				}
 				else
 			    {
-				  url = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
+				  url = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
 			    };
 				
 				var catProductsModel = new sap.ui.model.xml.XMLModel();
@@ -56,8 +56,8 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			        var that = this;
 					var getUrl = function(){
 //			        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
-			              var iconUrl = "http://10.59.145.101:9001";
-//						  var iconUrl = "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+			              var iconUrl = "http://jones02.nat123.net:18229";
+//						  var iconUrl = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229";
 //			              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 			              var oItems = that.byId("idCatList").getItems();
 			              for (var i=0;i<oItems.length;i++){

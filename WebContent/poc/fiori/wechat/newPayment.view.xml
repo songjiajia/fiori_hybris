@@ -1,6 +1,6 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.newPayment" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Add New Credit">
+	<Page title="Add New Credit"  showNavButton="true" navButtonPress="onBack">
 		
 	       <footer>
 			<Bar>
@@ -23,7 +23,7 @@
 		<content>
 		    <Label></Label>
 		    <VBox id="div" width="90%"><items>
-			<Label text="*Credit type:"></Label>
+			<Label text="*Bank Card type:"></Label>
 			<Input id="iCreType" editable="false" value="American Express"></Input>
 			<VBox id="types">
 			 <RadioButton groupName="Ctype" text="American Express" select="chooseCType" selected="true" />

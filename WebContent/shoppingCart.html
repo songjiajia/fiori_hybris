@@ -1,28 +1,27 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-	<style type="text/css">	
-    .LabelPadding{
-    width: 100%;
-    padding-left: 1rem!important;
-    }
-    .tBorder .sapMInputBaseInner{
-    border-color: transparent;
-    }    
-	</style>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+<head>
+<style type="text/css">
+.LabelPadding {
+	width: 100%;
+	padding-left: 1rem !important;
+}
 
-<!--  <script src="resources/sap-ui-core.js"-->		
-        <script src="resources/sap-ui-cachebuster/sap-ui-core.js"
-				id="sap-ui-bootstrap"
-				data-sap-ui-xx-bindingSyntax="complex"
-				data-sap-ui-libs="sap.m"
-				data-sap-ui-theme="sap_bluecrystal">
+.tBorder .sapMInputBaseInner {
+	border-color: transparent;
+}
+</style>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
+
+<!--  <script src="resources/sap-ui-core.js"-->
+<script src="resources/sap-ui-cachebuster/sap-ui-core.js"
+	id="sap-ui-bootstrap" data-sap-ui-xx-bindingSyntax="complex"
+	data-sap-ui-libs="sap.m" data-sap-ui-theme="sap_bluecrystal">
 		</script>
-		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
+<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
 
-		<script>
+<script>
 				sap.ui.localResources("poc.fiori.wechat");
 				var app = new sap.m.App({id:"theApp", initialPage:"shoppingCart"});
 				var page = sap.ui.view({id:"shoppingCart", viewName:"poc.fiori.wechat.shoppingCart", type:sap.ui.core.mvc.ViewType.XML});
@@ -30,8 +29,8 @@
 				app.placeAt("content");
 		</script>
 
-	</head>
-	<body class="sapUiBody" role="application">
-		<div id="content"></div>
-	</body>
+</head>
+<body class="sapUiBody" role="application">
+	<div id="content"></div>
+</body>
 </html>

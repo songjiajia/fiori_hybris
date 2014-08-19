@@ -63,8 +63,11 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 						that.getView().byId("Crd").setModel(creditJsonModel);
 						//TODO: change selected to last item;
 						var len = that.getView().byId("Crd").getItems().length;
+						if(len > 0){
+							
+						
 						that.getView().byId("Crd").getItems()[len - 1].setSelected(true);
-			           
+						}
 			      };
 					
 			      creditModel.loadData(url);	
@@ -115,12 +118,21 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 					
 					//TODO: change selected to last item;
 					var len = that.getView().byId("addresses").getItems().length;
+					if(len > 0){
+						
+					
 					that.getView().byId("addresses").getItems()[len - 1].setSelected(true);
-				}
+					}
+					}
 				
 				
 			}
     	}, this);
+	},
+	
+	onCheckoutBack : function(){
+		 this.app = sap.ui.getCore().byId("theApp");
+		 this.app.back();
 	},
 	onExit : function () {
 	    if (this.wcpayDialog) {
@@ -205,7 +217,8 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	        bus.publish("nav", "to", { 
 	            id : "newPayment",
 	            data : {
-	                fromwhere : "checkout"
+	                fromwhere : "checkout",
+	                userId : this.userid
 	            }
 	});
 	},
@@ -215,6 +228,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	},
 	
 	selectShip : function(){
+		this.showBusyDialog();
 		this.getView().byId("ShipAddress").setVisible(true);
 		var url = this.urlpre + "ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 		var addressJson = {};
@@ -226,6 +240,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			var oFilter = new sap.ui.model.Filter("line1",
 					 sap.ui.model.FilterOperator.NE, "");
 			that.getView().byId("addresses").getBinding("items").filter(oFilter);
+			that.closeBusyDialog();
 //			var xmlstr = AddressModel.getXML();
 //			var xmlDoc;
 //			if (window.DOMParser)
@@ -257,6 +272,32 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectWP : function(){
 		this.getView().byId("Credits").setVisible(false);
+	},
+	
+	showBusyDialog : function() {
+		var dialog = sap.ui.getCore().byId("busyDialog");
+		if (!dialog) {
+			dialog = new sap.m.BusyDialog("busyDialog", {
+				showCancelButton : false
+			});
+		}
+
+		dialog.open();
+		// var dialog = sap.ui.getCore().byId("busyDialog");
+		// if(!dialog){
+		// dialog = new sap.ui.core.BusyIndicator("busyDialog", {
+		//				
+		// });
+		// }
+		//		
+		// dialog.show();
+		// sap.ui.core.BusyIndicator.show();
+	},
+
+	closeBusyDialog : function() {
+		sap.ui.getCore().byId("busyDialog").close();
+
+		// sap.ui.core.BusyIndicator.hide();
 	},
 	
 	handleOk : function(){
@@ -366,7 +407,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		}
 		
 		var that = this;
-		var cartxml = '<cart code="'+this.cartid + '"><user uid="'+ this.userid + '"></user><paymentInfo pk="'+ chosenPayment + '"></paymentInfo><paymentAddress pk="' + chosenAdd + '"/></cart>';
+		var cartxml = '<cart code="'+this.cartid + '"><user uid="'+ this.userid + '"></user></cart>';
 		$.ajax({
 		      type: 'POST',
 		      url: url,
@@ -374,7 +415,17 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		      contentType: "application/xml",
 		      success: function () {
 		    	  var orderurl = that.urlpre + "ws410/rest/orders/" + that.cartid;
-		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user><paymentInfo pk="'+ chosenPayment + '"></paymentInfo><deliveryAddress pk="' + chosenAdd + '"/><status>COMPLETED</status></order>';
+		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user>';
+		    	  if(chosenPayment !== ""){
+		    		  orderxml = orderxml + '<paymentInfo pk="'+ chosenPayment + '"></paymentInfo>';
+		    	  }
+		    	  
+		    	  if(chosenAdd !== ""){
+		    		  
+		    	  
+		    	  orderxml = orderxml + '<deliveryAddress pk="' + chosenAdd + '"/>';
+		    	  }
+		    	  orderxml = orderxml + '<status>COMPLETED</status></order>';
 		    	  $.ajax({
 				      type: 'PUT',
 				      url: orderurl,
@@ -411,8 +462,9 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
+		this.showBusyDialog();
 		var url = this.urlpre + "ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
-	
+	    
 		var creditJson = {};
 		var that = this;
 		
@@ -450,7 +502,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			
 			var creditJsonModel = new sap.ui.model.json.JSONModel(actualJson);
 			that.getView().byId("Crd").setModel(creditJsonModel);
-			
+			that.closeBusyDialog();
 			
            
       };

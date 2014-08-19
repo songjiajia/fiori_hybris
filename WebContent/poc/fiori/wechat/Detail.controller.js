@@ -10,8 +10,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
-				var appUri = "http://localhost:8080/poc.fiori.wechat/";
-				proxyUri = "proxy/http/10.59.145.101:9001";
+				var appUri = "http://jones01.nat123.net/poc.fiori.wechat/";
+				proxyUri = "proxy/http/jones02.nat123.net:18229";
 				uripre = appUri+proxyUri;
 				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
@@ -274,7 +274,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
     		cartButton.setEnabled(false);
 // loop to create list for different size of product
 			while (i < num){
-//				var uripre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001";
+//				var uripre = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/jones02.nat123.net:18229";
 	        	var productUri = oModel.getProperty("/variants/variantProduct/"+i+"/@uri");
 	        	var index = productUri.indexOf("/ws410/rest");
 	        	var subpUri = productUri.substring(index,productUri.length);
