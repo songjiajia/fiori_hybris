@@ -12,6 +12,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			onBeforeShow: function(evt){
 				var appUri = "http://jones01.nat123.net/poc.fiori.wechat/";
 				proxyUri = "proxy/http/jones02.nat123.net:18229";
+//				var appUri = "http://localhost:8080/poc.fiori.wechat/";
+//				proxyUri = "proxy/http/10.59.145.101:9001";
 				uripre = appUri+proxyUri;
 				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
@@ -87,9 +89,10 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		 	var success = function(oEvent){
 				if (oEvent.getParameter("success") == false){
 					console.log("Load Product Price Failed");
-				}
+				};
+				var unitCurr = rModel.getProperty("/currency/@isocode")+" / UNIT";
 				oHeader.setProperty("number", rModel.getProperty("/price"));
-				oHeader.setProperty("numberUnit", rModel.getProperty("/currency/@isocode"));
+				oHeader.setProperty("numberUnit", unitCurr);
 		 	};
 		 	rModel.attachRequestCompleted(jQuery.proxy(success, this));
 		 	rModel.loadData(priceUri,null,true);
