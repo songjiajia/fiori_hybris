@@ -9,12 +9,19 @@
 		        <HBox>
 		        	<items>
 						<VBox width="3%"></VBox>
-					   <VBox width="50%">
+					   <VBox width="70%">
 				    		<items>
 				    			<HBox>			    			
 						    		<items>
-						    			<Image src="{@imageUri}" width='4em'></Image>
-						    			<Label id="info" text="{path: 'info',formatter:'.formatName'}" press="toDetail" ></Label>
+						    			<Image src="{@imageUri}" width='3em'></Image>
+						    			<VBox width="2%"></VBox>
+						    			<VBox>
+						    				<items>
+						    					<Label text=" "></Label>
+						    					<Label id="info" text="{path: 'info',formatter:'.formatName'}" press="toDetail" ></Label>
+						    				</items>
+						    			</VBox>
+<!-- 						    			<Label id="info" text="{path: 'info',formatter:'.formatName'}" press="toDetail" ></Label> -->
 						    		</items>
 				    			</HBox>
 				    			<VBox>
@@ -23,9 +30,10 @@
 							    		<HBox alignItems="Center">
 								    		<items>
 								    			<Label text="Quantity: " />
-										       <Button id="minu" icon="sap-icon://less" press="onPressMinus"/>		       
-										       <Input id="inputQuantity" type="Number" maxLength="3" width="3em" value="{quantity}" enabled="false"/> 		           
-										       <Button id="plus" icon="sap-icon://add" press="onPressPlus"/>    
+								    			<Button id="minus" icon="sap-icon://less" press="onPressMinus" class="transB"/>
+								    			<core:HTML id="separator"></core:HTML>		       
+		   									    <Input id="inputQuantity" class="input" type="Number" maxLength="3" value="{quantity}" width="2.6rem" enabled="false"/> 		           
+		       									<Button id="plus" icon="sap-icon://add" press="onPressPlus"  class="transB"/>   
 								    		</items>
 					           			 </HBox>
 					    			</items>
@@ -37,13 +45,12 @@
 				    		<items>
 				    			<VBox>
 				    				<items>
-										<ObjectHeader  id="price" number="{basePrice}" numberUnit="EUR / UNIT" />
+										<ObjectHeader  id="price" number="{@number}" numberUnit="{@numberUnit}" />
 				    				</items>
 				    					<layoutData><FlexItemData growFactor="1" /></layoutData>
 				    			</VBox>
 				    		</items>
 				    	</VBox>
-				    	
 				    </items>
 			    </HBox>
    			 </CustomListItem>

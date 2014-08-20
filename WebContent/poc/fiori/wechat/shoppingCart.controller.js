@@ -1,8 +1,9 @@
-
 jQuery.sap.require("model.ModelManager");
+
 sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onInit:function(){
-		
+		urlpre= model.ModelManager.getModelUrlPre(); 
+	    picpre = model.ModelManager.getPicUrlPre ();
 		  var bus = sap.ui.getCore().getEventBus();
 		    bus.subscribe("nav", "to", this.navToHandler, this);
 		    this.app = sap.ui.getCore().byId("theApp");		
@@ -11,10 +12,14 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		ProductList.setVisible(false);//initial cart,list not visible
 		userId="jones.wu@sap.com";
 //		userId="jiajing.hu@sap.com";
-		var baseUrl="http://182.254.156.24:8000/";
-		var userUrl="ws410/rest/customers/";
-		var url= model.ModelManager.getModelUrlPre() + userUrl + userId;
-//	    var url = "http://182.254.156.24:8080/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/customers/jiajing.hu@sap.com";
+//		var baseUrl="http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/";
+		var userUrl= urlpre + "/ws410/rest/customers/";
+//	    var url = "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/customers/jiajing.hu@sap.com";
+		var oView = this.getView();
+		url= userUrl + userId;
+		oView.addEventDelegate({
+			onBeforeShow: function(evt){
+			
 		var oModel = new sap.ui.model.xml.XMLModel();
 	    cartCode = "";
 	    var getUrl = function(){
@@ -27,7 +32,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	    	return;
 	    }
 	    cModel = new sap.ui.model.xml.XMLModel();
-	    var cartListUrl = baseUrl + "ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice";
+	    var cartListUrl = urlpre + "/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice";
 	    cModel.loadData(cartListUrl,"",false);
 
 	    if(cModel.getObject("/entries/").getElementsByTagName("entry").length==0){//cModel is null,there is no product in shopping cart
@@ -35,28 +40,26 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	    	return;
 	    }
 	    cModel.getObject("/entries/entry").setAttribute("imageUri","");
-	    cModel.getObject("/entries/entry").setAttribute("code","");
+	    cModel.getObject("/entries/entry").setAttribute("number","");
+	    cModel.getObject("/entries/entry").setAttribute("numberUnit","");
 	    var oCart = cModel.getObject("/entries/");
-        var cartNum =oCart.getElementsByTagName("entry").length;
-        for(var i=0;i<cartNum;i++){
-        	var proInfo = cModel.getProperty("/entries/entry/"+i+"/info");
-        	var infoFormat = proInfo.replace(/"/ig,"@!");
-    		var code = infoFormat.split("@!")[1];
-    		cModel.setProperty("/entries/entry/"+i+"/@code",code);
-        }
+        cartNum =oCart.getElementsByTagName("entry").length;
 	    this.getImageUri(cModel);
 	    var noProduct=this.byId("noProduct");
 	    noProduct.setVisible(false);	
 		ProductList.setVisible(true);//cart has products,list visible
         ProductList.setModel(cModel);
         var totalPrice = this.byId("totalPrice");
-        totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
+        var totalCartPrice = 0;
+        var numberUnit = cModel.getProperty("/entries/entry/"+0+"/@numberUnit").split(" ")[0];
         for(var i=0;i<cartNum;i++){
-        	var price = parseFloat(cModel.getProperty("/entries/entry/"+i+"/totalPrice"));
+        	var price = parseFloat(cModel.getProperty("/entries/entry/"+i+"/@number"))*cModel.getProperty("/entries/entry/"+i+"/quantity");
         	totalCartPrice += price;
         }
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");
-	  },
+        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+numberUnit);
+	}
+	  },this);
+	},
 	  navToHandler : function(channelId, eventId, data) {
 	        if (data && data.id) {
 	        	 if (this.app.getPage(data.id) === null) {
@@ -72,24 +75,32 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	  getImageUri : function(cModel){
 		  var oCart = cModel.getObject("/entries/");
           cartNum =oCart.getElementsByTagName("entry").length;
-          
-          var baseUri ="http://182.254.156.24:8000/";
+ //         var baseUri ="http://182.254.156.24:8000";
+//          var baseUri ="http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/";
           var i = 0;
           while(i<cartNum){
                 var cartNumEntryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//entry uri
-                cartNumEntryUri = baseUri + cartNumEntryUri.substring(26); 
+                var index = cartNumEntryUri.indexOf("/ws410/rest");
+                cartNumEntryUri = uripre + cartNumEntryUri.substring(index); 
                 var oCartEntryModel = new sap.ui.model.xml.XMLModel();
                 oCartEntryModel.loadData(cartNumEntryUri,null,false);
                 var productUri=oCartEntryModel.getProperty("/product/@uri");// product uri
-                productUri = baseUri + productUri.substring(26);
+                productUri =  uripre + productUri.substring(index);
 			    var oProductModel =  new sap.ui.model.xml.XMLModel();
 			     oProductModel.loadData(productUri,null,false);
+			    var basePriceUri = oProductModel.getProperty("/europe1Prices/priceRow/1/@uri");
+			    basePriceUri =  uripre + basePriceUri.substring(index);
+			    var bModel = new sap.ui.model.xml.XMLModel();
+			    bModel.loadData(basePriceUri,"",false);
+			    var unit = bModel.getProperty("/currency/@isocode")+" / UNIT";
+			    cModel.setProperty("/entries/entry/"+i+"/@number",bModel.getProperty("/price"));//set unitPrice
+			    cModel.setProperty("/entries/entry/"+i+"/@numberUnit",unit);// set numberUnit
 			    var imageUri=oProductModel.getProperty("/baseProduct/@uri");// baseProduct uri
-			    imageUri = baseUri + imageUri.substring(26);
+			    imageUri = uripre+ imageUri.substring(index);
                 var oImageModel = new sap.ui.model.xml.XMLModel();
                 oImageModel.loadData(imageUri,null,false);
-                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001
-                image = "http://182.254.156.24:9001" + image;
+                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001
+                image = picpre + image;
                 cModel.setProperty("/entries/entry/"+i+"/@imageUri",image);
                 i++;
           }
@@ -112,6 +123,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var priceId = "price"+minuId.substring(18);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());        //unitPrice
+		var unit = price.getNumberUnit().split(" ")[0];
 		if(quantity<=1)
 			return;
 		else
@@ -120,7 +132,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice -= basePrice;
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");     //new totalCartPrice
+        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+unit);     //new totalCartPrice
       //update backend
         var itemId = minuId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -128,7 +140,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri = entryUri.substring(7); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -150,12 +162,13 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var priceId = "price"+plusId.substring(18);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());
+		var unit = price.getNumberUnit().split(" ")[0];
         quantity+=1;
         inputQuantity.setValue(quantity);        //new quantity
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice += basePrice;        
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");
+        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+unit);
         //update backend
         var itemId = plusId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -163,7 +176,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/" + entryUri.substring(7); //http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var updateCartUri =entryUri.substring(7); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -185,7 +198,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var info = infoFormat.split("@!")[3].split(" ");
 		var name="";
 		for(var i=0;i<info.length-1;i++)
-			name =name + info[i] +" ";
+			name =name + info[i]+" ";
 		return name;
 	},
 	formatSize : function(info){  //handle info and get product size
@@ -195,24 +208,29 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var size = infoSize[infoSize.length-1];
 		return "Size : "+size;
 	},
-	formatBasePrice : function(basePrice){
-		return basePrice+"/pc";
-	},
+	
 	handleDelete: function(evt) {
 		var itemId = evt.getParameter("listItem").getId();
- 		var priceId = "price"+itemId.substring(7);
- 		var id = "inputQuantity"+itemId.substring(7);//relpace "shoppingCart--plus"
+		var items = itemId.split("--");
+ 		var priceId = "price-"+items[0].split("-")[1]+"--"+items[1];
+ 		var id = "inputQuantity-"+items[0].split("-")[1]+"--"+items[1];//relpace "shoppingCart--plus"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
  		var basePrice = parseFloat(this.byId(priceId).getNumber());//each item totalprice
+ 		var priceUnit = this.byId(priceId).getNumberUnit();
+ 		var unit = priceUnit.split(" ")[0];
  		var tPrice = this.byId("totalPrice");
+ 		var order = this.byId("CheckOut");
  		var totalPrice = parseFloat(tPrice.getText().split(" ")[1]);//Total: 0 EUR
  		totalPrice = totalPrice-basePrice * quantity;
+ 		if(totalPrice==0){
+  		  tPrice.setVisible(false);
+  		  order.setVisible(false);
+  	  }else
+  		tPrice.setText("Total: "+totalPrice.toFixed(2)+" "+unit); 			
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
-//	    uripre = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001";
-		uripre = "http://182.254.156.24:8000";
-	    var deleteCartProductUri = uripre + "/ws410/rest/carts/"+cartCode;
-
+//	    uripre = "http://182.254.156.24:8000";
+		var deleteCartProductUri = uripre + "/ws410/rest/carts/"+cartCode;
 		var oModel =   new sap.ui.model.xml.XMLModel();
 	     oModel.loadData(deleteCartProductUri);
 	     var oPara = evt.getParameter("listItem").getBindingContext();
@@ -227,7 +245,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 			      contentType: "application/xml",
 			      success: function () {
 			    	  cModel.refresh();
-			    	  tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR");
 			      },
 			      error: function (xhr, status, error) {
 			          alert("Service Error:" + error);
@@ -329,14 +346,14 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
             }
      });
 	},
-	cartProductDetail : function(oEvent){
-		return ;		
-		 var bus = sap.ui.getCore().getEventBus();
-	        bus.publish("nav", "to", { 
-	            id : "Detail",
-	            data : {
-	                context : oEvent.oSource.getBindingContext()
-	            }
-	     });
-	},
+//	cartProductDetail : function(oEvent){
+//		return ;		
+//		 var bus = sap.ui.getCore().getEventBus();
+//	        bus.publish("nav", "to", { 
+//	            id : "Detail",
+//	            data : {
+//	                context : oEvent.oSource.getBindingContext()
+//	            }
+//	     });
+//	},
 });

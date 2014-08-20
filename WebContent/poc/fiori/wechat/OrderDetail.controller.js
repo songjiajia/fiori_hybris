@@ -34,7 +34,7 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 			var i = 0;
 			while(i<orderNum){
 				var orderEntryUri = oModel.getProperty("/entries/entry/"+i+"/@uri");
-				var index = priceUri.indexOf("/ws410/rest");
+				var index = orderEntryUri.indexOf("/ws410/rest");
 				orderEntryUri = urlpre + orderEntryUri.substring(index,orderEntryUri.length);
 				var oOrderEntryModel = new sap.ui.model.xml.XMLModel();
 				oOrderEntryModel.loadData(orderEntryUri,null,false);
