@@ -26,7 +26,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	
 	var oOrderHead = this.getView().byId("OrderHead");
  	oOrderHead.setModel(oModel);
- 	oOrderHead.setProperty("title", "Hi, your order was successful!");
+ 	oOrderHead.setProperty("title", "Hi, your order is successful!");
  	oOrderHead.bindProperty("number", "/totalPrice");
  	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
  	
