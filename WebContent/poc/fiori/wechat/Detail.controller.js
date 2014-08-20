@@ -1,3 +1,5 @@
+jQuery.sap.require("model.ModelManager");
+
 sap.ui.controller("poc.fiori.wechat.Detail", {
 
 /**
@@ -10,11 +12,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
-				var appUri = "http://182.254.156.24:8980/poc.fiori.wechat/";
-				proxyUri = "proxy/http/182.254.156.24:9001";
-//				var appUri = "http://localhost:8080/poc.fiori.wechat/";
-//				proxyUri = "proxy/http/10.59.145.101:9001";
-				uripre = "http://182.254.156.24:8000";
+				uripre= model.ModelManager.getModelUrlPre();
+				picpre = model.ModelManager. getPicUrlPre();
 				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
@@ -99,7 +98,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	 	};
 	 	
 //	 	iconurl = uripre+oModel.getProperty("/picture/@downloadURL");
-	 	iconurl = "http://182.254.156.24:9001"+oModel.getProperty("/picture/@downloadURL");
+	 	iconurl = picpre+oModel.getProperty("/picture/@downloadURL");
 	 	oHeader.setProperty("icon", iconurl);
 	 	
 	 	var oHeadAtt = this.byId("ProductAtt");
@@ -167,7 +166,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	      success: function () {
 //	        alert(data);
 	    	  setTimeout(function () {
-				   sap.m.MessageToast.show("Item has added to Cart");
+				   sap.m.MessageToast.show("Item has been added to Cart");
 			   }, 100);
 //	    	  window.open("http://jones.nat123.net/yacceleratorstorefront/en/cart",'_self');
 	      },
@@ -205,7 +204,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
             	var productName = oModel.getProperty("/name");
             	var productCode = oModel.getProperty("/@code");
             	var productDes = oModel.getProperty("/summary");
-    		 	var iconurl = uripre+oModel.getProperty("/others/media/@downloadURL");
+    		 	var iconurl = picpre+oModel.getProperty("/others/media/@downloadURL");
     		 	var sButton = this.byId("bColors");
     		 	var button = new sap.m.Button({
     		 		press : function (oEvent) {

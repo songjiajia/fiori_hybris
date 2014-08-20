@@ -34,6 +34,12 @@
 .input .sapMInputBaseInner {
 	text-align: right;
 	height: 2.5rem;
+	font-size: 1.5rem;
+}
+
+.transB .sapMBtnInner{
+background: transparent;
+border-color: transparent;
 }
 
 .OrderNumber {
@@ -53,6 +59,7 @@
 
 <script>
 				sap.ui.localResources("poc.fiori.wechat");
+				sap.ui.localResources("model");
 				var app = new sap.m.App({id:"theApp", initialPage:"idsearch1"});
 				var page = sap.ui.view({id:"idsearch1", viewName:"poc.fiori.wechat.search", type:sap.ui.core.mvc.ViewType.XML});
 //				var app = new sap.m.App({id:"theApp", initialPage:"idsearch1"});

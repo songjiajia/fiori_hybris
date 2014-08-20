@@ -61,10 +61,10 @@
 		    <items>
 		      <Label text="Quantity" />
 		      <HBox alignItems="Center">
-		       <Button id="minus" icon="sap-icon://less" press="onPress"/>		       
+		       <Button id="minus" icon="sap-icon://less" press="onPress" class="transB"/>		       
 		       <core:HTML id="separator"></core:HTML>		       
-		       <Input id="input" class="input" type="Number" maxLength="3" value="1" width="3rem" enabled="false"/> 		           
-		       <Button id="plus" icon="sap-icon://add" press="onPress"/>       
+		       <Input id="input" class="input" type="Number" maxLength="3" value="1" width="3.5rem" enabled="false"/> 		           
+		       <Button id="plus" icon="sap-icon://add" press="onPress"  class="transB"/>       
               </HBox>
 		    </items>
 		  </VBox>
