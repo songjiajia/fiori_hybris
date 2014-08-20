@@ -1,3 +1,4 @@
+jQuery.sap.require("model.ModelManager");
 jQuery.sap.require("sap.ui.core.Element");
 sap.ui.controller("poc.fiori.wechat.OrderList", {
 
@@ -6,9 +7,11 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		   var bus = sap.ui.getCore().getEventBus();
 		    bus.subscribe("nav", "to", this.navToHandler, this);
 		    this.app = sap.ui.getCore().byId("theApp");		
-		    this.byId("test");
+		   this.byId("test");
+		   urlpre= model.ModelManager.getModelUrlPre(); 
+		   picpre = model.ModelManager.getPicUrlPre ();
 			    
-   url = "http://182.254.156.24:8000/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
+   url =  urlpre + "/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
    var orderListModel = new sap.ui.model.xml.XMLModel();
     orderListModel.loadData(url,null,false);	
     this.getView().setModel(orderListModel);
@@ -16,18 +19,6 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 	var items = oList.getBinding("items");
  	var oSorter = new sap.ui.model.Sorter("date",true);
  	items.sort(oSorter);
- //      var oOrderNumber= this.byId("idOrderNumber");
-/*      oOrderlist=this.byId("idOrderListItem");
-       oOrderlist.attachPress(function(oEvent){
-     	  var bus = sap.ui.getCore().getEventBus();
-	        bus.publish("nav", "to", { 
-	            id : "OrderDetail",
-	            data : {
-	                context : oEvent.oSource.getBindingContext()
-	            }
-  	});
-        
-	    });  */
 	},
 	    onCatBack: function(){
 			 this.app = sap.ui.getCore().byId("theApp");

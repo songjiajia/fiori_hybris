@@ -1,9 +1,12 @@
+jQuery.sap.require("model.ModelManager");
 jQuery.sap.require("sap.ui.core.format.DateFormat");
 sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 
 
 	onInit: function() {
 		var oView = this.getView();
+		urlpre= model.ModelManager.getModelUrlPre(); 
+	    picpre = model.ModelManager.getPicUrlPre ();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				var oPara = evt.data.context;
@@ -11,9 +14,9 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 				sPathCode = sPath + "/@code";			
 			    oCode =	oPara.getProperty (sPathCode); 
 //				 uripre = "http://jones01.nat123.net/poc.fiori.wechat/proxy/http/182.254.156.24:9001";	
-			    uriPreEntries= "http://182.254.156.24:8000/";
-			    uripre = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http";	
-				 orderuri = uriPreEntries + "/ws410/rest/orders/"+ oCode +"?orderentry_attributes=basePrice,quantity,info,calculated&address_attributes=streetname,town";
+//			    uriPreEntries= "http://182.254.156.24:8000/";
+//			    uripre = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http";	
+				 orderuri = urlpre + "/ws410/rest/orders/"+ oCode +"?orderentry_attributes=basePrice,quantity,info,calculated&address_attributes=streetname,town";
 				oModel = new sap.ui.model.xml.XMLModel();
 				oModel.loadData(orderuri,null,false);
 				oView.setModel(oModel);
@@ -31,22 +34,21 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 			var i = 0;
 			while(i<orderNum){
 				var orderEntryUri = oModel.getProperty("/entries/entry/"+i+"/@uri");
-				orderEntryUri = orderEntryUri.substring(27,orderEntryUri.length);
-				orderEntryUri = uriPreEntries + orderEntryUri;
+				var index = priceUri.indexOf("/ws410/rest");
+				orderEntryUri = urlpre + orderEntryUri.substring(index,orderEntryUri.length);
 				var oOrderEntryModel = new sap.ui.model.xml.XMLModel();
 				oOrderEntryModel.loadData(orderEntryUri,null,false);
 				var productUri=oOrderEntryModel.getProperty("/product/@uri");
-				productUri = productUri.substring(27,productUri.length);
-				productUri = uriPreEntries + productUri;
+				productUri = urlpre + productUri.substring(index,productUri.length);
                var oProductModel =  new sap.ui.model.xml.XMLModel();
                 oProductModel.loadData(productUri,null,false);
                 var size = oProductModel.getProperty("/size");
 				var productCode=oOrderEntryModel.getProperty("/product/@code");
-				var productPicUri = uriPreEntries + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/products/" + productCode + "?product_attributes=name,picture" ;
+				var productPicUri = urlpre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/products/" + productCode + "?product_attributes=name,picture" ;
 				var oProductPicModel =  new sap.ui.model.xml.XMLModel();
 				oProductPicModel.loadData(productPicUri,null,false);
 				var picUri = oProductPicModel.getProperty("/picture/@downloadURL");
-				picUri = uriPreEntries + picUri;
+				picUri = urlpre + picUri;
 				var oProdcutName = oProductPicModel.getProperty("/name");
 				oModel.setProperty("/entries/entry/"+i+"/@productName",oProdcutName);
 				oModel.setProperty("/entries/entry/"+i+"/@downloadURL",picUri);

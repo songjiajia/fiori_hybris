@@ -1,19 +1,23 @@
+jQuery.sap.require("model.ModelManager");
 sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 
 
 	onInit: function() {
 		var oView = this.getView();
+		urlpre= model.ModelManager.getModelUrlPre(); 
+	    picpre = model.ModelManager.getPicUrlPre ();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				var oPara = evt.data.context;
 				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
 				{					
 //				var url = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
-				 url = "http://182.254.156.24:8000/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
+				 url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
 				}
 				else
 			    {
-				  url = "http://182.254.156.24:8000//rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
+//				  url = "http://182.254.156.24:8000//rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
+					url = urlpre + "/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + oPara +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online"; 
 			    };
 				
 				var catProductsModel = new sap.ui.model.xml.XMLModel();
@@ -56,12 +60,12 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			        var that = this;
 					var getUrl = function(){
 //			        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
-			              var iconUrl = "http://182.254.156.24:9001";
+//			              var iconUrl = "http://182.254.156.24:9001";
 //						  var iconUrl = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001";
 //			              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 			              var oItems = that.byId("idCatList").getItems();
 			              for (var i=0;i<oItems.length;i++){
-			            	  oItems[i].setProperty("icon", iconUrl + oItems[i].getProperty("icon"));
+			            	  oItems[i].setProperty("icon", picpre + oItems[i].getProperty("icon"));
 			              } 
 			             
 			        };
@@ -81,15 +85,15 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 					}
 					else
 				    {     
-						/*  var aFilters = [];
+						  var aFilters = [];
 						  oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
 						 	oList.setModel(catProductsModel);
 						 	oList.bindItems("/product", oItems);
 						    if (oPara && oPara.length > 0) {
 						      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Starts, oPara);
 						      aFilters.push(filter);
-						    }*/
-						oItems.bindProperty("title","name/text()").bindProperty("icon","images/image/url");
+						    }
+						/*oItems.bindProperty("title","name/text()").bindProperty("icon","images/image/url");
 					 	oList.setModel(catProductsModel);
 					 	oList.bindItems("/categories/category/2/products/product", oItems);
 					 	var items = oList.getBinding("items");
@@ -98,7 +102,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 						      items.filter(afilter);
 						    }
 					 	var oFilter = new sap.ui.model.Filter("baseOption/variantType",sap.ui.model.FilterOperator.EQ,"ApparelStyleVariantProduct");
-					 	items.filter(oFilter); 
+					 	items.filter(oFilter); */
 				    };
 			
 			}	}, this);

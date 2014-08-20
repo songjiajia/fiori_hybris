@@ -24,7 +24,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				
 				if(evt.data.fromwhere == "newpayment"){
 					that.getView().byId("Credits").setVisible(true);
-					var url = that.urlpre + "ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+					var url = that.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 				
 					var creditJson = {};
 				//	var that = this;
@@ -78,13 +78,13 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				}else if(evt.data.fromwhere === "cart"){
 					that.setParm(evt.data.cartCode, evt.data.userId);
 					
-					var url = that.urlpre + "ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode";
+					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode";
 					var cartModel = new sap.ui.model.xml.XMLModel();
 					cartModel.loadData(url);
 					oView.byId("totalprice").setModel(cartModel);
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
-					var url = that.urlpre +  "ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+					var url = that.urlpre +  "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 					var addressJson = {};
 					
 					
@@ -232,7 +232,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectShip : function(){
 		this.showBusyDialog();
 		this.getView().byId("ShipAddress").setVisible(true);
-		var url = this.urlpre + "ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+		var url = this.urlpre + "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 		var addressJson = {};
 		var that = this;
 		
@@ -385,7 +385,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	},
 	
 	createorder : function(){
-		var url = this.urlpre + "ws410/rest/carts/" + this.cartid + "?cmd=PlaceOrderCommand";
+		var url = this.urlpre + "/ws410/rest/carts/" + this.cartid + "?cmd=PlaceOrderCommand";
 		var chosenAdd = "";
 		var addresses = this.getView().byId("addresses").getItems();
 		var addlen = addresses.length;
@@ -416,7 +416,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		      data: cartxml,
 		      contentType: "application/xml",
 		      success: function () {
-		    	  var orderurl = that.urlpre + "ws410/rest/orders/" + that.cartid;
+		    	  var orderurl = that.urlpre + "/ws410/rest/orders/" + that.cartid;
 		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user>';
 		    	  if(chosenPayment !== ""){
 		    		  orderxml = orderxml + '<paymentInfo pk="'+ chosenPayment + '"></paymentInfo>';
@@ -465,7 +465,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
 		this.showBusyDialog();
-		var url = this.urlpre + "ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+		var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 	    
 		var creditJson = {};
 		var that = this;

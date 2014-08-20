@@ -1,3 +1,4 @@
+jQuery.sap.require("model.ModelManager");
 sap.ui.controller("poc.fiori.wechat.orderStatus", {
 
 /**
@@ -6,7 +7,8 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 * @memberOf poc.fiori.wechat.orderStatus
 */
 	onInit: function() {
-	    
+		urlpre= model.ModelManager.getModelUrlPre(); 
+		picpre = model.ModelManager.getPicUrlPre ();
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
@@ -14,7 +16,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	if (evt.data.order){
      var oderId = evt.data.order;
      
-	var url = "http://182.254.156.24:8000/ws410/rest/orders/" + oderId;
+	var url = urlpre + "/ws410/rest/orders/" + oderId;
     var oModel = new sap.ui.model.xml.XMLModel();
 	oModel.loadData(url,null,false);
 	
@@ -41,7 +43,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var oAddress=this.getView().byId("Address");
  	var deliveryPK = oModel.getProperty("/deliveryAddress/@pk");
- 	var deliveryUrl = "http://182.254.156.24:8000/ws410/rest/addresses/" + deliveryPK;
+ 	var deliveryUrl = urlpre + "/ws410/rest/addresses/" + deliveryPK;
  	var oDeliveryModel = new sap.ui.model.xml.XMLModel();
  	if(deliveryPK !== ""){
  		
