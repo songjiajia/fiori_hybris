@@ -23,6 +23,7 @@
 
 <script>
 				sap.ui.localResources("poc.fiori.wechat");
+				sap.ui.localResources("model");
 				var app = new sap.m.App({id:"theApp", initialPage:"shoppingCart"});
 				var page = sap.ui.view({id:"shoppingCart", viewName:"poc.fiori.wechat.shoppingCart", type:sap.ui.core.mvc.ViewType.XML});
 				app.addPage(page);

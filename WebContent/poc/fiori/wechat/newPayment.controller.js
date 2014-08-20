@@ -1,3 +1,5 @@
+jQuery.sap.require("model.ModelManager");
+
 sap.ui.controller("poc.fiori.wechat.newPayment", {
 
 /**
@@ -53,7 +55,7 @@ sap.ui.controller("poc.fiori.wechat.newPayment", {
         },
 	
 	handleAccept : function(){
-		var uripre = "http://182.254.156.24:8000/";
+		var uripre = model.ModelManager.getModelUrlPre();
 		//var uripre = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
 	 	var newCreditUri = uripre + "/ws410/rest/creditcardpaymentinfos/";	
 	 	var code = this.getView().byId("iVnum").getValue();

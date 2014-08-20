@@ -1,3 +1,5 @@
+
+jQuery.sap.require("model.ModelManager");
 sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onInit:function(){
 		
@@ -11,7 +13,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 //		userId="jiajing.hu@sap.com";
 		var baseUrl="http://182.254.156.24:8000/";
 		var userUrl="ws410/rest/customers/";
-		var url= "http://182.254.156.24:8000/" + userUrl + userId;
+		var url= model.ModelManager.getModelUrlPre() + userUrl + userId;
 //	    var url = "http://182.254.156.24:8080/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/customers/jiajing.hu@sap.com";
 		var oModel = new sap.ui.model.xml.XMLModel();
 	    cartCode = "";

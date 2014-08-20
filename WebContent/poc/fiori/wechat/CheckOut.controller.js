@@ -1,3 +1,5 @@
+jQuery.sap.require("model.ModelManager");
+
 sap.ui.controller("poc.fiori.wechat.CheckOut", {
 
 /**
@@ -16,7 +18,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
         this.cartid = "";
         var oView = this.getView();
         var that = this;
-        this.urlpre = "http://182.254.156.24:8000/";
+        this.urlpre = model.ModelManager.getModelUrlPre();
     	oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				
