@@ -425,7 +425,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		    	  
 		    	  orderxml = orderxml + '<deliveryAddress pk="' + chosenAdd + '"/>';
 		    	  }
-		    	  orderxml = orderxml + '<status>COMPLETED</status></order>';
+		    	  orderxml = orderxml + '<status>COMPLETED</status><currency isocode="EUR" /></order>';
 		    	  $.ajax({
 				      type: 'PUT',
 				      url: orderurl,
