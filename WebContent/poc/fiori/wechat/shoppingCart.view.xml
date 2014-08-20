@@ -48,7 +48,7 @@
 			    </HBox>
    			 </CustomListItem>
   		</List>
-		<Label id="noProduct"  text="No product,Please add" textAlign="Center" width="100%"></Label>
+		<Label id="noProduct"  text="No product, please add" textAlign="Center" width="100%"></Label>
   	</content>	
   	<footer>
       <Bar>

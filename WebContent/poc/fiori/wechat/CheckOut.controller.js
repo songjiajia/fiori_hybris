@@ -16,7 +16,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
         this.cartid = "";
         var oView = this.getView();
         var that = this;
-        this.urlpre = "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.145.101:9001/";
+        this.urlpre = "http://182.254.156.24:8000/";
     	oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				
