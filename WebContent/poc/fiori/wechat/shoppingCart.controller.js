@@ -81,22 +81,22 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
           while(i<cartNum){
                 var cartNumEntryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//entry uri
                 var index = cartNumEntryUri.indexOf("/ws410/rest");
-                cartNumEntryUri = uripre + cartNumEntryUri.substring(index); 
+                cartNumEntryUri = urlpre + cartNumEntryUri.substring(index); 
                 var oCartEntryModel = new sap.ui.model.xml.XMLModel();
                 oCartEntryModel.loadData(cartNumEntryUri,null,false);
                 var productUri=oCartEntryModel.getProperty("/product/@uri");// product uri
-                productUri =  uripre + productUri.substring(index);
+                productUri =  urlpre + productUri.substring(index);
 			    var oProductModel =  new sap.ui.model.xml.XMLModel();
 			     oProductModel.loadData(productUri,null,false);
 			    var basePriceUri = oProductModel.getProperty("/europe1Prices/priceRow/1/@uri");
-			    basePriceUri =  uripre + basePriceUri.substring(index);
+			    basePriceUri =  urlpre + basePriceUri.substring(index);
 			    var bModel = new sap.ui.model.xml.XMLModel();
 			    bModel.loadData(basePriceUri,"",false);
 			    var unit = bModel.getProperty("/currency/@isocode")+" / UNIT";
 			    cModel.setProperty("/entries/entry/"+i+"/@number",bModel.getProperty("/price"));//set unitPrice
 			    cModel.setProperty("/entries/entry/"+i+"/@numberUnit",unit);// set numberUnit
 			    var imageUri=oProductModel.getProperty("/baseProduct/@uri");// baseProduct uri
-			    imageUri = uripre+ imageUri.substring(index);
+			    imageUri = urlpre+ imageUri.substring(index);
                 var oImageModel = new sap.ui.model.xml.XMLModel();
                 oImageModel.loadData(imageUri,null,false);
                 var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001
@@ -117,11 +117,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onPressMinus : function (object){
 		var itemId = object.getSource();
 		var minuId = itemId.getId();//shoppingCart--minu-shoppingCart--ProductList-0
-		var minuIndex = minuId.indexOf("minu");
-		var id = "inputQuantity"+ minuIndex;//relpace "shoppingCart--minu"
+		var minuIndex = minuId.indexOf("-shoppingCart--");
+		var id = "inputQuantity"+ minuId.substring(minuIndex);//relpace "shoppingCart--minu"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
-		var priceId = "price"+ minuIndex;//"price-shoppingCart--ProductList-0"
+		var priceId = "price"+ minuId.substring(minuIndex);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());        //unitPrice
 		var unit = price.getNumberUnit().split(" ")[0];
@@ -156,11 +156,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onPressPlus : function (object){
 		var item = object.getSource();
 		var plusId = item.getId();//shoppingCart--plus-shoppingCart--ProductList-0
-		var plusIndex = plusId.indexOf("plus");
-		var id = "inputQuantity" + plusIndex;//relpace "shoppingCart--plus"
+		var plusIndex = plusId.indexOf("-shoppingCart--");
+		var id = "inputQuantity" + plusId.substring(plusIndex);//relpace "shoppingCart--plus"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
-		var priceId = "price" + plusIndex;//"price-shoppingCart--ProductList-0"
+		var priceId = "price" + plusId.substring(plusIndex);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());
 		var unit = price.getNumberUnit().split(" ")[0];
@@ -230,8 +230,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
   	  }else
   		tPrice.setText("Total: "+totalPrice.toFixed(2)+" "+unit); 			
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
-//	    uripre = "http://182.254.156.24:8000";
-		var deleteCartProductUri = uripre + "/ws410/rest/carts/"+cartCode;
+//	    urlpre = "http://182.254.156.24:8000";
+		var deleteCartProductUri = urlpre + "/ws410/rest/carts/"+cartCode;
 		var oModel =   new sap.ui.model.xml.XMLModel();
 	     oModel.loadData(deleteCartProductUri);
 	     var oPara = evt.getParameter("listItem").getBindingContext();
@@ -239,7 +239,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 			sPathProducts = sPath + "/@uri";			
 		    oDelProductUri =	oPara.getProperty (sPathProducts);  
 		    oDelProductUri = oDelProductUri.substring(25,oDelProductUri.length);
-		    oDelProductUri = uripre + oDelProductUri;
+		    oDelProductUri = urlpre + oDelProductUri;
 			$.ajax({
 			      type: 'DELETE',
 			      url: oDelProductUri,
