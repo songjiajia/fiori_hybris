@@ -117,10 +117,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onPressMinus : function (object){
 		var itemId = object.getSource();
 		var minuId = itemId.getId();//shoppingCart--minu-shoppingCart--ProductList-0
-		var id = "inputQuantity"+minuId.substring(18);//relpace "shoppingCart--minu"
+		var minuIndex = minuId.indexOf("minu");
+		var id = "inputQuantity"+ minuIndex;//relpace "shoppingCart--minu"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
-		var priceId = "price"+minuId.substring(18);//"price-shoppingCart--ProductList-0"
+		var priceId = "price"+ minuIndex;//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());        //unitPrice
 		var unit = price.getNumberUnit().split(" ")[0];
@@ -155,11 +156,11 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onPressPlus : function (object){
 		var item = object.getSource();
 		var plusId = item.getId();//shoppingCart--plus-shoppingCart--ProductList-0
-		
-		var id = "inputQuantity"+plusId.substring(18);//relpace "shoppingCart--plus"
+		var plusIndex = plusId.indexOf("plus");
+		var id = "inputQuantity" + plusIndex;//relpace "shoppingCart--plus"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
-		var priceId = "price"+plusId.substring(18);//"price-shoppingCart--ProductList-0"
+		var priceId = "price" + plusIndex;//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
 		var basePrice= parseFloat(price.getNumber());
 		var unit = price.getNumberUnit().split(" ")[0];

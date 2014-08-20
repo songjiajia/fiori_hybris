@@ -14,7 +14,7 @@
 				    			<HBox>			    			
 						    		<items>
 						    			<Image src="{@imageUri}" width='3em'></Image>
-						    			<VBox width="2%"></VBox>
+						    			<VBox width="3%"></VBox>
 						    			<VBox>
 						    				<items>
 						    					<Label text=" "></Label>
@@ -30,9 +30,9 @@
 							    		<HBox alignItems="Center">
 								    		<items>
 								    			<Label text="Quantity: " />
-								    			<Button id="minus" icon="sap-icon://less" press="onPressMinus" class="transB"/>
+								    			<Button id="minu" icon="sap-icon://less" press="onPressMinus" class="transB"/>
 								    			<core:HTML id="separator"></core:HTML>		       
-		   									    <Input id="inputQuantity" class="input" type="Number" maxLength="3" value="{quantity}" width="2.6rem" enabled="false"/> 		           
+		   									    <Input id="inputQuantity" class="input" type="Number" value="{quantity}" width="3.2rem" enabled="false"/> 		           
 		       									<Button id="plus" icon="sap-icon://add" press="onPressPlus"  class="transB"/>   
 								    		</items>
 					           			 </HBox>
