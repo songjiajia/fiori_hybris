@@ -43,13 +43,17 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	var deliveryPK = oModel.getProperty("/deliveryAddress/@pk");
  	var deliveryUrl = "http://182.254.156.24:8000/ws410/rest/addresses/" + deliveryPK;
  	var oDeliveryModel = new sap.ui.model.xml.XMLModel();
+ 	if(deliveryPK !== ""){
+ 		
+ 	
  	oDeliveryModel.loadData(deliveryUrl,null,false);
+ 	
  	var deliveryAddress1 = oDeliveryModel.getProperty("/line1");
  	//var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
- 	var deliveryAddress =  "Address:"+ deliveryAddress1 
+ 	var deliveryAddress =  "Address:"+ deliveryAddress1;
  	//+ deliveryAddress2;
  	oAddress.setProperty("text",deliveryAddress);
- 	
+ 	}
 // 	 var isoCode = oModel.getProperty("/currency/@isocode");
 // 	var currUrl = "http://jones01.nat123.net/shytest1/proxy/http/jones02.nat123.net:18229/ws410/rest/currencies/" + isoCode;
 // 	var oModelCurrency = new sap.ui.model.xml.XMLModel();
