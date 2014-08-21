@@ -1,12 +1,12 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m" controllerName="poc.fiori.wechat.newAddress" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Add New Address" id="newAddress" showNavButton="true" navButtonPress="onBack">
+	<Page title="{i18n>NA_TITLE}" id="newAddress" showNavButton="true" navButtonPress="onBack">
 	  <footer>
 			<Bar>
 				<contentMiddle>
 					<Button
 					    id="save"
-						text="Save"
+						text="{i18n>BTN_SAVE}"
 						enabled="false"
 						press="handleAccept"
 						type="Accept"/>
@@ -22,11 +22,11 @@
 		<content>
 		    <Label></Label>
 		    <VBox id="div" width="90%"><items>
-			<Label text="*Last Name:"></Label>
+			<Label text="{i18n>LAST_NAME}"></Label>
 			<Input id="lName" liveChange="handleChange"></Input>
-			<Label text="*First Name:"></Label>
+			<Label text="{i18n>FIRST_NAME}"></Label>
 			<Input id="fName" liveChange="handleChange"></Input>
-			<Label text="*Address Line:"></Label>			
+			<Label text="{i18n>ADD_LINE}"></Label>			
 			<TextArea id="tAddr" rows="3" width="100%" liveChange="handleChange"></TextArea>
 			<TextArea id="uAddr" rows="3" width="100%" visible="false" class="tBorder"></TextArea>
 			</items></VBox>

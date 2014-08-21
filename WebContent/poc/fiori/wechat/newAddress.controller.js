@@ -64,6 +64,8 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		var address = tAddr.getValue();
   		var uAddr = this.byId("uAddr");
 		var bSave = this.byId("save");
+		var bundle = this.getView().getModel("i18n").getResourceBundle();
+	 	var successMsg = bundle.getText("NEWADD_MSG");
 	 	var newAddressUri = uripre + "/ws410/rest/addresses/";	 	
 		var xmlData = "<address><owner pk='"+userPK+"'></owner><firstname>"+firstName+"</firstname><lastname>"+lastName+"</lastname><streetname>"+address+"</streetname><shippingAddress>true</shippingAddress></address>";
 		$.ajax({
@@ -83,7 +85,7 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	  		  uAddr.setValue(address);
 	  		  uAddr.setEnabled(false);
 	    	  setTimeout(function () {
-				   sap.m.MessageToast.show("New address has been added");
+				   sap.m.MessageToast.show(successMsg);
 			   }, 100);
 	    	  
 	    	  if(fromwhere === "checkout"){
@@ -97,7 +99,7 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 	    	  }
 	      },
 	      error: function (xhr, status, error) {
-	          alert("Service Error:" + error);
+	          console.log("Add new address failed:" + error);
 	      },
 	      dataType: 'xml'
 	    });
