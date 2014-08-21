@@ -44,10 +44,12 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
                 oProductModel.loadData(productUri,null,false);
                 var size = oProductModel.getProperty("/size");
 				var productCode=oOrderEntryModel.getProperty("/product/@code");
-				var productPicUri = urlpre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/products/" + productCode + "?product_attributes=name,picture" ;
+//				var productPicUri = urlpre + "/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/products/" + productCode + "?product_attributes=name,picture" ;
+				productPicUri = oProductModel.getProperty("/baseProduct/@uri");
+				productPicUri = urlpre + productPicUri.substring(index,productPicUri.length);
 				var oProductPicModel =  new sap.ui.model.xml.XMLModel();
 				oProductPicModel.loadData(productPicUri,null,false);
-				var picUri = oProductPicModel.getProperty("/picture/@downloadURL");
+				var picUri = oProductPicModel.getProperty("/normal/media/@downloadURL");
 				picUri = urlpre + picUri;
 				var oProdcutName = oProductPicModel.getProperty("/name");
 				oModel.setProperty("/entries/entry/"+i+"/@productName",oProdcutName);
