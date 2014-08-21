@@ -1,6 +1,9 @@
 <core:View xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.shoppingCart" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>SC_TITLE}" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
+	<Page class="marginBoxContent" title="Shopping Cart" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
+	<headerContent>
+		 <Button icon="sap-icon://home" press="backHome" />
+	</headerContent>
 	<content>
 		<List id="ProductList"
 			items="{/entries/entry/}" mode="Delete" delete="handleDelete"  >
@@ -9,11 +12,11 @@
 		        <HBox>
 		        	<items>
 						<VBox width="3%"></VBox>
-					   <VBox width="70%">
+					   <VBox width="60%">
 				    		<items>
 				    			<HBox>			    			
 						    		<items>
-						    			<Image src="{@imageUri}" width='3em'></Image>
+						    			<Image src="{@imageUri}" width='2.5em'></Image>
 						    			<VBox width="3%"></VBox>
 						    			<VBox>
 						    				<items>
@@ -45,7 +48,10 @@
 				    		<items>
 				    			<VBox>
 				    				<items>
-										<ObjectHeader  id="price" number="{@number}" numberUnit="{@numberUnit}" />
+										<ObjectHeader >
+											<statuses><ObjectStatus class="numberSize" id="price" text="{@number}" state="Success" /></statuses>
+											<statuses><ObjectStatus class="numberNuit" id="unit" text="{@numberUnit}" state="Success" /></statuses>
+										</ObjectHeader> 
 				    				</items>
 				    					<layoutData><FlexItemData growFactor="1" /></layoutData>
 				    			</VBox>

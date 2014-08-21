@@ -4,17 +4,15 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onInit:function(){
 		urlpre= model.ModelManager.getModelUrlPre(); 
 	    picpre = model.ModelManager.getPicUrlPre ();
-		  var bus = sap.ui.getCore().getEventBus();
-		    bus.subscribe("nav", "to", this.navToHandler, this);
-		    this.app = sap.ui.getCore().byId("theApp");		
+//		  var bus = sap.ui.getCore().getEventBus();
+//		    bus.subscribe("nav", "to", this.navToHandler, this);
+//		    this.app = sap.ui.getCore().byId("theApp");		
 		    
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
 		userId="jones.wu@sap.com";
 //		userId="jiajing.hu@sap.com";
-//		var baseUrl="http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/";
 		var userUrl= urlpre + "/ws410/rest/customers/";
-//	    var url = "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/customers/jiajing.hu@sap.com";
 		var oView = this.getView();
 		url= userUrl + userId;
 		oView.addEventDelegate({
@@ -123,8 +121,10 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var quantity = parseInt(inputQuantity.getValue());
 		var priceId = "price"+ minuId.substring(minuIndex);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
-		var basePrice= parseFloat(price.getNumber());        //unitPrice
-		var unit = price.getNumberUnit().split(" ")[0];
+		var basePrice= parseFloat(price.getText());        //unitPrice
+		var unitId = "unit"+ minuId.substring(minuIndex);//"price-shoppingCart--ProductList-0"
+		var priceUnit = this.byId(unitId);
+		var unit = priceUnit.getText().split(" ")[0];
 		if(quantity<=1)
 			return;
 		else
@@ -141,7 +141,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri = entryUri.substring(7); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var index = entryUri.indexOf("/ws410/rest");
+		var updateCartUri = urlpre + entryUri.substring(index); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -162,8 +163,10 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var quantity = parseInt(inputQuantity.getValue());
 		var priceId = "price" + plusId.substring(plusIndex);//"price-shoppingCart--ProductList-0"
 		var price = this.byId(priceId);
-		var basePrice= parseFloat(price.getNumber());
-		var unit = price.getNumberUnit().split(" ")[0];
+		var basePrice= parseFloat(price.getText());        //unitPrice
+		var unitId = "unit"+ plusId.substring(plusIndex);//"price-shoppingCart--ProductList-0"
+		var priceUnit = this.byId(unitId);
+		var unit = priceUnit.getText().split(" ")[0];
         quantity+=1;
         inputQuantity.setValue(quantity);        //new quantity
         var totalPrice = this.byId("totalPrice");
@@ -177,7 +180,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var entries = entryUri.split("/");
 		var cartentryPk = entries[entries.length-1];
 		var totalPrice = quantity * basePrice;
-		var updateCartUri =entryUri.substring(7); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
+		var index = entryUri.indexOf("/ws410/rest");
+		var updateCartUri = urlpre + entryUri.substring(index); //http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/carts/00024518/cartentries/8796717285420
 		var xmlData = "<cartentry pk='"+cartentryPk+"' uri='"+entryUri+"'><quantity>"+quantity+"</quantity><totalPrice>"+totalPrice+"</totalPrice></cartentry>";
 		$.ajax({
 	      type: 'PUT',
@@ -217,8 +221,9 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
  		var id = "inputQuantity-"+items[0].split("-")[1]+"--"+items[1];//relpace "shoppingCart--plus"
 		var inputQuantity = this.byId(id);
 		var quantity = parseInt(inputQuantity.getValue());
- 		var basePrice = parseFloat(this.byId(priceId).getNumber());//each item totalprice
- 		var priceUnit = this.byId(priceId).getNumberUnit();
+ 		var basePrice = parseFloat(this.byId(priceId).getText());//each item totalprice
+ 		var unitId = "unit-"+items[0].split("-")[1]+"--"+items[1];
+ 		var priceUnit = this.byId(unitId).getText();
  		var unit = priceUnit.split(" ")[0];
  		var tPrice = this.byId("totalPrice");
  		var order = this.byId("CheckOut");
@@ -237,8 +242,9 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	     var oPara = evt.getParameter("listItem").getBindingContext();
 			var sPath = oPara.sPath;
 			sPathProducts = sPath + "/@uri";			
-		    oDelProductUri =	oPara.getProperty (sPathProducts);  
-		    oDelProductUri = oDelProductUri.substring(25,oDelProductUri.length);
+		    oDelProductUri =	oPara.getProperty (sPathProducts);
+		    var index = oDelProductUri.indexOf("/ws410/rest");
+		    oDelProductUri = oDelProductUri.substring(index);
 		    oDelProductUri = urlpre + oDelProductUri;
 			$.ajax({
 			      type: 'DELETE',
@@ -347,14 +353,23 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
             }
      });
 	},
-//	cartProductDetail : function(oEvent){
-//		return ;		
-//		 var bus = sap.ui.getCore().getEventBus();
-//	        bus.publish("nav", "to", { 
-//	            id : "Detail",
-//	            data : {
-//	                context : oEvent.oSource.getBindingContext()
-//	            }
-//	     });
-//	},
+	cartProductDetail : function(oEvent){
+		var m = oEvent.oSource.getBindingContext();
+		return ;		
+		 var bus = sap.ui.getCore().getEventBus();
+	        bus.publish("nav", "to", { 
+	            id : "Detail",
+	            data : {
+	                context : oEvent.oSource.getBindingContext()
+	            }
+	     });
+	},
+	backHome : function(){
+		var bus = sap.ui.getCore().getEventBus();
+        bus.publish("nav", "to", { 
+            id : "search",
+            data : {
+            }
+     });
+	},
 });
