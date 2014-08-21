@@ -10,7 +10,23 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	onInit: function() {
 // L
 		this.oModel = new sap.ui.model.xml.XMLModel();
-		
+		var success = function(oEvent){
+			if (oEvent.getParameter("success") == false){
+				console.log("Load Product Failed");
+			}
+		    this.showDetail(oEvent);
+			var a = this.oModel.getObject("/variants/");
+			var num = a.getElementsByTagName("variantProduct").length;
+			if (num > 0){
+				var infoTab = this.byId("InfoTab");
+				infoTab.setVisible(true);
+			    this.showColor(oEvent);
+			    this.showInitialSize();
+			    var noteTab = this.byId("NotesTab");
+				noteTab.setVisible(true);
+		    }
+		};		
+		this.oModel.attachRequestCompleted(jQuery.proxy(success, this));
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
