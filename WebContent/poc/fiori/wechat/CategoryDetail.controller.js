@@ -32,51 +32,31 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 			        this.getView().byId("idCatList").setNoDataText(this.sNoDataText);
 
 			      }, this));
-		    	//var oProducts = productModel.getObject("/products/");
-			//	var productNum =oProducts.getElementsByTagName("product").length;
-		//		var i = 0;
-//				while(i<productNum){
-//					var variantType = productModel.getProperty("/products/product/"+i+"/variantType");
-//					if(variantType != "ApparelStyleVariantProduct") {
-//						dProduct = oProducts.getElementsByTagName("product")[i];
-//						productModel.getObject("/products/").removeChild(dProduct);
-//						
-//					}
-//					i++;
-//						
-//				};
-//		    	 var oList = this.byId("idCatList");
-		    	 var oItems = new sap.m.StandardListItem();
-			        oItems.setProperty("type", "Active");
-			        oItems.attachPress(function(oEvent){
-			        	  var bus = sap.ui.getCore().getEventBus();
-					        bus.publish("nav", "to", { 
-					            id : "Detail",
-					            data : {
-					                context : oEvent.oSource.getBindingContext()
-					            }
-			        	});
-			        });
+
 			        var that = this;
-					var getUrl = function(){
-//			        	  var loadUrl = oModel.getProperty("/product/picture/@downloadURL");
-//			              var iconUrl = "http://182.254.156.24:9001";
-//						  var iconUrl = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001";
-//			              var iconUrl = "http://jones4.nat123.net:14606/poc.fiori.wechat/proxy/http/jones.nat123.net";
-			              var oItems = that.byId("idCatList").getItems();
-			              for (var i=0;i<oItems.length;i++){
-			            	  oItems[i].setProperty("icon", picpre + oItems[i].getProperty("icon"));
-			              } 
-			             
-			        };
-			        catProductsModel.attachRequestCompleted(getUrl);
-			        
-//				 	oItems.bindProperty("title","@code").bindProperty("description","ean/text()");
-			        
-//			        oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
+				
 			    	if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
-					{					
-					   oItems.bindProperty("title","name/text()").bindProperty("icon","images/0/image/url");;
+					{	
+			    		  var oItems = new sap.m.CustomListItem(
+					    		  {
+					    			  content : [ new sap.m.HBox({
+//							        	   justifyContent : "Center",
+							        	   alignItems : "Center",
+							        	  items:[new sap.m.Image(
+													{
+														width:"3rem",
+														height:"3rem",
+														src : picpre + "{images/0/image/url}",
+													}),
+													new sap.m.Link({
+														text : "{name/text()}",
+														href :"http://localhost:8980/poc.fiori.wechat/detailPage.html?Para="+"{code}"
+													})
+							        	         ] 
+							           })]
+					    		  });
+					        oItems.setProperty("type", "Active");	
+		//			   oItems.bindProperty("title","name/text()").bindProperty("icon","images/0/image/url");;
 				        oList.setModel(catProductsModel);
 					 	oList.bindItems("/products/product", oItems);
 					 	var items = oList.getBinding("items");
@@ -86,23 +66,33 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 					else
 				    {     
 						  var aFilters = [];
-						  oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
+						  var oItems = new sap.m.CustomListItem(
+					    		  {
+					    			  content : [ new sap.m.HBox({
+//							        	   justifyContent : "Center",
+							        	   alignItems : "Center",
+							        	  items:[new sap.m.Image(
+													{
+														width:"3rem",
+														height:"3rem",
+														src : picpre + "{picture/@downloadURL}",
+													}),
+													new sap.m.Link({
+														text : "{name/text()}",
+														href :"http://localhost:8980/poc.fiori.wechat/detailPage.html?Para="+"{@code}"
+													})
+							        	         ] 
+							           })]
+					    		  });
+					        oItems.setProperty("type", "Active");
+						  var aFilters = [];
+	//					  oItems.bindProperty("title","name/text()").bindProperty("description","ean/text()").bindProperty("icon","picture/@downloadURL");
 						 	oList.setModel(catProductsModel);
 						 	oList.bindItems("/product", oItems);
 						    if (oPara && oPara.length > 0) {
 						      var filter = new sap.ui.model.Filter("ProductName", sap.ui.model.FilterOperator.Starts, oPara);
 						      aFilters.push(filter);
 						    }
-						/*oItems.bindProperty("title","name/text()").bindProperty("icon","images/image/url");
-					 	oList.setModel(catProductsModel);
-					 	oList.bindItems("/categories/category/2/products/product", oItems);
-					 	var items = oList.getBinding("items");
-				 	 if (oPara && oPara.length > 0) {
-						      var afilter = new sap.ui.model.Filter("name", sap.ui.model.FilterOperator.StartsWith, oPara);
-						      items.filter(afilter);
-						    }
-					 	var oFilter = new sap.ui.model.Filter("baseOption/variantType",sap.ui.model.FilterOperator.EQ,"ApparelStyleVariantProduct");
-					 	items.filter(oFilter); */
 				    };
 			
 			}	}, this);

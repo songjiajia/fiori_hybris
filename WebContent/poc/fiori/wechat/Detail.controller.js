@@ -32,14 +32,15 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			onBeforeShow: function(evt){
 				uripre= model.ModelManager.getModelUrlPre();
 				picpre = model.ModelManager. getPicUrlPre();
-				var oPara = evt.data.context.oModel;
+				var oCode = this.requestPara();
+/*				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
 			    oCode =	oPara.getProperty (sPathCode);
 			    if (oCode == null){
 			    	sPathCode = sPath + "/code";			
 				    oCode =	oPara.getProperty (sPathCode);
-			    }
+			    }*/
 //				sPath = sPath + "/@code";
 //			    oCode =	oPara.getProperty (sPath);
 //				oCode = "121868";
@@ -75,6 +76,11 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	    this.app = sap.ui.getCore().byId("theApp");
 		
 	},
+	  requestPara: function () { 
+			var url = location.href;  
+			var paraString = url.substring(url.indexOf("=")+1,url.length); 
+			return paraString;
+			},
 	
 	showDetail: function(oEvent){
 //		var that = this;
