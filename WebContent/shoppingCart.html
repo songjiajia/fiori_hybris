@@ -24,6 +24,13 @@
 <script>
 				sap.ui.localResources("poc.fiori.wechat");
 				sap.ui.localResources("model");
+				sap.ui.localResources("i18n");
+				var oModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl : "i18n/i18n.properties",
+					locale : sap.ui.getCore().getConfiguration().getLanguage()
+				});
+				// set the resource model as global model with the name "i18n"
+				sap.ui.getCore().setModel(oModel, "i18n");
 				var app = new sap.m.App({id:"theApp", initialPage:"shoppingCart"});
 				var page = sap.ui.view({id:"shoppingCart", viewName:"poc.fiori.wechat.shoppingCart", type:sap.ui.core.mvc.ViewType.XML});
 				app.addPage(page);

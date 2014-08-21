@@ -1,18 +1,18 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.CheckOut" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Order"  showNavButton="true" navButtonPress="onCheckoutBack">
+	<Page title="{i18n>CHECKOUT_TITLE}"  showNavButton="true" navButtonPress="onCheckoutBack">
 	 <footer>
 			<Bar>
 				<contentMiddle>
 					<Button
 					    id="ok"
-						text="OK"
+						text="{i18n>BTN_OK}"
 						enabled="true"
 						press="handleOk"
 						type="Accept" />
 				    <Button
 					    id="cancel"
-						text="Cancel"
+						text="{i18n>BTN_CANCEL}"
 						enabled="true"
 						press="handleCancel"
 						type="Reject" />
@@ -28,9 +28,9 @@
 	<VBox>
 	
 	
-	<ObjectIdentifier title="Shipping" />
-	 <RadioButton groupName="Shipping" text="Pick up" selected="true" select="selectPickup"/>
-      <RadioButton id="ship" groupName="Shipping" text="Ship" select="selectShip"/>
+	<ObjectIdentifier title="{i18n>SHIPPING}" />
+	 <RadioButton groupName="Shipping" text="{i18n>PICKUP}" selected="true" select="selectPickup"/>
+      <RadioButton id="ship" groupName="Shipping" text="{i18n>SHIP}" select="selectShip"/>
       
      
       
@@ -53,7 +53,7 @@
        
       </VBox>
       <HBox>
-      <Button icon="sap-icon://add" text="Add new Address" press="addNewAddress"/> 
+      <Button icon="sap-icon://add" text="{i18n>ADDNEWADD}" press="addNewAddress"/> 
       </HBox>
       
       
@@ -65,10 +65,10 @@
 	<VBox>
 	
 	
-	<ObjectIdentifier title="Payment" />
-	 <RadioButton groupName="Payment" text="Cash" select="selectCash" selected="true" />
-      <RadioButton id="wcpay" groupName="Payment" text="WeChat Pay" select="selectWP"/>
-      <RadioButton groupName="Payment" text="Bank Card" select="selectCredit"/>
+	<ObjectIdentifier title="{i18n>PAYMENT}" />
+	 <RadioButton groupName="Payment" text="{i18n>CASH}" select="selectCash" selected="true" />
+      <RadioButton id="wcpay" groupName="Payment" text="{i18n>WCPAY}" select="selectWP"/>
+      <RadioButton groupName="Payment" text="{i18n>BANKCARD}" select="selectCredit"/>
      
 	</VBox>
 	</content>
@@ -89,7 +89,7 @@
        
       </VBox>
       <HBox>
-      <Button icon="sap-icon://add" text="Add new Bank Card" press="addNewCredit"/> 
+      <Button icon="sap-icon://add" text="{i18n>ADDNEWCARD}" press="addNewCredit"/> 
       </HBox>
       
       
@@ -99,9 +99,9 @@
     id="totalprice"
     title="Total:"
     number="{/totalPrice}"
-    numberUnit="EUR" >
+    numberUnit="{i18n>EUR}" >
 	 <attributes>
-      <ObjectAttribute text="including delivery fee {/deliveryCost} EURO ." />
+      <ObjectAttribute text="{i18n>DELIVERYFEE} {/deliveryCost} {i18n>EURO}" />
        </attributes>
   </ObjectHeader>
 	</VBox>

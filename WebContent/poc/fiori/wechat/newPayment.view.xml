@@ -1,19 +1,19 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.newPayment" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Add New Credit"  showNavButton="true" navButtonPress="onBack">
+	<Page title="{i18n>PAYMENT_TITLE}"  showNavButton="true" navButtonPress="onBack">
 		
 	       <footer>
 			<Bar>
 				<contentMiddle>
 					<Button
 					    id="ok"
-						text="OK"
+						text="{i18n>BTN_OK}"
 						enabled="true"
 						press="handleAccept"
 						type="Accept" />
 				    <Button
 					    id="cancel"
-						text="Cancel"
+						text="{i18n>BTN_CANCEL}"
 						enabled="true"
 						press="handleCancel"
 						type="Reject" />
@@ -23,22 +23,22 @@
 		<content>
 		    <Label></Label>
 		    <VBox id="div" width="90%"><items>
-			<Label text="*Bank Card type:"></Label>
-			<Input id="iCreType" editable="false" value="American Express"></Input>
+			<Label text="{i18n>CARD_TYPE}"></Label>
+			<Input id="iCreType" editable="false" value="{i18n>AE}"></Input>
 			<VBox id="types">
-			 <RadioButton groupName="Ctype" text="American Express" select="chooseCType" selected="true" />
-      <RadioButton groupName="Ctype" text="Visa" select="chooseCType" />
-      <RadioButton groupName="Ctype" text="China Unionpay"  select="chooseCType"/>
+			 <RadioButton groupName="Ctype" text="{i18n>AE}" select="chooseCType" selected="true" />
+      <RadioButton groupName="Ctype" text="{i18n>VISA}" select="chooseCType" />
+      <RadioButton groupName="Ctype" text="{i18n>CU}"  select="chooseCType"/>
 			</VBox>
-			<Label  text="*Card number:"></Label>
+			<Label  text="{i18n>CARD_NUMBER}"></Label>
 			<Input id="iCardnum"></Input>
-			<Label  text="*Owner name:"></Label>
+			<Label  text="{i18n>OWNER}"></Label>
 			<Input id="iName"></Input>
-			<Label  text="*Verification number:"></Label>	
+			<Label  text="{i18n>VER_NUMBER}"></Label>	
 			<Input id="iVnum"></Input>		
-				<Label  text="*Expiry Date:"></Label>	
+				<Label  text="{i18n>EXP_DATE}"></Label>	
 			<HBox><Select id="monthSelect">
-			 <core:Item key="month" text="month" />
+			 <core:Item key="month" text="{i18n>MONTH}" />
 			  <core:Item key="1" text="1" />
 			   <core:Item key="2" text="2" />
 			    <core:Item key="3" text="3" />
@@ -53,7 +53,7 @@
 			     <core:Item key="12" text="12" />
 			     </Select>
 			<Select id="yearSelect">
-			 <core:Item key="year" text="year" />
+			 <core:Item key="year" text="{i18n>YEAR}" />
 			  <core:Item key="2014" text="2014" />
 			   <core:Item key="2015" text="2015" />
 			    <core:Item key="2016" text="2016" />

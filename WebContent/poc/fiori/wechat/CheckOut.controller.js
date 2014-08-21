@@ -310,7 +310,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			if(!this.wcpayDialog){
 				this.wcpayDialog = new sap.m.Dialog(
 						{
-							title : "Enter Payment Passport",
+							title : "{i18n>PAYPASS}",
 							content : [
 							           new sap.m.VBox({
 							        	   justifyContent : "Center",
@@ -325,12 +325,12 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 														design : "Bold"
 													}),new sap.m.Input({
 														maxLength : 6,
-														placeholder : "please enter password",
+														placeholder : "{i18n>ENTERPSW}",
 														type : "Password",
 														width : "auto"
 														
 													}),new sap.m.Link({
-														text : "Payment mode:WeChat Account >"
+														text : "{i18n>PAYMODE}"
 													})
 							        	         ] 
 							           })
@@ -339,7 +339,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 
 							leftButton : new sap.m.Button(
 									{
-										text : "ok",
+										text : "{i18n>BTN_OK}",
 										press : function() {
 											//TODO :temply removed;
 											that.createorder();
@@ -369,7 +369,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 										}
 									}),
 							rightButton : new sap.m.Button({
-								text : "Cancel",
+								text : "{i18n>CANCEL}",
 								press : function() {
 									that.wcpayDialog.close();
 								}

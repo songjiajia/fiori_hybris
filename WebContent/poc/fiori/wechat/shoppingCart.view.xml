@@ -1,6 +1,6 @@
 <core:View xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.shoppingCart" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Shopping Cart" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
+	<Page title="{i18n>SC_TITLE}" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
 	<content>
 		<List id="ProductList"
 			items="{/entries/entry/}" mode="Delete" delete="handleDelete"  >
