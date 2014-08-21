@@ -144,6 +144,9 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	 	cartNoModel.loadData(cartNoUrl,null,false);
 	 	var cartNo = cartNoModel.getProperty("/carts/cart/@code");
 	 	var userPK = cartNoModel.getProperty("/@pk");
+	 	
+	 	var bundle = this.getView().getModel("i18n").getResourceBundle();
+	 	var successMsg = bundle.getText("CARTSUCINFO");
 //Create a new cart for user if no existing cartNo	 	
 	 	if(!cartNo) {
 	 		cartNoUrl = uripre + "/ws410/rest/users/" + user;
@@ -181,7 +184,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	      success: function () {
 //	        alert(data);
 	    	  setTimeout(function () {
-				   sap.m.MessageToast.show("Item has been added to Cart");
+				   sap.m.MessageToast.show(successMsg);
 			   }, 100);
 //	    	  window.open("http://jones.nat123.net/yacceleratorstorefront/en/cart",'_self');
 	      },
@@ -283,10 +286,12 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 // remove all size selection when color updated
 			var select = this.byId("sizeSelect");
     		select.removeAllItems();
+    		var bundle = this.getView().getModel("i18n").getResourceBundle();
+    		var sizeInit = bundle.getText("SIZE_INIT");
 // add initial text
     		var oText = new sap.ui.core.Item(
     				{
-    					text: "Please select a size",
+    					text: sizeInit,
     					key: "initial"
     				}
     		);
