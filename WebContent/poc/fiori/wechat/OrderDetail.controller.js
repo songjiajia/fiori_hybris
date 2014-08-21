@@ -50,7 +50,7 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 				var oProductPicModel =  new sap.ui.model.xml.XMLModel();
 				oProductPicModel.loadData(productPicUri,null,false);
 				var picUri = oProductPicModel.getProperty("/normal/media/@downloadURL");
-				picUri = urlpre + picUri;
+				picUri = picpre + picUri;
 				var oProdcutName = oProductPicModel.getProperty("/name");
 				oModel.setProperty("/entries/entry/"+i+"/@productName",oProdcutName);
 				oModel.setProperty("/entries/entry/"+i+"/@downloadURL",picUri);
