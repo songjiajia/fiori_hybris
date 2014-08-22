@@ -119,18 +119,20 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		 lName.setEditable(true);
 	  	 fName.setEditable(true);
 	  	 tAddr.setEditable(true);
+	  	 uAddr.setVisible(false);
+	  	 tAddr.setVisible(true);
 	  	 bSave.setEnabled(false);
 //If nav from Order Page, back; If nav from ME, close 	  	 
 		 this.app = sap.ui.getCore().byId("theApp");
-		 var initialPage = this.app.getInitialPage();
-		 if (initialPage == "newAddress") {
-			 var href = window.location.href;
-		 	 window.open(href, "_self", "");
-		   	 window.close();
-		 }
-		 else {
+//		 var initialPage = this.app.getInitialPage();
+//		 if (initialPage == "newAddress") {
+//			 var href = window.location.href;
+//		 	 window.open(href, "_self", "");
+//		   	 window.close();
+//		 }
+//		 else {
 			 this.app.back();
-		 }
+//		 }
 	},
 	
 });

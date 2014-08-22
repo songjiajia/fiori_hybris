@@ -36,7 +36,7 @@
 .numberUnit {
 	font-size:xx-small;
 }
-.input {
+.sap-phone .input {
 	opacity: 0.8 !important;
 }
 
@@ -63,8 +63,15 @@
 <script>
 				sap.ui.localResources("poc.fiori.wechat");
 				sap.ui.localResources("model");
+				sap.ui.localResources("i18n");
 				var app = new sap.m.App({id:"theApp", initialPage:"idDetailPage"});
 				var page = sap.ui.view({id:"idDetailPage", viewName:"poc.fiori.wechat.Detail", type:sap.ui.core.mvc.ViewType.XML});
+				var oModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl : "i18n/i18n.properties",
+					locale : sap.ui.getCore().getConfiguration().getLanguage()
+});
+// set the resource model as global model with the name "i18n"
+				sap.ui.getCore().setModel(oModel, "i18n");
 //				var app = new sap.m.App({id:"theApp", initialPage:"idsearch1"});
 //				var page = sap.ui.view({id:"idsearch1", viewName:"poc.fiori.wechat.Detail", type:sap.ui.core.mvc.ViewType.XML});
 				app.addPage(page);
