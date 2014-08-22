@@ -12,11 +12,7 @@
 			 items="{/entries/entry/}">
 			 <items>
 			<CustomListItem id="idOrderDetailItem" type="Active">	
- 	    <ObjectHeader icon="{@downloadURL}" title="{@productName}" number="{basePrice}" >
-		   <statuses>
-          <ObjectStatus
-             text="{path:'quantity', formatter:'.formatQuantity'}"  state="Error" />
-           </statuses>
+ 	    <ObjectHeader icon="{@downloadURL}" title="{@productName}" number="{basePrice}"  numberUnit="{path:'quantity', formatter:'.formatQuantity'}" >
 		    <attributes>
 		    <ObjectAttribute text="{@code}"/>
 		    <ObjectAttribute text="{path:'@size',formatter:'.formatSize'}"/>
