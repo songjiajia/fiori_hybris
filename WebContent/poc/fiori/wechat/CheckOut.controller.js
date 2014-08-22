@@ -31,6 +31,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 					
 					var creditModel = new sap.ui.model.xml.XMLModel();
 					var successfulRequest = function(){
+						 creditModel.refresh(true);
 						var xmlstr = creditModel.getXML();
 						var xmlDoc;
 						if (window.DOMParser)
@@ -73,6 +74,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			      };
 					
 			      creditModel.loadData(url);	
+			     
 			      creditModel.attachRequestCompleted(successfulRequest);
 					
 				}else if(evt.data.fromwhere === "cart"){
@@ -81,6 +83,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode";
 					var cartModel = new sap.ui.model.xml.XMLModel();
 					cartModel.loadData(url);
+					
 					oView.byId("totalprice").setModel(cartModel);
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
@@ -90,10 +93,21 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 					
 					var addressModel = new sap.ui.model.xml.XMLModel();
 					var successfulRequest = function(){
+						addressModel.refresh(true);
+						
+						
+						that.getView().byId("ShipAddress").setModel(addressModel);
 						
 						var oFilter = new sap.ui.model.Filter("line1",
 								 sap.ui.model.FilterOperator.NE, "");
 						that.getView().byId("addresses").getBinding("items").filter(oFilter);
+						//TODO: change selected to last item;
+						var len = that.getView().byId("addresses").getItems().length;
+						if(len > 0){
+							
+						
+						that.getView().byId("addresses").getItems()[len - 1].setSelected(true);
+						}
 //						var xmlstr = AddressModel.getXML();
 //						var xmlDoc;
 //						if (window.DOMParser)
@@ -113,18 +127,10 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			           
 			      };
 					
-					addressModel.loadData(url);			
+					addressModel.loadData(url);	
+					
 					addressModel.attachRequestCompleted(successfulRequest);
-					that.getView().byId("ShipAddress").setModel(addressModel);
-					
-					
-					//TODO: change selected to last item;
-					var len = that.getView().byId("addresses").getItems().length;
-					if(len > 0){
-						
-					
-					that.getView().byId("addresses").getItems()[len - 1].setSelected(true);
-					}
+				
 					}
 				
 				
