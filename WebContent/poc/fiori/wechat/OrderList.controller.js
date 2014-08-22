@@ -20,10 +20,6 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
  	var oSorter = new sap.ui.model.Sorter("date",true);
  	items.sort(oSorter);
 	},
-	    onCatBack: function(){
-			 this.app = sap.ui.getCore().byId("theApp");
-			 this.app.back();
-		},
 		
 		
 		navToHandler : function(channelId, eventId, data) {

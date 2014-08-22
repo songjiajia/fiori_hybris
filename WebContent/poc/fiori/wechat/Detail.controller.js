@@ -150,12 +150,12 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	 	 	
 	},
 	
-	onBack: function(){
+/*	onBack: function(){
 		 this.app = sap.ui.getCore().byId("theApp");
 		 this.app.back();
 //		 this.setDefaultTab();
 //		window.open("http://localhost:8080/poc.fiori.wechat/",'_self');
-	},
+	},*/
 	
 	handleCart: function() {
 		var oHeadAtt = this.byId("ProductAtt");
