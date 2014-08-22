@@ -25,11 +25,19 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			    var noteTab = this.byId("NotesTab");
 				noteTab.setVisible(true);
 		    }
+			this.busyDialog.close();
 		};		
 		this.oModel.attachRequestCompleted(jQuery.proxy(success, this));
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
+				var bundle = this.getView().getModel("i18n").getResourceBundle();
+			 	var busyTitle = bundle.getText("BUSY_TITLE");
+				this.busyDialog = new sap.m.BusyDialog({
+					   showCancelButton : false,
+					   title : busyTitle
+				   });
+				this.busyDialog.open();
 				uripre= model.ModelManager.getModelUrlPre();
 				picpre = model.ModelManager. getPicUrlPre();
 				var oCode = this.requestPara("Para");
@@ -146,6 +154,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		 this.app = sap.ui.getCore().byId("theApp");
 		 this.app.back();
 //		 this.setDefaultTab();
+//		window.open("http://localhost:8080/poc.fiori.wechat/",'_self');
 	},
 	
 	handleCart: function() {

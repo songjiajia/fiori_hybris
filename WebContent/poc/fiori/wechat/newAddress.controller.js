@@ -110,10 +110,12 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		 var lName = this.byId("lName");
 		 var fName = this.byId("fName");
 		 var tAddr = this.byId("tAddr");
+		 var uAddr = this.byId("uAddr");
 		 var bSave = this.byId("save");
 		 lName.setValue();
 		 fName.setValue();
 		 tAddr.setValue();
+		 uAddr.setValue();
 		 lName.setEditable(true);
 	  	 fName.setEditable(true);
 	  	 tAddr.setEditable(true);
