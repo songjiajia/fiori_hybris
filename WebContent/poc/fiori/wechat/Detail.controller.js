@@ -32,7 +32,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 			onBeforeShow: function(evt){
 				uripre= model.ModelManager.getModelUrlPre();
 				picpre = model.ModelManager. getPicUrlPre();
-				var oCode = this.requestPara();
+				var oCode = this.requestPara("Para");
 /*				var oPara = evt.data.context.oModel;
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
@@ -76,11 +76,20 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	    this.app = sap.ui.getCore().byId("theApp");
 		
 	},
-	  requestPara: function () { 
-			var url = location.href;  
-			var paraString = url.substring(url.indexOf("=")+1,url.length); 
-			return paraString;
-			},
+	  requestPara:function (paras){ 
+		  var url = location.href;  
+		  var paraString = url.substring(url.indexOf("?")+1,url.length).split("&");  
+		  var paraObj = {}  
+		  for (i=0; j=paraString[i]; i++){  
+		  paraObj[j.substring(0,j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=")+1,j.length);  
+		  }  
+		  var returnValue = paraObj[paras.toLowerCase()];  
+		  if(typeof(returnValue)=="undefined"){  
+		  return "";  
+		  }else{  
+		  return returnValue;  
+		  }  
+		  },
 	
 	showDetail: function(oEvent){
 //		var that = this;
