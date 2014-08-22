@@ -28,7 +28,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	
 	var oOrderHead = this.getView().byId("OrderHead");
  	oOrderHead.setModel(oModel);
- 	oOrderHead.setProperty("title", "Hi, your order is successful!");
+ 	oOrderHead.setProperty("title", "{i18n>ORDERSUCCESS}");
  	oOrderHead.bindProperty("number", "/totalPrice");
  	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
  	
@@ -38,7 +38,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var oOrderId=this.getView().byId("OrderId");
  	var orderNumber = oModel.getProperty("/@code");
- 	orderNumber = "Order Number:" + orderNumber;
+ 	orderNumber = "{i18n>ORDERNO}" + orderNumber;
  	oOrderId.setProperty("text",orderNumber);
  	
  	var oAddress=this.getView().byId("Address");
@@ -52,7 +52,7 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var deliveryAddress1 = oDeliveryModel.getProperty("/line1");
  	//var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
- 	var deliveryAddress =  "Address:"+ deliveryAddress1;
+ 	var deliveryAddress =  "{i18n>ADDRESS}"+ deliveryAddress1;
  	//+ deliveryAddress2;
  	oAddress.setProperty("text",deliveryAddress);
  	}
