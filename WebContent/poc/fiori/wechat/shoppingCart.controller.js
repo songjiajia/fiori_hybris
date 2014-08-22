@@ -4,9 +4,9 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	onInit:function(){
 		urlpre= model.ModelManager.getModelUrlPre(); 
 	    picpre = model.ModelManager.getPicUrlPre ();
-//		  var bus = sap.ui.getCore().getEventBus();
-//		    bus.subscribe("nav", "to", this.navToHandler, this);
-//		    this.app = sap.ui.getCore().byId("theApp");		
+		  var bus = sap.ui.getCore().getEventBus();
+		    bus.subscribe("nav", "to", this.navToHandler, this);
+		    this.app = sap.ui.getCore().byId("theApp");		
 		    
 		var ProductList=this.byId("ProductList");
 		ProductList.setVisible(false);//initial cart,list not visible
@@ -306,6 +306,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
             id : "search",
             data : {
             }
-     });
+     });		
 	},
 });
