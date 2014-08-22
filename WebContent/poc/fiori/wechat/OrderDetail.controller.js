@@ -69,7 +69,7 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 			},
 			
 		formatQuantity: function(value){
-			return "Quantity: " + value;
+			return "*" + value;
 		},
 		
 		formatOrderNumber: function(value){

@@ -84,8 +84,8 @@ navToHandler : function(channelId, eventId, data) {
 		   case this.byId("idCaps").getId():
 			 para = "caps";
 			 break;
-		   case this.byId("idClothes").getId():
-			 para = "clothes";
+		   case this.byId("idDresses").getId():
+			 para = "260700";
 			 break;
 		   case this.byId("idTools").getId():
 		     para = "tools";

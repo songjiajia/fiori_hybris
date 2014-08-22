@@ -29,7 +29,7 @@
 							<Button text="Caps" id="idCaps" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
-							<Button text="Clothes" id="idClothes" width="10em" press="onCatButtonsPress" />
+							<Button text="Dresses" id="idDresses" width="10em" press="onCatButtonsPress" />
 						</HBox>
 						<HBox width="20em">
 							<Button text="Tool"  id="idTools" width="10em" press="onCatButtonsPress" />

@@ -9,7 +9,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				var oPara = evt.data.context;
-				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
+				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="260700" || oPara =="tools")
 				{					
 //				var url = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
 				 url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
@@ -35,7 +35,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 
 			        var that = this;
 				
-			    	if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="clothes" || oPara =="tools")
+			    	if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="260700" || oPara =="tools")
 					{	
 			    		  var oItems = new sap.m.CustomListItem(
 					    		  {

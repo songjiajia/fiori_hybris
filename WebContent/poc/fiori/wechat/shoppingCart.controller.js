@@ -15,46 +15,107 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		var userUrl= urlpre + "/ws410/rest/customers/";
 		var oView = this.getView();
 		url= userUrl + userId;
-		oView.addEventDelegate({
+		oView.addEventDelegate({                       //beforeShow
 			onBeforeShow: function(evt){
 			
 		var oModel = new sap.ui.model.xml.XMLModel();
-	    cartCode = "";
+	    var that = this;
 	    var getUrl = function(){
 	    	cartCode = oModel.getProperty("/carts/cart/@code");
-	    };
-        oModel.attachRequestCompleted(getUrl);
-	    oModel.loadData(url,"",false);
-	    if(cartCode==""){	//when cartCode is null,there is no product in shopping cart
-	    	this.setVisibleFalse();
-	    	return;
-	    }
-	    cModel = new sap.ui.model.xml.XMLModel();
-	    var cartListUrl = urlpre + "/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice";
-	    cModel.loadData(cartListUrl,"",false);
+	    	if(!cartCode){	//when cartCode is null or undefined,there is no product in shopping cart
+	    		var noProduct=that.byId("noProduct");
+		    	noProduct.setVisible(true);//when cartCode is null,there is no product in the shopping cart
+		    	var totalPrice = that.byId("totalPrice");
+		    	totalPrice.setVisible(false);
+		    	var CheckOut = that.byId("CheckOut");
+		    	CheckOut.setVisible(false);
+		    	return;
+		    }
+		    cModel = new sap.ui.model.xml.XMLModel();
+		    var cartUri = urlpre + "/ws410/rest/carts/"+ cartCode;
+		    var uModel = new sap.ui.model.xml.XMLModel();
+		    uModel.loadData(cartUri,"",false);
+		    cartUnit = uModel.getProperty("/currency/@isocode"); //cartUnit
+		    var cartListUrl = urlpre + "/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice";
+		    cModel.loadData(cartListUrl,"",false);
 
-	    if(cModel.getObject("/entries/").getElementsByTagName("entry").length==0){//cModel is null,there is no product in shopping cart
-	    	this.setVisibleFalse();
-	    	return;
-	    }
-	    cModel.getObject("/entries/entry").setAttribute("imageUri","");
-	    cModel.getObject("/entries/entry").setAttribute("number","");
-	    cModel.getObject("/entries/entry").setAttribute("numberUnit","");
-	    var oCart = cModel.getObject("/entries/");
-        cartNum =oCart.getElementsByTagName("entry").length;
-	    this.getImageUri(cModel);
-	    var noProduct=this.byId("noProduct");
-	    noProduct.setVisible(false);	
-		ProductList.setVisible(true);//cart has products,list visible
-        ProductList.setModel(cModel);
-        var totalPrice = this.byId("totalPrice");
-        var totalCartPrice = 0;
-        var numberUnit = cModel.getProperty("/entries/entry/"+0+"/@numberUnit").split(" ")[0];
-        for(var i=0;i<cartNum;i++){
-        	var price = parseFloat(cModel.getProperty("/entries/entry/"+i+"/@number"))*cModel.getProperty("/entries/entry/"+i+"/quantity");
-        	totalCartPrice += price;
-        }
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+numberUnit);
+		    if(cModel.getObject("/entries/").getElementsByTagName("entry").length==0){//cModel is null,there is no product in shopping cart
+		    	var noProduct=that.byId("noProduct");
+		    	noProduct.setVisible(true);//when cartCode is null,there is no product in the shopping cart
+		    	var totalPrice = that.byId("totalPrice");
+		    	totalPrice.setVisible(false);
+		    	var CheckOut = that.byId("CheckOut");
+		    	CheckOut.setVisible(false);
+		    	return;
+		    }
+		    cModel.getObject("/entries/entry").setAttribute("imageUri","");
+		    cModel.getObject("/entries/entry").setAttribute("number","");
+		    cModel.getObject("/entries/entry").setAttribute("numberUnit","");
+		    cModel.getObject("/entries/entry").setAttribute("code","");
+		    var oCart = cModel.getObject("/entries/");
+	        cartNum =oCart.getElementsByTagName("entry").length;
+	        var m = 0;
+	          while(m<cartNum){
+	                var cartNumEntryUri = cModel.getProperty("/entries/entry/"+m+"/@uri");//entry uri
+	                var index = cartNumEntryUri.indexOf("/ws410/rest");
+	                cartNumEntryUri = urlpre + cartNumEntryUri.substring(index); 
+	                var oCartEntryModel = new sap.ui.model.xml.XMLModel();
+	                oCartEntryModel.loadData(cartNumEntryUri,null,false);
+	                var productUri=oCartEntryModel.getProperty("/product/@uri");// product uri
+	                if(!productUri){
+	                	var noProduct=that.byId("noProduct");
+	    		    	noProduct.setVisible(true);//when cartCode is null,there is no product in the shopping cart
+	    		    	var totalPrice = that.byId("totalPrice");
+	    		    	totalPrice.setVisible(false);
+	    		    	var CheckOut = that.byId("CheckOut");
+	    		    	CheckOut.setVisible(false);
+	    		    	return;
+	                }
+	                productUri =  urlpre + productUri.substring(index);
+				    var oProductModel =  new sap.ui.model.xml.XMLModel();
+				     oProductModel.loadData(productUri,null,false);
+				    for(var j=0;j<oProductModel.getObject("/europe1Prices/").getElementsByTagName("priceRow").length;j++){ //write numberUnit="EUR"
+				    	var basePriceUri = oProductModel.getProperty("/europe1Prices/priceRow/"+j+"/@uri");
+					    basePriceUri =  urlpre + basePriceUri.substring(index);
+					    var bModel = new sap.ui.model.xml.XMLModel();
+					    bModel.loadData(basePriceUri,"",false);
+					    var unit = bModel.getProperty("/currency/@isocode");
+					    if(unit=="EUR"){
+					    	var numberUnit = bModel.getProperty("/currency/@isocode");
+					    	cModel.setProperty("/entries/entry/"+m+"/@number",bModel.getProperty("/price"));//set unitPrice
+						    cModel.setProperty("/entries/entry/"+m+"/@numberUnit",numberUnit);// set numberUnit
+					    }
+				    } 
+				    var imageUri=oProductModel.getProperty("/baseProduct/@uri");// baseProduct uri
+				    imageUri = urlpre+ imageUri.substring(index);
+	                var oImageModel = new sap.ui.model.xml.XMLModel();
+	                oImageModel.loadData(imageUri,null,false);
+	                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001
+	                image = picpre + image;
+	                cModel.setProperty("/entries/entry/"+m+"/@imageUri",image);
+	                var baseProductUri = oImageModel.getProperty("/baseProduct/@uri").split("/");
+	                var productId = baseProductUri[baseProductUri.length-1];
+	                cModel.setProperty("/entries/entry/"+m+"/@code",productId);                       //baseProduct code 
+	                m++;
+	          }
+		    var noProduct=that.byId("noProduct");
+		    noProduct.setVisible(false);	
+			ProductList.setVisible(true);//cart has products,list visible
+	        ProductList.setModel(cModel);
+	        var totalPrice = that.byId("totalPrice");
+	        var totalCartPrice = 0;
+	        for(var i=0;i<cartNum;i++){
+	        	var price = parseFloat(cModel.getProperty("/entries/entry/"+i+"/@number"))*cModel.getProperty("/entries/entry/"+i+"/quantity");
+	        	totalCartPrice += price;
+	        }
+	        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");
+	        
+	      
+	          
+	    };
+	    oModel.loadData(url);
+	    oModel.attachRequestCompleted(getUrl);
+	    
 	}
 	  },this);
 	},
@@ -70,48 +131,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	            jQuery.sap.log.error("nav-to event cannot be processed. Invalid data: " + data);
 	        }
 	        },
-	  getImageUri : function(cModel){
-		  var oCart = cModel.getObject("/entries/");
-          cartNum =oCart.getElementsByTagName("entry").length;
- //         var baseUri ="http://182.254.156.24:8000";
-//          var baseUri ="http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/";
-          var i = 0;
-          while(i<cartNum){
-                var cartNumEntryUri = cModel.getProperty("/entries/entry/"+i+"/@uri");//entry uri
-                var index = cartNumEntryUri.indexOf("/ws410/rest");
-                cartNumEntryUri = urlpre + cartNumEntryUri.substring(index); 
-                var oCartEntryModel = new sap.ui.model.xml.XMLModel();
-                oCartEntryModel.loadData(cartNumEntryUri,null,false);
-                var productUri=oCartEntryModel.getProperty("/product/@uri");// product uri
-                productUri =  urlpre + productUri.substring(index);
-			    var oProductModel =  new sap.ui.model.xml.XMLModel();
-			     oProductModel.loadData(productUri,null,false);
-			    var basePriceUri = oProductModel.getProperty("/europe1Prices/priceRow/1/@uri");
-			    basePriceUri =  urlpre + basePriceUri.substring(index);
-			    var bModel = new sap.ui.model.xml.XMLModel();
-			    bModel.loadData(basePriceUri,"",false);
-			    var unit = bModel.getProperty("/currency/@isocode")+" / UNIT";
-			    cModel.setProperty("/entries/entry/"+i+"/@number",bModel.getProperty("/price"));//set unitPrice
-			    cModel.setProperty("/entries/entry/"+i+"/@numberUnit",unit);// set numberUnit
-			    var imageUri=oProductModel.getProperty("/baseProduct/@uri");// baseProduct uri
-			    imageUri = urlpre+ imageUri.substring(index);
-                var oImageModel = new sap.ui.model.xml.XMLModel();
-                oImageModel.loadData(imageUri,null,false);
-                var image = oImageModel.getProperty("/picture/@downloadURL");//picture   "http://182.254.156.24:8000/poc.fiori.wechat/proxy/http/182.254.156.24:9001
-                image = picpre + image;
-                cModel.setProperty("/entries/entry/"+i+"/@imageUri",image);
-                i++;
-          }
-          return cModel;
-	  },
-	  setVisibleFalse : function(){					//when cart is null.
-	    	var noProduct=this.byId("noProduct");
-	    	noProduct.setVisible(true);//when cartCode is null,there is no product in the shopping cart
-	    	var totalPrice = this.byId("totalPrice");
-	    	totalPrice.setVisible(false);
-	    	var CheckOut = this.byId("CheckOut");
-	    	CheckOut.setVisible(false);
-	    },
 	onPressMinus : function (object){
 		var itemId = object.getSource();
 		var minuId = itemId.getId();//shoppingCart--minu-shoppingCart--ProductList-0
@@ -133,7 +152,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice -= basePrice;
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+unit);     //new totalCartPrice
+        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");     //new totalCartPrice
       //update backend
         var itemId = minuId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -172,7 +191,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice += basePrice;        
-        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" "+unit);
+        totalPrice.setText("Total: "+totalCartPrice.toFixed(2)+" EUR");
         //update backend
         var itemId = plusId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -233,7 +252,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
   		  tPrice.setVisible(false);
   		  order.setVisible(false);
   	  }else
-  		tPrice.setText("Total: "+totalPrice.toFixed(2)+" "+unit); 			
+  		tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR"); 			
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
 //	    urlpre = "http://182.254.156.24:8000";
 		var deleteCartProductUri = urlpre + "/ws410/rest/carts/"+cartCode;
@@ -259,88 +278,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 			      dataType: 'xml'
 			    });
 	  },
-// 	selectChange : function(object){  //when each item checkbox selectChange
-// 		var isSelected = object.getParameters();
-// 		var itemId = isSelected.listItem.getId();//__item0-shoppingCart--ProductList-0
-// 		var priceId = "price"+itemId.substring(7);
-// 		var plusId = "plus"+itemId.substring(7);
-// 		var minuId = "minu"+itemId.substring(7);
-// 		var plus = this.byId(plusId);
-// 		var minu = this.byId(minuId);
-// 		var price = parseFloat(this.byId(priceId).getText());//each item totalprice
-// 		var tPrice = this.byId("totalPrice");
-// 		var totalPrice = parseFloat(tPrice.getText().split(" ")[1]);//Total: 0 EUR
-// 		var check = this.byId("CheckOut");
-// 		var checkout = parseInt(check.getText().replace(/[^0-9]/ig,""));//Checkout(0)
-// 		if(isSelected.selected){
-// 			totalPrice += price;
-// 			checkout += 1;
-// 			plus.setEnabled(false);
-// 			minu.setEnabled(false);
-// 		}
-// 		else{
-// 			totalPrice -= price;
-// 			checkout -= 1;
-// 			plus.setEnabled(true);
-// 			minu.setEnabled(true);
-// 		}
-// 		check.setText("Checkout("+checkout+")");	
-// 		tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR");
-// 		
-// 	},
-//	selectedAll : function(){           //select all items
-//		var isSelect = this.byId("selectedAll");
-//		var productList = this.byId("ProductList");
-//		var totalPrice = this.byId("totalPrice");
-//		var CheckOut = this.byId("CheckOut");
-//		
-//		var items = productList.getItems();
-//		var i = items.length-1;
-//		if(isSelect.getSelected()){			//when id('selectAll') is checked
-//			while(i>=0){
-//				if(items[i].getSelected()){//if there are some items are selected? then continue
-//					i--;
-//					continue;
-//				}
-//				items[i].setSelected(true);
-//				this.selectItem(items[i]);	//call selectItem(itemId) to handle the TotalPrice
-//				i--;
-//			}
-//		}else{								//when id('selectAll') is not checked
-//			while(i>=0){
-//				items[i].setSelected(false);
-//				this.selectItem(items[i]);
-//				i--;
-//			}
-//			totalPrice.setText("Total: 0 ");
-//			CheckOut.setText("Checkout(0)");
-//		}
-//	},
-//	selectItem : function(item){//
-//	    var itemId = item.getId();
-//		var priceId = "price"+itemId.substring(7);
-// 		var plusId = "plus"+itemId.substring(7);
-// 		var minuId = "minu"+itemId.substring(7);
-// 		var plus = this.byId(plusId);
-// 		var minu = this.byId(minuId);
-// 		var price = parseFloat(this.byId(priceId).getText());//each item totalprice
-// 		var tPrice = this.byId("totalPrice");
-// 		var totalPrice = parseFloat(tPrice.getText().split(" ")[1]);//Total: 0 EUR
-// 		var check = this.byId("CheckOut");
-// 		var checkout = parseInt(check.getText().replace(/[^0-9]/ig,""));//Checkout(0)
-//		totalPrice += price;
-//		checkout += 1;
-//		if(item.getSelected()){
-//			plus.setEnabled(false);
-//			minu.setEnabled(false);
-//		}
-//		else{
-//			plus.setEnabled(true);
-//			minu.setEnabled(true);
-//		}
-// 		check.setText("Checkout("+checkout+")");	
-// 		tPrice.setText("Total: "+totalPrice.toFixed(2)+" EUR");
-//	},
 	
 	checkOut : function(oEvent){
 		var bus = sap.ui.getCore().getEventBus();
@@ -353,9 +290,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
             }
      });
 	},
-	cartProductDetail : function(oEvent){
-		var m = oEvent.oSource.getBindingContext();
-		return ;		
+	productDetail : function(oEvent){
+		return;
 		 var bus = sap.ui.getCore().getEventBus();
 	        bus.publish("nav", "to", { 
 	            id : "Detail",
