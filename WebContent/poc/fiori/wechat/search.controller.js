@@ -81,15 +81,16 @@ navToHandler : function(channelId, eventId, data) {
 		   case this.byId("idShoes").getId():
 			 para = "shoes";
 			 break;
-		   case this.byId("idCaps").getId():
+/*	   case this.byId("idCaps").getId():
 			 para = "caps";
 			 break;
+			    case this.byId("idTools").getId():
+		     para = "tools";
+			 break; */
 		   case this.byId("idDresses").getId():
 			 para = "260700";
 			 break;
-		   case this.byId("idTools").getId():
-		     para = "tools";
-			 break;   
+		  
 						};
 	        bus.publish("nav", "to", { 
 	            id : "CategoryDetail",
