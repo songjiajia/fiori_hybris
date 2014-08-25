@@ -10,3 +10,4 @@ model.ModelManager.getPicUrlPre = function(){
 	return "http://10.59.145.101:9001";
 	//return "182.254.156.24:9001";
 };
+
