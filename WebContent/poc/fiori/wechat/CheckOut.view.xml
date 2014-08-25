@@ -97,7 +97,7 @@
       </Panel>
 	 <ObjectHeader
     id="totalprice"
-    title="Total:"
+    title="{i18n>TOTAL}"
     number="{/totalPrice}"
     numberUnit="{i18n>EUR}" >
 	 <attributes>
