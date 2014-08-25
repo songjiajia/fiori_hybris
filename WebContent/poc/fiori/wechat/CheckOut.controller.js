@@ -238,7 +238,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectShip : function(){
 		this.showBusyDialog();
 		this.getView().byId("ShipAddress").setVisible(true);
-		var url = this.urlpre + "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
+		var url = this.urlpre + "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2&time=" + new Date();
 		var addressJson = {};
 		var that = this;
 		
@@ -471,7 +471,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
 		this.showBusyDialog();
-		var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
+		var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate&time=" + new Date();
 	    
 		var creditJson = {};
 		var that = this;
