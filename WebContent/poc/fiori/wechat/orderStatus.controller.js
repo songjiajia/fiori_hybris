@@ -30,7 +30,8 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	oOrderHead.setModel(oModel);
  	oOrderHead.setProperty("title", "{i18n>ORDERSUCCESS}");
  	oOrderHead.bindProperty("number", "/totalPrice");
- 	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
+// 	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
+ 	oOrderHead.setProperty("numberUnit", "CNY");
  	
  	var oOrderStatus=this.getView().byId("OrderSta");
  	oOrderStatus.setModel(oModel);
