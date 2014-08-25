@@ -21,7 +21,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				var infoTab = this.byId("InfoTab");
 				infoTab.setVisible(true);
 			    this.showColor(oEvent);
-			    this.showInitialSize();
+			    this.showInitial();
 			    var noteTab = this.byId("NotesTab");
 				noteTab.setVisible(true);
 		    }
@@ -119,6 +119,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 //					var unitCurr = rModel.getProperty("/currency/@isocode")+" / UNIT";
 					oHeader.setProperty("number", rModel.getProperty("/price"));
 					oHeader.setProperty("numberUnit", rModel.getProperty("/currency/@isocode"));
+//					oHeader.setProperty("numberUnit", "CNY");
 				}
 		 	};
 		 	rModel.attachRequestCompleted(jQuery.proxy(success, this));
@@ -287,30 +288,20 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
         	oModel.loadData(oEvent.oSource.pUri,null,true);       	
 		},
 		
-	showInitialSize: function(){
-			var color = this.byId("bColors").getButtons()[0];
-			this.byId("bColors")._buttonPressed = function(e){
+	showInitial: function(){
+		    var colors = this.byId("bColors");
+			var colorSelected = colors.getButtons()[0];
+			this.byId("bColors")._buttonPressed = function(){};
+		 	color.firePress();
+		 	this.byId("bColors")._buttonPressed = function(e){
 				var l=this.getSelectedButton(),
 				c=e.getSource();
 				if(l!==c.getId()){
 				c.$().addClass('sapMSegBBtnSel');
-//				sap.ui.getCore().byId(l).$().removeClass('sapMSegBBtnSel');
+				sap.ui.getCore().byId(l).$().removeClass('sapMSegBBtnSel');
 				this.setAssociation('selectedButton',c,true);
 				}
 			};
-		 	color.firePress();
-			var uri = color.pUri;
-			var oModel = new sap.ui.model.xml.XMLModel();
-			var success = function(oEvent){
-				if (oEvent.getParameter("success") == false){
-					console.log("Load Initial Size Failed");
-				}
-				else{
-	        	this.showSize(oModel);
-				}
-			};
-			oModel.attachRequestCompleted(jQuery.proxy(success, this));
-        	oModel.loadData(uri,null,true);
 		},
 		
 	showSize: function(oModel){
