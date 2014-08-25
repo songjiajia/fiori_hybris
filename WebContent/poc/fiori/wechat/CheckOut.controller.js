@@ -80,7 +80,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				}else if(evt.data.fromwhere === "cart"){
 					that.setParm(evt.data.cartCode, evt.data.userId);
 					
-					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode";
+					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode&time=" + new Date() ;
 					var cartModel = new sap.ui.model.xml.XMLModel();
 					cartModel.loadData(url);
 					
@@ -375,7 +375,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 										}
 									}),
 							rightButton : new sap.m.Button({
-								text : "{i18n>CANCEL}",
+								text : "{i18n>BTN_CANCEL}",
 								press : function() {
 									that.wcpayDialog.close();
 								}
