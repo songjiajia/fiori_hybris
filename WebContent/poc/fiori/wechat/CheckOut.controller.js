@@ -82,9 +82,16 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 					
 					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode&time=" + new Date() ;
 					var cartModel = new sap.ui.model.xml.XMLModel();
+					that.showBusyDialog();
+					var successfulRequest = function(){
+						that.closeBusyDialog();
+					};
+					cartModel.attachRequestCompleted(successfulRequest);
 					cartModel.loadData(url);
 					
+					
 					oView.byId("totalprice").setModel(cartModel);
+					
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
 					var url = that.urlpre +  "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2&time=" + new Date();
