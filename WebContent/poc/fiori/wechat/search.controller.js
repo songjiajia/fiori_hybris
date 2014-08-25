@@ -1,3 +1,5 @@
+jQuery.sap.require("utils.FunctionUtil");
+
 sap.ui.controller("poc.fiori.wechat.search", {
 
 /**
@@ -7,6 +9,8 @@ sap.ui.controller("poc.fiori.wechat.search", {
 */
 	onInit: function() {
 		
+		
+		var uid = utils.FunctionUtil.getUser();
 /*		 var oImage = this.byId("idImage");
 		 oImage.setVisible(true);
 		 var oList = this.byId("idList");

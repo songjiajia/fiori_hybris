@@ -1,11 +1,11 @@
-jQuery.sap.declare("util.FunctionUtil");
+jQuery.sap.declare("utils.FunctionUtil");
 jQuery.sap.require("model.ModelManager");
 
-util.FunctionUtil = {
+utils.FunctionUtil = {
 		
 };
 
-util.FunctionUtil.getUser = function(){
+utils.FunctionUtil.getUser = function(){
 	var paras = "openID";
 	var openid = "";
 	var url = location.href;  
