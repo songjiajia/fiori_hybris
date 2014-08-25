@@ -291,9 +291,9 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	showInitial: function(){
 		    var colors = this.byId("bColors");
 			var colorSelected = colors.getButtons()[0];
-			this.byId("bColors")._buttonPressed = function(){};
-		 	color.firePress();
-		 	this.byId("bColors")._buttonPressed = function(e){
+			colors._buttonPressed = function(){};
+			colorSelected.firePress();
+		 	colors._buttonPressed = function(e){
 				var l=this.getSelectedButton(),
 				c=e.getSource();
 				if(l!==c.getId()){
