@@ -6,7 +6,7 @@
 			 items="{/orders/order/}">
 			 <items>
 			<CustomListItem id="idOrderListItem" press="onOrderDetail" type="Active">	
- 	    <ObjectHeader  title="{path:'@code', formatter:'.formatOrderNumber'}" number="{totalPrice}" numberUnit="EUR">
+ 	    <ObjectHeader  title="{path:'@code', formatter:'.formatOrderNumber'}" number="{totalPrice}" numberUnit="{i18n>CURRENCY}">
 		    <statuses>
       <ObjectStatus
         text="{status}"

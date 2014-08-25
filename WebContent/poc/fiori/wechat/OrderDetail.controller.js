@@ -9,6 +9,7 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 	    picpre = model.ModelManager.getPicUrlPre ();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
+				 oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oPara = evt.data.context;
 				var sPath = evt.data.context.sPath;
 				sPathCode = sPath + "/@code";			
@@ -65,7 +66,8 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 			 this.app.back();
 		},
 		formatSize: function(value){
-			return "Size: " + value;
+//			return "Size: " + value;
+			return oBundle.getText("SIZE") + value;
 			},
 			
 		formatQuantity: function(value){
@@ -73,11 +75,11 @@ sap.ui.controller("poc.fiori.wechat.OrderDetail", {
 		},
 		
 		formatOrderNumber: function(value){
-			 return "Order Number: " + value;
+			 return oBundle.getText("ORDERNO") + value;
 		},
 		
 		formatAddress : function (street, town){
-			return "Address: " + street +"  " + town;
+			return oBundle.getText("ADDRESS") + street +"  " + town;
 		},
 		
 		formatDate: function(date){
