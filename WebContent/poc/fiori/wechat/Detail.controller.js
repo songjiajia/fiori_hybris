@@ -289,6 +289,16 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		
 	showInitialSize: function(){
 			var color = this.byId("bColors").getButtons()[0];
+			this.byId("bColors")._buttonPressed = function(e){
+				var l=this.getSelectedButton(),
+				c=e.getSource();
+				if(l!==c.getId()){
+				c.$().addClass('sapMSegBBtnSel');
+//				sap.ui.getCore().byId(l).$().removeClass('sapMSegBBtnSel');
+				this.setAssociation('selectedButton',c,true);
+				}
+			};
+		 	color.firePress();
 			var uri = color.pUri;
 			var oModel = new sap.ui.model.xml.XMLModel();
 			var success = function(oEvent){
