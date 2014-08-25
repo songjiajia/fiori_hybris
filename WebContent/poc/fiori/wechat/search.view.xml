@@ -1,7 +1,7 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns:com="sap.suite.ui.commons" xmlns="sap.m" controllerName="poc.fiori.wechat.search"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Product Search" id="Search">
+	<Page title="{i18n>SEARCH_TITLE}" id="Search">
 		<subHeader>
 			<Bar>
 				<contentMiddle>
@@ -21,14 +21,15 @@
 			id="idTools" width="10em" press="onCatButtonsPress" /> </HBox> </items> </HBox> 
 			</items> </VBox> -->
 		<HBox justifyContent="Center" alignItems="Center">
+		<VBox>
 			<com:GenericTile id="idBags" size="S" frameType="OneByOne"
 				press="onCatButtonsPress">
 				<com:tileContent>
 					<com:TileContent size="S">
 						<com:content>
-							<VBox justifyContent="Center" alignItems="Center">
-								<core:Icon src="sap-icon://travel-expense" />
-								<Text text="Bag" />
+							<VBox  alignItems="Center">
+								<Image src="poc/fiori/wechat/bag.jpg" width="2rem" height="2rem"/>
+								<Text text="{i18n>BAGS}" />
 							</VBox>
 						</com:content>
 					</com:TileContent>
@@ -41,22 +42,24 @@
 					<com:TileContent size="S">
 						<com:content>
 							<VBox justifyContent="Center" alignItems="Center">
-								<core:Icon src="sap-icon://travel-expense" />
-								<Text text="Shoes" />
+								<Image src="poc/fiori/wechat/shoes.jpg"  width="2rem" height="2rem"/>
+								<Text text="{i18n>SHOES}" />
 							</VBox>
 						</com:content>
 					</com:TileContent>
 				</com:tileContent>
 			</com:GenericTile>
+			</VBox>
 			<Label width="10px" />
+			<VBox>
 			<com:GenericTile id="idShirt" size="S" frameType="OneByOne"
 				press="onCatButtonsPress">
 				<com:tileContent>
 					<com:TileContent size="S">
 						<com:content>
 							<VBox justifyContent="Center" alignItems="Center">
-								<core:Icon src="sap-icon://travel-expense" />
-								<Text text="Shirt" />
+								<Image src="poc/fiori/wechat/shirt.jpg"  width="2rem" height="2rem"/>
+								<Text text="{i18n>SHIRTS}" />
 							</VBox>
 						</com:content>
 					</com:TileContent>
@@ -69,13 +72,14 @@
 					<com:TileContent size="S">
 						<com:content>
 							<VBox justifyContent="Center" alignItems="Center">
-								<core:Icon src="sap-icon://travel-expense" />
-								<Text text="Dresses" />
+								<Image src="poc/fiori/wechat/dress.jpg"  width="2rem" height="2rem" />
+								<Text text="{i18n>DRESSES}" />
 							</VBox>
 						</com:content>
 					</com:TileContent>
 				</com:tileContent>
 			</com:GenericTile>
+			</VBox>
 		</HBox>
 
 		<content>
