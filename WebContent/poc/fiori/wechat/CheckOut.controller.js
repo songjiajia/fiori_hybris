@@ -433,12 +433,16 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user>';
 		    	  if(chosenPayment !== ""){
 		    		  orderxml = orderxml + '<paymentInfo pk="'+ chosenPayment + '"></paymentInfo>';
+		    	  }else{
+		    		  orderxml = orderxml + '<paymentInfo pk="'+ "8796158820394" + '"></paymentInfo>';
 		    	  }
 		    	  
 		    	  if(chosenAdd !== ""){
 		    		  
 		    	  
 		    	  orderxml = orderxml + '<deliveryAddress pk="' + chosenAdd + '"/>';
+		    	  }else{
+		    		  orderxml = orderxml + '<deliveryAddress pk="' + "8796192702487" + '"/>';
 		    	  }
 		    	  orderxml = orderxml + '<status>COMPLETED</status><currency isocode="EUR" /></order>';
 		    	  $.ajax({
