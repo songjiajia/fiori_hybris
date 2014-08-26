@@ -8,6 +8,12 @@ model.ModelManager.getModelUrlPre = function(){
 
 model.ModelManager.getPicUrlPre = function(){
 	//return "http://10.59.145.101:9001";
-	return "182.254.156.24:9001";
+	return "http://182.254.156.24:9001";
+};
+
+
+model.ModelManager.getDetailUrl = function(){
+	//return "http://localhost:8980";
+	return "http://182.254.156.24:8000";
 };
 

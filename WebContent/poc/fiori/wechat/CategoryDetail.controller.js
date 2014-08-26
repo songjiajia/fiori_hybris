@@ -6,6 +6,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 		var oView = this.getView();
 		urlpre= model.ModelManager.getModelUrlPre(); 
 	    picpre = model.ModelManager.getPicUrlPre ();
+	    detailUrl= model.ModelManager.getDetailUrl(); 
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				 oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -52,7 +53,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 													}),
 													new sap.m.Link({
 														text : "{name/text()}",
-														href :"http://localhost:8980/poc.fiori.wechat/detailPage.html?Para="+"{code}"
+														href : detailUrl + "/poc.fiori.wechat/detailPage.html?Para="+"{code}"
 													})
 							        	         ] 
 							           })]
@@ -81,7 +82,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 													}),
 													new sap.m.Link({
 														text : "{name/text()}",
-														href :"http://localhost:8980/poc.fiori.wechat/detailPage.html?Para="+"{@code}"
+														href : detailUrl + "/poc.fiori.wechat/detailPage.html?Para="+"{@code}"
 													})
 							        	         ] 
 							           })]
