@@ -68,7 +68,7 @@
       		<Button id="totalPrice" text="{i18n>TOTAL_PRICE0}" />
       	</contentLeft>
         <contentRight>
-	  		<Button id="CheckOut" text="{i18n>ORDER}" press="checkOut" />
+	  		<Button id="CheckOut" text="{i18n>CHECKOUT}" press="checkOut" />
         </contentRight>
       </Bar>
     </footer>
