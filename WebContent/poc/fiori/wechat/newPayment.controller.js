@@ -8,7 +8,8 @@ sap.ui.controller("poc.fiori.wechat.newPayment", {
 * @memberOf poc.fiori.wechat.newPayment
 */
 	onInit: function() {
-       this.userid = "jones.wu@sap.com";
+ //      this.userid = "jones.wu@sap.com";
+		this.userid = "jones02@sap.com";
        
        var bus = sap.ui.getCore().getEventBus();
 	    bus.subscribe("nav", "to", this.navToHandler, this);

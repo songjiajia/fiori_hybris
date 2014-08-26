@@ -163,7 +163,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		var code = oHeadAtt.getProperty("text");
 		var quantity = this.byId("input").getValue();
 		
-        var user = "jones.wu@sap.com";
+ //       var user = "jones.wu@sap.com";
+	     var user = "jones02@sap.com";
 		var cartNoUrl = uripre + "/ws410/rest/customers/" + user;
 	 	var cartNoModel = new sap.ui.model.xml.XMLModel();
 	 	cartNoModel.loadData(cartNoUrl,null,false);

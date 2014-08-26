@@ -9,7 +9,8 @@ sap.ui.controller("poc.fiori.wechat.newAddress", {
 		    bus.subscribe("nav", "to", this.navToHandler, this);
 		    this.app = sap.ui.getCore().byId("theApp");		
 		this.fromwhere = "";
-		this.userid = "jones.wu@sap.com";
+//		this.userid = "jones.wu@sap.com";
+		this.userid = "jones02@sap.com";
 		var that = this;
 		this.getView().addEventDelegate({
 			onBeforeShow: function(evt){

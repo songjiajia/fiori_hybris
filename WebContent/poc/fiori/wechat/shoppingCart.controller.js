@@ -13,8 +13,8 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		    noProduct.setVisible(false);
 		ProductList.setVisible(false);//initial cart,list not visible
 //		userId="jones.wu@sap.com";
-//		userId="jones02@sap.com";
-		userId="jiajing.hu@sap.com";
+		userId="jones02@sap.com";
+//		userId="jiajing.hu@sap.com";
 		userUrl= urlpre + "/ws410/rest/customers/";
 		var oView = this.getView();
 		

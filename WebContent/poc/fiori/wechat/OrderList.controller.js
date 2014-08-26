@@ -11,8 +11,10 @@ sap.ui.controller("poc.fiori.wechat.OrderList", {
 		   urlpre= model.ModelManager.getModelUrlPre(); 
 		   picpre = model.ModelManager.getPicUrlPre ();
 			    
-   url =  urlpre + "/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
-   var orderListModel = new sap.ui.model.xml.XMLModel();
+ //  url =  urlpre + "/ws410/rest/customers/jones.wu@sap.com?order_attributes=date,status,totalPrice,code";
+  url =  urlpre + "/ws410/rest/customers/jones02@sap.com?order_attributes=date,status,totalPrice,code";
+		   
+		   var orderListModel = new sap.ui.model.xml.XMLModel();
     orderListModel.loadData(url,null,false);	
     this.getView().setModel(orderListModel);
     var oList=this.byId("idOrderList");
