@@ -95,24 +95,23 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	 	var oHeader = this.byId("ProductHead");
 	 	oHeader.setProperty("title", this.oModel.getProperty("/name"));
 // Get price of Europe currency
-	 	if (this.oModel.getObject("/europe1Prices/").getElementsByTagName("priceRow").length > 0) {
-		 	var priceUri = this.oModel.getProperty("/europe1Prices/priceRow/1/@uri");
-		 	var index = priceUri.indexOf("/ws410/rest");
-		 	var subpriceUri = priceUri.substring(index,priceUri.length);
-		 	priceUri = uripre + subpriceUri;
-		 	var rModel = new sap.ui.model.xml.XMLModel();
-		 	var success = function(oEvent){
-				if (oEvent.getParameter("success") == false){
-					console.log("Load Product Price Failed");
-				}
-				else{
-					oHeader.setProperty("number", rModel.getProperty("/price"));
-					oHeader.setProperty("numberUnit", rModel.getProperty("/currency/@isocode"));
-//					oHeader.setProperty("numberUnit", "CNY");
-				}
-		 	};
-		 	rModel.attachRequestCompleted(jQuery.proxy(success, this));
-		 	rModel.loadData(priceUri,null,true);
+	 	var priceIndex = this.oModel.getObject("/europe1Prices/").getElementsByTagName("priceRow").length;
+	 	if (priceIndex > 0) {
+	 		for (var i=0; i<priceIndex; i++) 
+		 	{
+			 	var priceUri = this.oModel.getProperty("/europe1Prices/priceRow/"+i+"/@uri");
+			 	var index = priceUri.indexOf("/ws410/rest");
+			 	var subpriceUri = priceUri.substring(index,priceUri.length);
+			 	priceUri = uripre + subpriceUri;
+			 	var rModel = new sap.ui.model.xml.XMLModel();
+			 	rModel.loadData(priceUri,null,false);
+			 	var currency = rModel.getProperty("/currency/@isocode");
+			 	if (currency == "EUR")
+				 	{
+				 	 oHeader.setProperty("number", rModel.getProperty("/price"));
+					 oHeader.setProperty("numberUnit", rModel.getProperty("/currency/@isocode"));
+				 	}
+		 	}
 	 	}
 	 	else {
 	 		oHeader.setProperty("number", "");
