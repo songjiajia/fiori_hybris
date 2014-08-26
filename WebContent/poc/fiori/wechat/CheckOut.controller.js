@@ -8,11 +8,13 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 * @memberOf poc.fiori.wechat.CheckOut
 */
 	onInit: function() {
+		 this.app = sap.ui.getCore().byId("theApp");	
 		  var bus = sap.ui.getCore().getEventBus();
-		    bus.subscribe("nav", "to", this.navToHandler, this);
-		    this.app = sap.ui.getCore().byId("theApp");		
+		    bus.subscribe("to", "checkout", this.onBeforeShow, this);
+		   	
 		    
-		this.userid= "jones.wu@sap.com";
+//		this.userid= "jones.wu@sap.com";
+		 this.userid= "jones02@sap.com";
 		
 		
         this.cartid = "";
@@ -80,18 +82,15 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				}else if(evt.data.fromwhere === "cart"){
 					that.setParm(evt.data.cartCode, evt.data.userId);
 					
-					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode&time=" + new Date() ;
+					var url = that.urlpre + "/ws410/rest/carts/" + that.cartid + "?currency_attributes=name,isocode&date=" + new Date();
 					var cartModel = new sap.ui.model.xml.XMLModel();
 					that.showBusyDialog();
 					var successfulRequest = function(){
 						that.closeBusyDialog();
 					};
-					cartModel.attachRequestCompleted(successfulRequest);
 					cartModel.loadData(url);
-					
-					
+					cartModel.attachRequestCompleted(successfulRequest);
 					oView.byId("totalprice").setModel(cartModel);
-					
 				}else if(evt.data.fromwhere === "address"){
 					that.getView().byId("ShipAddress").setVisible(true);
 					var url = that.urlpre +  "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2&time=" + new Date();
@@ -143,6 +142,127 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				
 			}
     	}, this);
+	},
+	
+	onBeforeShow: function(channelId, eventId, evt){
+		
+		if(evt.data.fromwhere == "newpayment"){
+			this.getView().byId("Credits").setVisible(true);
+			var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate&time=" + new Date();
+		
+			var creditJson = {};
+		//	var that = this;
+			
+			var creditModel = new sap.ui.model.xml.XMLModel();
+			var successfulRequest = function(){
+				 creditModel.refresh(true);
+				var xmlstr = creditModel.getXML();
+				var xmlDoc;
+				if (window.DOMParser)
+				  {
+				  parser=new DOMParser();
+				  xmlDoc=parser.parseFromString(xmlstr,"text/xml");
+				  }
+				else // code for IE
+				  {
+				  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+				  xmlDoc.async=false;
+				  xmlDoc.loadXML(xmlstr); 
+				  } 
+				creditJson = this.xmlToJson(xmlDoc); 
+				var userscredit = creditJson.creditcardpaymentinfos.creditcardpaymentinfo.filter(function(item){
+	                  if(item.user['@attributes'].uid === this.userid && item.duplicate["#text"] === "false"){
+	                	  return item;
+	                	  
+	                  }
+			});
+				var actualJson = [];
+				var paymentLen = userscredit.length;
+				for(var i=0;i<paymentLen;i++){
+					var actualJsonPiece = {};
+					var payment = userscredit[i];
+					actualJsonPiece.pk = payment['@attributes'].pk;
+					actualJsonPiece.number = payment.number['#text'];
+					actualJson.push(actualJsonPiece);
+				}
+				
+				var creditJsonModel = new sap.ui.model.json.JSONModel(actualJson);
+				this.getView().byId("Crd").setModel(creditJsonModel);
+				//TODO: change selected to last item;
+				var len = this.getView().byId("Crd").getItems().length;
+				if(len > 0){
+					
+				
+				this.getView().byId("Crd").getItems()[len - 1].setSelected(true);
+				}
+	      };
+			
+	      creditModel.loadData(url);	
+	     
+	      creditModel.attachRequestCompleted(successfulRequest);
+			
+		}else if(evt.data.fromwhere === "cart"){
+			this.setParm(evt.data.cartCode, evt.data.userId);
+			
+			var url = this.urlpre + "/ws410/rest/carts/" + this.cartid + "?currency_attributes=name,isocode&date=" + new Date();
+			var cartModel = new sap.ui.model.xml.XMLModel();
+			this.showBusyDialog();
+			var that = this;
+			var successfulRequest = function(){
+				that.closeBusyDialog();
+			};
+			cartModel.loadData(url);
+			cartModel.attachRequestCompleted(successfulRequest);
+			this.getView().byId("totalprice").setModel(cartModel);
+		}else if(evt.data.fromwhere === "address"){
+			this.getView().byId("ShipAddress").setVisible(true);
+			var url = this.urlpre +  "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2&time=" + new Date();
+			var addressJson = {};
+			
+			
+			var addressModel = new sap.ui.model.xml.XMLModel();
+			var successfulRequest = function(){
+				addressModel.refresh(true);
+				
+				
+				this.getView().byId("ShipAddress").setModel(addressModel);
+				
+				var oFilter = new sap.ui.model.Filter("line1",
+						 sap.ui.model.FilterOperator.NE, "");
+				this.getView().byId("addresses").getBinding("items").filter(oFilter);
+				//TODO: change selected to last item;
+				var len = this.getView().byId("addresses").getItems().length;
+				if(len > 0){
+					
+				
+				this.getView().byId("addresses").getItems()[len - 1].setSelected(true);
+				}
+//				var xmlstr = AddressModel.getXML();
+//				var xmlDoc;
+//				if (window.DOMParser)
+//				  {
+//				  parser=new DOMParser();
+//				  xmlDoc=parser.parseFromString(xmlstr,"text/xml");
+//				  }
+//				else // code for IE
+//				  {
+//				  xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+//				  xmlDoc.async=false;
+//				  xmlDoc.loadXML(xmlstr); 
+//				  } 
+//				addressJson = that.xmlToJson(xmlDoc); 
+				
+				
+	           
+	      };
+			
+			addressModel.loadData(url);	
+			
+			addressModel.attachRequestCompleted(successfulRequest);
+		
+			}
+		
+		
 	},
 	
 	onCheckoutBack : function(){
@@ -245,7 +365,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectShip : function(){
 		this.showBusyDialog();
 		this.getView().byId("ShipAddress").setVisible(true);
-		var url = this.urlpre + "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2&time=" + new Date();
+		var url = this.urlpre + "/ws410/rest/users/" + this.userid + "?address_attributes=building,pk,appartment,country,company,line1,line2";
 		var addressJson = {};
 		var that = this;
 		
@@ -320,6 +440,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 			var that = this;
 			var orderno = this.cartid;
 			var price = this.getView().byId("totalprice");
+			var canceltxt = sap.ui.getCore().getModel("i18n").getResourceBundle().getText("BTN_CANCEL");
 			if(!this.wcpayDialog){
 				this.wcpayDialog = new sap.m.Dialog(
 						{
@@ -382,7 +503,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 										}
 									}),
 							rightButton : new sap.m.Button({
-								text : "{i18n>BTN_CANCEL}",
+								text : canceltxt,
 								press : function() {
 									that.wcpayDialog.close();
 								}
@@ -433,16 +554,12 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 		    	  var orderxml = '<order code="'+that.cartid + '"><user uid="'+ that.userid + '"></user>';
 		    	  if(chosenPayment !== ""){
 		    		  orderxml = orderxml + '<paymentInfo pk="'+ chosenPayment + '"></paymentInfo>';
-		    	  }else{
-		    		  orderxml = orderxml + '<paymentInfo pk="'+ "8796158820394" + '"></paymentInfo>';
 		    	  }
 		    	  
 		    	  if(chosenAdd !== ""){
 		    		  
 		    	  
 		    	  orderxml = orderxml + '<deliveryAddress pk="' + chosenAdd + '"/>';
-		    	  }else{
-		    		  orderxml = orderxml + '<deliveryAddress pk="' + "8796192702487" + '"/>';
 		    	  }
 		    	  orderxml = orderxml + '<status>COMPLETED</status><currency isocode="EUR" /></order>';
 		    	  $.ajax({
@@ -453,6 +570,12 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 				      success: function () {
 				    		 var bus = sap.ui.getCore().getEventBus();
 				 	        bus.publish("nav", "to", { 
+				 	            id : "orderStatus",
+				 	            data : {
+				 	            	order : that.cartid
+				 	            }
+				 	});
+				 	       bus.publish("to", "status", { 
 				 	            id : "orderStatus",
 				 	            data : {
 				 	            	order : that.cartid
@@ -482,7 +605,7 @@ sap.ui.controller("poc.fiori.wechat.CheckOut", {
 	selectCredit : function(){
 		this.getView().byId("Credits").setVisible(true);
 		this.showBusyDialog();
-		var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate&time=" + new Date();
+		var url = this.urlpre + "/ws410/rest/creditcardpaymentinfos?creditcardpaymentinfo_attributes=pk,ccowner,user,code,number,type,validFromMonth,validFromYear,validToMonth,validToYear,saved,duplicate";
 	    
 		var creditJson = {};
 		var that = this;

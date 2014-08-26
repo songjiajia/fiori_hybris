@@ -97,7 +97,7 @@
       </Panel>
 	 <ObjectHeader
     id="totalprice"
-    title="{i18n>TOTAL}"
+    title="合计:"
     number="{/totalPrice}"
     numberUnit="{i18n>EUR}" >
 	 <attributes>

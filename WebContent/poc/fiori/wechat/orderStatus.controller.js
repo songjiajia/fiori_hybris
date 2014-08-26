@@ -7,12 +7,17 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 * @memberOf poc.fiori.wechat.orderStatus
 */
 	onInit: function() {
+	
+
 		urlpre= model.ModelManager.getModelUrlPre(); 
 		picpre = model.ModelManager.getPicUrlPre ();
+		
+		  var bus = sap.ui.getCore().getEventBus();
+		    bus.subscribe("to", "status", this.onBeforeShow, this);
 		var oView = this.getView();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
-
+				 bundle = sap.ui.getCore().getModel("i18n").getResourceBundle();
 	if (evt.data.order){
      var oderId = evt.data.order;
      
@@ -28,7 +33,8 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	
 	var oOrderHead = this.getView().byId("OrderHead");
  	oOrderHead.setModel(oModel);
- 	oOrderHead.setProperty("title", "{i18n>ORDERSUCCESS}");
+ //	oOrderHead.setProperty("title", "{i18n>ORDERSUCCESS}");
+ 	oOrderHead.setProperty("title", bundle.getText("ORDERSUCCESS"));
  	oOrderHead.bindProperty("number", "/totalPrice");
 // 	oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
  	oOrderHead.setProperty("numberUnit", "CNY");
@@ -39,7 +45,8 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var oOrderId=this.getView().byId("OrderId");
  	var orderNumber = oModel.getProperty("/@code");
- 	orderNumber = "{i18n>ORDERNO}" + orderNumber;
+ //	orderNumber = "{i18n>ORDERNO}" + orderNumber;
+	orderNumber = bundle.getText("ORDERNO") + orderNumber;
  	oOrderId.setProperty("text",orderNumber);
  	
  	var oAddress=this.getView().byId("Address");
@@ -53,7 +60,8 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
  	
  	var deliveryAddress1 = oDeliveryModel.getProperty("/line1");
  	//var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
- 	var deliveryAddress =  "{i18n>ADDRESS}"+ deliveryAddress1;
+// 	var deliveryAddress =  "{i18n>ADDRESS}"+ deliveryAddress1;
+ 	var deliveryAddress = bundle.getText("ADDRESS")+ deliveryAddress1;
  	//+ deliveryAddress2;
  	oAddress.setProperty("text",deliveryAddress);
  	}
@@ -66,6 +74,64 @@ sap.ui.controller("poc.fiori.wechat.orderStatus", {
 	}
 			}
 		},this);
+		},
+		
+		onBeforeShow: function(channelId, eventId, evt){
+			 bundle = sap.ui.getCore().getModel("i18n").getResourceBundle();
+if (evt.data.order){
+var oderId = evt.data.order;
+
+var url = urlpre + "/ws410/rest/orders/" + oderId;
+var oModel = new sap.ui.model.xml.XMLModel();
+oModel.loadData(url,null,false);
+
+var oDateLabel = this.getView().byId("DateLabel");
+var date1 = new Date(oModel.getProperty("/date"));
+var oOrderDate = date1.toLocaleDateString();
+oDateLabel.setProperty("text", oOrderDate);
+
+
+var oOrderHead = this.getView().byId("OrderHead");
+oOrderHead.setModel(oModel);
+//	oOrderHead.setProperty("title", "{i18n>ORDERSUCCESS}");
+oOrderHead.setProperty("title", bundle.getText("ORDERSUCCESS"));
+oOrderHead.bindProperty("number", "/totalPrice");
+//oOrderHead.bindProperty("numberUnit", "/currency/@isocode");
+oOrderHead.setProperty("numberUnit", "CNY");
+
+var oOrderStatus=this.getView().byId("OrderSta");
+oOrderStatus.setModel(oModel);
+oOrderStatus.bindProperty("text", "/status");
+
+var oOrderId=this.getView().byId("OrderId");
+var orderNumber = oModel.getProperty("/@code");
+//	orderNumber = "{i18n>ORDERNO}" + orderNumber;
+orderNumber = bundle.getText("ORDERNO") + orderNumber;
+oOrderId.setProperty("text",orderNumber);
+
+var oAddress=this.getView().byId("Address");
+var deliveryPK = oModel.getProperty("/deliveryAddress/@pk");
+var deliveryUrl = urlpre + "/ws410/rest/addresses/" + deliveryPK;
+var oDeliveryModel = new sap.ui.model.xml.XMLModel();
+if(deliveryPK !== ""){
+	
+
+oDeliveryModel.loadData(deliveryUrl,null,false);
+
+var deliveryAddress1 = oDeliveryModel.getProperty("/line1");
+//var deliveryAddress2 = oDeliveryModel.getProperty("/line2");
+//var deliveryAddress =  "{i18n>ADDRESS}"+ deliveryAddress1;
+var deliveryAddress = bundle.getText("ADDRESS")+ deliveryAddress1;
+//+ deliveryAddress2;
+oAddress.setProperty("text",deliveryAddress);
+}
+// var isoCode = oModel.getProperty("/currency/@isocode");
+//var currUrl = "http://jones01.nat123.net/shytest1/proxy/http/jones02.nat123.net:18229/ws410/rest/currencies/" + isoCode;
+//var oModelCurrency = new sap.ui.model.xml.XMLModel();
+//oModelCurrency.loadData(currUrl,null,false);
+//var currencyName = oModelCurrency.getProperty("/name");
+//oOrderHead.setProperty("numberUnit", currencyName);
+}
 		},
 	
 	onStatusBack:function(){
