@@ -1,6 +1,6 @@
 <core:View xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.shoppingCart" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page class="marginBoxContent" title="Shopping Cart" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
+	<Page class="marginBoxContent" title="{i18n>SC_TITLE}" showNavButton="true" navButtonPress="onBack" id="shoppingCart">
 	<headerContent>
 		 <Button icon="sap-icon://home" press="backHome" />
 	</headerContent>
@@ -60,15 +60,15 @@
 			    </HBox>
    			 </CustomListItem>
   		</List>
-		<Label id="noProduct"  text="Empty Shopping Cart" textAlign="Center" width="100%"></Label>
+		<Label id="noProduct"  text="{i18n>SC_EMPTY}" textAlign="Center" width="100%"></Label>
   	</content>	
   	<footer>
       <Bar>
       	<contentLeft>
-      		<Button id="totalPrice" text="Total: 0 " />
+      		<Button id="totalPrice" text="{i18n>TOTAL_PRICE0}" />
       	</contentLeft>
         <contentRight>
-	  		<Button id="CheckOut" text="Order" press="checkOut" />
+	  		<Button id="CheckOut" text="{i18n>ORDER}" press="checkOut" />
         </contentRight>
       </Bar>
     </footer>
