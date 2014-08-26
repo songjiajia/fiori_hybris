@@ -8,6 +8,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 	    picpre = model.ModelManager.getPicUrlPre ();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
+				 oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oPara = evt.data.context;
 				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="260700" || oPara =="tools")
 				{					
@@ -24,7 +25,8 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 				catProductsModel.loadData(url);	
 				var oList = this.getView().byId("idCatList");
 			      this.sNoDataText = oList.getNoDataText();
-			      oList.setNoDataText("Loading...");
+			     
+			      oList.setNoDataText(oBundle.getText("BUSY_TITLE"));
 			      // Request completed
 			      catProductsModel.attachRequestCompleted(jQuery.proxy(function(oEvent) {
 
