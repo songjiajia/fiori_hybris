@@ -2,7 +2,7 @@
 	xmlns="sap.m" controllerName="poc.fiori.wechat.OrderDetail" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>ORDDETAIL_TITLE}" id="OrderDetail" showNavButton="true" navButtonPress="onOrderDetailBack">
 		<content>
- 		<ObjectHeader title="{path:'/date', formatter:'.formatDate'}" number="{/totalPrice}" numberUnit="{i18n>CURRENY}">
+ 		<ObjectHeader title="{path:'/date', formatter:'.formatDate'}" number="{/totalPrice}" numberUnit="{i18n>CURRENCY}">
 		<attributes>
             <ObjectAttribute text="{path:'/@code', formatter:'.formatOrderNumber'}"/>
             <ObjectAttribute text="{parts:['/deliveryAddress/streetname','/deliveryAddress/town'],formatter:'.formatAddress'}"/> 
