@@ -13,13 +13,14 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		    noProduct.setVisible(false);
 		ProductList.setVisible(false);//initial cart,list not visible
 //		userId="jones.wu@sap.com";
-		userId="jones02@sap.com";
-//		userId="jiajing.hu@sap.com";
+//		userId="jones02@sap.com";
+		userId="jiajing.hu@sap.com";
 		userUrl= urlpre + "/ws410/rest/customers/";
 		var oView = this.getView();
 		
 		oView.addEventDelegate({                       //beforeShow
 			onBeforeShow: function(evt){
+				oBundle = this.getView().getModel("i18n").getResourceBundle();
 		url= userUrl + userId + "?time="+ new Date();
 		var oModel = new sap.ui.model.xml.XMLModel();
 	    var that = this;
@@ -39,7 +40,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 		    var uModel = new sap.ui.model.xml.XMLModel();
 		    uModel.loadData(cartUri,"",false);
 		    cartUnit = uModel.getProperty("/currency/@isocode"); //cartUnit
-		    var cartListUrl = urlpre + "/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice&time"+ new Date();
+		    var cartListUrl = urlpre + "/ws410/rest/carts/"+ cartCode+"?cartentry_attributes=info,totalPrice,quantity,basePrice&time="+new Date();
 		    cModel.loadData(cartListUrl,"",false);
 
 		    if(cModel.getObject("/entries/").getElementsByTagName("entry").length==0){//cModel is null,there is no product in shopping cart
@@ -101,7 +102,6 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	                cModel.setProperty("/entries/entry/"+m+"/@code",productId);                       //baseProduct code 
 	                m++;
 	          }
-		   	
 			ProductList.setVisible(true);//cart has products,list visible
 	        ProductList.setModel(cModel);
 	        var totalPrice = that.byId("totalPrice");
@@ -110,14 +110,10 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
 	        	var price = parseFloat(cModel.getProperty("/entries/entry/"+i+"/@number"))*cModel.getProperty("/entries/entry/"+i+"/quantity");
 	        	totalCartPrice += price;
 	        }
-	        totalPrice.setText("合计: "+totalCartPrice.toFixed(2)+" CNY");
-	        
-	      
-	          
+	        totalPrice.setText(oBundle.getText("TOTAL")+" "+totalCartPrice.toFixed(2)+" "+oBundle.getText("EUR"));
 	    };
 	    oModel.loadData(url);
 	    oModel.attachRequestCompleted(getUrl);
-	    
 	}
 	  },this);
 	},
@@ -154,7 +150,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice -= basePrice;
-        totalPrice.setText("合计: "+totalCartPrice.toFixed(2)+" CNY");     //new totalCartPrice
+        totalPrice.setText(oBundle.getText("TOTAL")+" "+totalCartPrice.toFixed(2)+" "+oBundle.getText("EUR"));     //new totalCartPrice
       //update backend
         var itemId = minuId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -193,7 +189,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
         var totalPrice = this.byId("totalPrice");
         totalCartPrice = parseFloat(totalPrice.getText().split(" ")[1]);
         totalCartPrice += basePrice;        
-        totalPrice.setText("合计: "+totalCartPrice.toFixed(2)+" CNY");
+        totalPrice.setText(oBundle.getText("TOTAL")+" "+totalCartPrice.toFixed(2)+" "+oBundle.getText("EUR"));
         //update backend
         var itemId = plusId.split("-");
 		var i = itemId[itemId.length-1];   //press No.i item
@@ -254,7 +250,7 @@ sap.ui.controller("poc.fiori.wechat.shoppingCart", {
   		  tPrice.setVisible(false);
   		  order.setVisible(false);
   	  }else
-  		tPrice.setText("合计: "+totalPrice.toFixed(2)+" CNY"); 			
+  		tPrice.setText(oBundle.getText("TOTAL")+" "+totalPrice.toFixed(2)+" "+oBundle.getText("EUR")); 			
 	    evt.getSource().removeItem(evt.getParameter("listItem"));
 //	    urlpre = "http://182.254.156.24:8000";
 		var deleteCartProductUri = urlpre + "/ws410/rest/carts/"+cartCode;
