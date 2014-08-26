@@ -1,7 +1,7 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
 		controllerName="poc.fiori.wechat.orderStatus" xmlns:html="http://www.w3.org/1999/xhtml">
 	<!-- <Page title="Order" id="orderstatus" showNavButton="true" navButtonPress="onStatusBack"> -->
-	<Page title="{i18n>ORDER}" id="orderstatus">
+	<Page title="{i18n>ORDERCONFIRM}" id="orderstatus">
 		<content>
     <Label id="DateLabel" width="7em" textAlign="Right"></Label>
 	<ObjectHeader id="OrderHead" >
