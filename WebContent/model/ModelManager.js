@@ -2,7 +2,7 @@ jQuery.sap.declare("model.ModelManager");
 
 model.ModelManager = {};
 model.ModelManager.getModelUrlPre = function(){
-	return "http://localhost:8080/poc.fiori.wechat/proxy/http/182.254.156.24:9001";
+	return "http://localhost:8080/poc.fiori.wechat/proxy/http/10.59.157.120:9001";
 	//return "http://182.254.156.24:8000";
 };
 
@@ -18,15 +18,21 @@ model.ModelManager.getDetailUrl = function(){
 };
 
 
-model.ModelManager.getLanHeader = function(){
+model.ModelManager.getLanHeader = function(type){
 	var header = {};
 	var lan = sap.ui.getCore().getConfiguration().getLanguage();
 	if(lan.length >=2){
 		lan = lan.substr(0,2);
 	}
 	header = {"Accept-Language" : lan};
+	if(type === "ws410"){
+		
+	
 	return header;
-};
+	}else{
+		return lan;
+	}
+	};
 
 
 
