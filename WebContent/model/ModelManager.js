@@ -1,6 +1,6 @@
 jQuery.sap.declare("model.ModelManager");
 
-del.ModelManager = {};
+model.ModelManager = {};
 model.ModelManager.getModelUrlPre = function(){
 	return "http://localhost:8980/poc.fiori.wechat/proxy/http/10.59.157.120:9001";
 	//return "http://182.254.156.24:8000";
