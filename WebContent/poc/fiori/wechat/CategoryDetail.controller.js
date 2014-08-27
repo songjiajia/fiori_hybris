@@ -7,7 +7,6 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 		urlpre= model.ModelManager.getModelUrlPre(); 
 	    picpre = model.ModelManager.getPicUrlPre ();
 	    detailUrl= model.ModelManager.getDetailUrl(); 
-	    catProductsModel = new sap.ui.model.xml.XMLModel();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				 oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -15,12 +14,14 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="260700" || oPara =="tools")
 				{					
 //				var url = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
+					var catProductsModel = new sap.ui.model.xml.XMLModel();
 					var header = model.ModelManager.getLanHeader("v1");
-					url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS" + header;
+					url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS&lang=" + header;
 					catProductsModel.loadData(url);					
 				}
 				else
 			    {
+					var catProductsModel = new sap.ui.model.xml.XMLModel();
 //				  url = "http://182.254.156.24:8000//rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
 					url = urlpre + "/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + oPara +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online"; 
 					var header = model.ModelManager.getLanHeader();
