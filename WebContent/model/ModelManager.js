@@ -17,3 +17,16 @@ model.ModelManager.getDetailUrl = function(){
 	return "http://182.254.156.24:8000";
 };
 
+
+model.ModelManager.getLanHeader = function(){
+	var header = {};
+	var lan = sap.ui.getCore().getConfiguration().getLanguage();
+	if(lan.length >=2){
+		lan = lan.substr(0,2);
+	}
+	header = {"Accept-Language" : lan};
+	return header;
+};
+
+
+
