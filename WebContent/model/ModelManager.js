@@ -18,7 +18,8 @@ model.ModelManager.getDetailUrl = function(){
 };
 
 
-model.ModelManager.getLanHeader = function(type){
+model.ModelManager.getLanHeader = function(){
+	var type = arguments[0]?arguments[0]:"ws410";
 	var header = {};
 	var lan = sap.ui.getCore().getConfiguration().getLanguage();
 	if(lan.length >=2){
