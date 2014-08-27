@@ -154,7 +154,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
         var user = "jones02@sap.com";
 		var cartNoUrl = uripre + "/ws410/rest/customers/" + user + "?time=" + new Date();
 	 	var cartNoModel = new sap.ui.model.xml.XMLModel();
-	 	cartNoModel.loadData(cartNoUrl,null,false);
+	 	var header = model.ModelManager.getLanHeader();
+	 	cartNoModel.loadData(cartNoUrl,null,false,"GET",false,header);
 	 	var cartNo = cartNoModel.getProperty("/carts/cart/@code");
 	 	var userPK = cartNoModel.getProperty("/@pk");
 	 	
@@ -163,7 +164,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 // Create a new cart for user if no existing cartNo	 	
 	 	if(!cartNo) {
 	 		cartNoUrl = uripre + "/ws410/rest/users/" + user + "?time=" + new Date();
-		 	cartNoModel.loadData(cartNoUrl,null,false);
+	 		var header = model.ModelManager.getLanHeader();
+		 	cartNoModel.loadData(cartNoUrl,null,false,"GET",false,header);
 		 	cartNo = cartNoModel.getProperty("/carts/cart/@code");
 		 	userPK = cartNoModel.getProperty("/@pk");
 		 	if(!cartNo){
@@ -230,7 +232,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
             	var subpUri = productUri.substring(index,productUri.length);
             	productUri = uripre+subpUri;
             	var oModel = new sap.ui.model.xml.XMLModel();
-            	oModel.loadData(productUri,null,false);
+            	var header = model.ModelManager.getLanHeader();
+            	oModel.loadData(productUri,null,false,"GET",false,header);
             	var productName = oModel.getProperty("/name");
             	var productCode = oModel.getProperty("/@code");
             	var productDes = oModel.getProperty("/summary");
@@ -271,7 +274,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				}
 		 	};
 		 	oModel.attachRequestCompleted(jQuery.proxy(success, this));
-		 	oModel.loadData(s.pUri,null,true);  
+		 	var header = model.ModelManager.getLanHeader();
+		 	oModel.loadData(s.pUri,null,true,"GET",false,header);  
 		},
 		
 	setInitColor: function(){
@@ -352,7 +356,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	        	var subpUri = productUri.substring(index,productUri.length);
 	        	productUri = uripre+subpUri;
 	        	var sModel = new sap.ui.model.xml.XMLModel();
-	        	sModel.loadData(productUri,null,false);
+	        	var header = model.ModelManager.getLanHeader();
+	        	sModel.loadData(productUri,null,false,"GET",false,header);
 	        	var size = sModel.getProperty("/variantAttributes/variantAttribute/@value");
 	    		var oItem = new sap.ui.core.Item(
 	    				{

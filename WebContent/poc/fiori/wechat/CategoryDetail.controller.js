@@ -7,6 +7,7 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 		urlpre= model.ModelManager.getModelUrlPre(); 
 	    picpre = model.ModelManager.getPicUrlPre ();
 	    detailUrl= model.ModelManager.getDetailUrl(); 
+	    catProductsModel = new sap.ui.model.xml.XMLModel();
 		oView.addEventDelegate({
 			onBeforeShow: function(evt){
 				 oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -14,16 +15,20 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 				if (oPara == "160700" || oPara =="shirts" ||oPara =="shoes" || oPara =="caps" || oPara =="260700" || oPara =="tools")
 				{					
 //				var url = "http://182.254.156.24:8980/poc.fiori.wechat/proxy/http/182.254.156.24:9001/ws410/rest/catalogs/apparelProductCatalog/catalogversions/Online/categories/" + oPara +"?category_attributes=products&product_attributes=name";
-				 url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS";
+					var header = model.ModelManager.getLanHeader("v1");
+					url = urlpre + "/rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online/categories/" + oPara +"?options=PRODUCTS" + header;
+					catProductsModel.loadData(url);					
 				}
 				else
 			    {
 //				  url = "http://182.254.156.24:8000//rest/v1/apparel-uk/catalogs/apparelProductCatalog/Online?options=CATEGORIES,PRODUCTS";
 					url = urlpre + "/ws410/rest/products?product_attributes=name,ean,picture,code&products_query=%7Bname%7D%20LIKE%20'%25" + oPara +"%25'"+"&catalogs=apparelProductCatalog&catalogversions=Online"; 
+					var header = model.ModelManager.getLanHeader();
+					catProductsModel.loadData(url,null,false,"GET",false,header);	
 			    };
 				
-				var catProductsModel = new sap.ui.model.xml.XMLModel();
-				catProductsModel.loadData(url);	
+				
+			
 				var oList = this.getView().byId("idCatList");
 			      this.sNoDataText = oList.getNoDataText();
 			     
@@ -52,12 +57,16 @@ sap.ui.controller("poc.fiori.wechat.CategoryDetail", {
 														src : picpre + "{images/0/image/url}",
 													}),
 													new sap.m.Link({
+														id : "catId",
 														text : "{name/text()}",
 														href : detailUrl + "/poc.fiori.wechat/detailPage.html?Para="+"{code}"
 													})
 							        	         ] 
 							           })]
 					    		  });
+			    		  oItems.attachPress(function(oEvent){
+				        	  this.getView().byId(catId).press();						      
+				        });
 					        oItems.setProperty("type", "Active");	
 		//			   oItems.bindProperty("title","name/text()").bindProperty("icon","images/0/image/url");;
 				        oList.setModel(catProductsModel);
