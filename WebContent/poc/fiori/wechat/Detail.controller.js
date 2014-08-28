@@ -8,7 +8,6 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 * @memberOf poc.fiori.wechat.Detail
 */
 	onInit: function() {
-// L
 		this.oModel = new sap.ui.model.xml.XMLModel();
 		var success = function(oEvent){
 			if (oEvent.getParameter("success") == false){
@@ -110,6 +109,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				 	{
 				 	 oHeader.setProperty("number", rModel.getProperty("/price"));
 					 oHeader.setProperty("numberUnit", rModel.getProperty("/currency/@isocode"));
+//					 oHeader.setProperty("numberUnit", "CNY");
 				 	}
 		 	}
 	 	}
@@ -142,7 +142,7 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 		 this.app = sap.ui.getCore().byId("theApp");
 		 this.app.back();
 //		 this.setDefaultTab();
-//		window.open("http://localhost:8080/poc.fiori.wechat/",'_self');
+//		 window.open("http://localhost:8080/poc.fiori.wechat/",'_self');
 	},*/
 	
 	handleCart: function() {
@@ -224,8 +224,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
         	cModel = oEvent.oSource;	
 			var variants = cModel.getObject("/variants/");
 			var num = variants.getElementsByTagName("variantProduct").length;
-			var i = 0;
-            while (i < num){
+            for (var i=0;i<num;i++)
+            {
 // Loop to create buttons for different color of base product
             	var productUri = cModel.getProperty("/variants/variantProduct/"+i+"/@uri");
             	var index = productUri.indexOf("/ws410/rest");
@@ -251,7 +251,6 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
     		 	button.pDes = productDes;
     		 	button.setProperty("icon", iconurl);
     		 	sButton.addButton(button);
-            	i++;
             }
 		},
 		
@@ -312,24 +311,12 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 				}
 			};
 			oModel.attachRequestCompleted(jQuery.proxy(success, this));
-	    	oModel.loadData(pUri,null,true);
-//			colors._buttonPressed = function(){};
-//			colorSelected.firePress();
-//		 	colors._buttonPressed = function(e){
-//				var l=this.getSelectedButton(),
-//				c=e.getSource();
-//				if(l!==c.getId()){
-//				c.$().addClass('sapMSegBBtnSel');
-//				sap.ui.getCore().byId(l).$().removeClass('sapMSegBBtnSel');
-//				this.setAssociation('selectedButton',c,true);
-//				}
-//			};			
+	    	oModel.loadData(pUri,null,true);			
 		},
 		
 	showSize: function(oModel){
 			var a = oModel.getObject("/variants/");
 			var num = a.getElementsByTagName("variantProduct").length;
-			var i = 0;
 // Refresh all sizes first
 			var select = this.byId("sizeSelect");
     		select.removeAllItems();
@@ -350,7 +337,8 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
     		};
     			
 // loop to create list for different size of product
-			while (i < num){
+    		for (var i=0;i<num;i++)
+			{
 	        	var productUri = oModel.getProperty("/variants/variantProduct/"+i+"/@uri");
 	        	var index = productUri.indexOf("/ws410/rest");
 	        	var subpUri = productUri.substring(index,productUri.length);
@@ -367,7 +355,6 @@ sap.ui.controller("poc.fiori.wechat.Detail", {
 	    		);
 	    		select.addItem(oItem);  
 	    		oItem.pCode = sModel.getProperty("/@code");
-	        	i++;
 			}
 			
 			if (num = 1){
